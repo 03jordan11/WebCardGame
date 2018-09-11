@@ -8565,8 +8565,6 @@
       "type": "package",
       "path": "system.linq/4.3.0",
       "files": [
-        "System.Linq.4.3.0.nupkg.sha512",
-        "System.Linq.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -8627,7 +8625,9 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._"
+        "ref/xamarinwatchos10/_._",
+        "system.linq.4.3.0.nupkg.sha512",
+        "system.linq.nuspec"
       ]
     },
     "System.Linq.Expressions/4.3.0": {
@@ -11500,23 +11500,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jordan.burnes\\.nuget\\packages\\": {},
+    "C:\\Users\\Ravel\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jordan.burnes\\source\\repos\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
+      "projectUniqueName": "C:\\Users\\Ravel\\Documents\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
       "projectName": "WebCardGame",
-      "projectPath": "C:\\Users\\jordan.burnes\\source\\repos\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
-      "packagesPath": "C:\\Users\\jordan.burnes\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jordan.burnes\\source\\repos\\WebCardGame\\WebCardGame\\obj\\",
+      "projectPath": "C:\\Users\\Ravel\\Documents\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
+      "packagesPath": "C:\\Users\\Ravel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ravel\\Documents\\WebCardGame\\WebCardGame\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\jordan.burnes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ravel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
