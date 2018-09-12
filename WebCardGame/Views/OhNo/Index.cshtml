@@ -1,0 +1,26 @@
+﻿
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+
+	here is a test div
+</div>
+<button id="testId">
+	click me!
+</button>
+
+@section Scripts{ 
+
+<script type="text/javascript">
+	$("#testId").on('click', function () {
+		alert("Hello!");
+	});
+
+	alert("Hello");
+</script>
+}
