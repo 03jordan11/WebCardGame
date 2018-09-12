@@ -11500,30 +11500,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ravel\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/aabhas/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ravel\\Documents\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
+      "projectUniqueName": "/Users/aabhas/WebCardGame/WebCardGame/WebCardGame.csproj",
       "projectName": "WebCardGame",
-      "projectPath": "C:\\Users\\Ravel\\Documents\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
-      "packagesPath": "C:\\Users\\Ravel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ravel\\Documents\\WebCardGame\\WebCardGame\\obj\\",
+      "projectPath": "/Users/aabhas/WebCardGame/WebCardGame/WebCardGame.csproj",
+      "packagesPath": "/Users/aabhas/.nuget/packages/",
+      "outputPath": "/Users/aabhas/WebCardGame/WebCardGame/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Ravel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/aabhas/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
