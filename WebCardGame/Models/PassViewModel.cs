@@ -8,7 +8,7 @@ namespace WebCardGame.Models
 {
     public class PassViewModel
     {
-        public Game Pass { get; set; }
+        public Game PassGame { get; set; }
 
     }
 }
