@@ -11500,28 +11500,30 @@
     ]
   },
   "packageFolders": {
-    "/Users/aabhas/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\MAT-TING\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/aabhas/WebCardGame/WebCardGame/WebCardGame.csproj",
+      "projectUniqueName": "C:\\Users\\MAT-TING\\Documents\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
       "projectName": "WebCardGame",
-      "projectPath": "/Users/aabhas/WebCardGame/WebCardGame/WebCardGame.csproj",
-      "packagesPath": "/Users/aabhas/.nuget/packages/",
-      "outputPath": "/Users/aabhas/WebCardGame/WebCardGame/obj",
+      "projectPath": "C:\\Users\\MAT-TING\\Documents\\WebCardGame\\WebCardGame\\WebCardGame.csproj",
+      "packagesPath": "C:\\Users\\MAT-TING\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\MAT-TING\\Documents\\WebCardGame\\WebCardGame\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/aabhas/.config/NuGet/NuGet.Config"
+        "C:\\Users\\MAT-TING\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11541,12 +11543,12 @@
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "2.1.1"
+            "version": "[2.1.1, )",
+            "autoReferenced": true
           },
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
-            "version": "2.1",
+            "version": "[2.1.0, )",
             "autoReferenced": true
           }
         },
