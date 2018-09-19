@@ -16,11 +16,25 @@
 
 @section Scripts{ 
 
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script type="text/javascript">
+	swal("test");
 	$("#testId").on('click', function () {
-		alert("Hello!");
+		debugger;
+		$.ajax({
+			url: "/OhNo/TestMethod",
+			action: "GET",
+			success: function (data) {
+				alert(data);
+			}
+		});
+
 	});
 
 	alert("Hello");
 </script>
+
+
 }

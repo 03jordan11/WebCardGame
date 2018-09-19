@@ -30,5 +30,10 @@ namespace WebCardGame.Controllers
 			};
 			return View("Index", x);
 		}
+
+		public IActionResult TestMethod()
+		{
+			return Json("test Json ");
+		}
 	}
 }
