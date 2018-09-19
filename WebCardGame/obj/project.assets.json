@@ -11500,8 +11500,9 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MAT-TING\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/aabhas/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+
   },
   "project": {
     "version": "1.0.0",
