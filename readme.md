@@ -7,4 +7,5 @@ How To Compile:
 3. Open project using Visual Studio or Visual Studio Code by selecting "open project" from file menu ans selecing the project (.sln) file
 4. Run file through Visual Studio
 5. NOTE: A test version will be available through HTTP in the future
+
 [Documentation](https://drive.google.com/drive/folders/1LZWzqJHkDROf3FxlJqt9z19stl5ErKpn?usp=sharing)
