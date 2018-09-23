@@ -2,16 +2,55 @@
     ViewData["Title"] = "1,2,3 Pass!";
 }
 
-@{ 
-	Layout = "_Layout";
+@{
+    Layout = "_Layout";
 }
+<head>
+    <style>
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/ >
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/ >
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" >
+    </style>
+</head>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
 <div class="title">1,2,3 Pass!</div>
-<div class="playArea">
+
+<div class="midArea">
+    <div v-if="state=='start'" id="startPage">
+        <button type="button" class="btn btn-success" id="startButton" v-on:click="state='play'">START</button>
+
+        <div id="difficultyDropDown">Difficulty:<br />
+            <select style="background-color:black">
+                <option value="easy">Easy</option>
+                <option value="normal">Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+    </div>
+
+    <div v-if="state=='play'" id="playing">
+        <button type="button" class="btn btn-success" id="restartButton" v-on:click="state='start'">Restart</button>
+    </div>
 
 </div>
+
 <div class="footer"></div>
 
+<script>
+    var app = new Vue({
+        el:".midArea",
+
+        data:{
+            state: "start"
+        }
+    });
+</script>
 
 <style>
     .title {
@@ -31,13 +70,42 @@
         margin-top: 5px;
     }
 
-    .playArea{
+    .midArea {
         width: 100%;
         height: 600px;
+        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+        background-size: 1100px 600px;
         border-style: solid;
         border-width: 1px;
         border-color: black;
         margin-top: 5px;
+    }
+
+    #startButton {
+        width: 300px;
+        height: 100px;
+        margin-top: 250px;
+        margin-left: 10%;
+        color: yellow;
+        font-family: monospace;
+        font-size: 40px;
+        border-radius:20px;
+    }
+
+    #difficultyDropDown {
+        font-family: monospace;
+        font-size:30px;
+        color:white;
+        margin-top:-320px;
+        margin-left: 70%;
+    }
+
+    #restartButton{
+        width:150px;
+        height:40px;
+        margin-top:20px;
+        margin-left:20px;
+        color:yellow;
     }
 
     .footer {
