@@ -2,13 +2,15 @@
     ViewData["Title"] = "Home Page";
 }
 <style>
-    /*body{
-        background-image: 
-    }*/
+body { 
+    background-image: url("https://i.groupme.com/3000x2250.jpeg.e30d9d1f46574be5b0d8e437166a020f.large"); 
+    background-repeat: no-repeat;
+
+}
 </style>
 <div class="row" style="position: relative; top: 80px">
     <div class="col-md-3">
-        <button asp-action="Index" asp-controller="Feud" class="btn btn-dark btn-lg">Feud</button>
+        <button id="passButton" class="btn btn-dark btn-lg">Feud</button>
     </div>
     <div class="col-md-3">
         <button asp-action="Index" asp-controller="OhNo" class="btn btn-dark btn-lg">OhNo</button>
@@ -17,5 +19,14 @@
         <button asp-action="Index" asp-controller="Pass" class="btn btn-dark btn-lg">Pass</button>
     </div>
 </div>
+
+<script>
+    $("#passButton").on('click', function () {
+        $.ajax({
+            url: "/OhNo/Index",
+            type: "GET",
+        });
+    })
+</script>
 
 
