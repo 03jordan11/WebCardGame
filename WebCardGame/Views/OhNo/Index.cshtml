@@ -1,14 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
-@{ 
+@{
 	Layout = "_Layout";
 }
 
-<h2>Index</h2>
+<h2>Oh No, 99!</h2>
 
-<div class="title"Oh No, 99!</div>
+<div class="title" Oh No, 99!</div>
 <div class="playArea"></div>
 <div class="footer"></div>
 
@@ -51,28 +51,14 @@
 	}
 </style>
 
+<body>
+	<p>
+		Oh No, 99 is a fun and educational math card game recommended for all ages 4+.
+		The oject of the game is to play cards numbered 2-10, while avoiding a sum of over 99.
+	</p>
+	<p>Number of Players: 2-5</p>
+	<p>GamePlay Instructions:</p>
+	<p>Four cards are dealt to each player. A numbered card is dealt face up on the table.</p>
+</body>
 
-@section Scripts{ 
-
-
-@*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-<script type="text/javascript">
-	swal("test");
-	$("#testId").on('click', function () {
-		debugger;
-		$.ajax({
-			url: "/OhNo/TestMethod",
-			action: "GET",
-			success: function (data) {
-				alert(data);
-			}
-		});
-
-	});
-
-	alert("Hello");
-</script>*@
-
-
-}
+@section Scripts{
