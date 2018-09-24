@@ -13,18 +13,21 @@
     </style>
 </head>
 
-
-
+@*required scripts*@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
+@*tile area implementation*@
 <div class="title">1,2,3 Pass!</div>
 
+@*middle area implementation*@
 <div class="midArea">
     <div v-if="state=='start'" id="startPage">
+        @*start button*@
         <button type="button" class="btn btn-success" id="startButton" v-on:click="state='play'">START</button>
 
+        @*dropdown menu for difficulty selection*@
         <div id="difficultyDropDown">Difficulty:<br />
             <select style="background-color:black">
                 <option value="easy">Easy</option>
@@ -40,6 +43,7 @@
 
 </div>
 
+@*footer implemenation*@
 <div class="footer"></div>
 
 <script>
