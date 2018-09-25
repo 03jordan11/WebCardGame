@@ -11,5 +11,9 @@
 
   <ItemGroup>
     <Folder Include="Domains\" />
+    <Folder Include="Views\Pass\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Models\PassViewModel.cshtml" />
   </ItemGroup>
 </Project>
