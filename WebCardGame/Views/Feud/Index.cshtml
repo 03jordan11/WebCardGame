@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    Layout = "_Layout";
+}
+@model FeudViewModel
+
+
+<h1>Feud</h1>
+
+<canvas id="feudCanvas" width="600px" height="600px" style="border:1px solid brown"></canvas>
+
+<script>
+
+    debugger;
+    var deck =[];
+    var temp;
+    var player;
+    @*for (i = 0; i < 52; i++) {
+        deck.push(@Model.FeudGame.DrawDeck.Cards[i])
+    }*@
+    @foreach(var item in Model.FeudGame.DrawDeck.Cards)
+    {
+        @:temp = @Html.Raw(Json.Serialize(item));
+        @:deck.push(temp);
+    }
+
+
+
+</script>
