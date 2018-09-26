@@ -37,8 +37,16 @@
         </div>
     </div>
 
-    <div v-if="state=='play'" id="playing">
+    <div v-if="state=='play'" id="playingPage">
         <button type="button" class="btn btn-success" id="restartButton" v-on:click="state='start'">Restart</button>
+        <div id="middleDeck"></div>
+        <div id="playerCards">
+            <div id="pCard1"></div>
+            <div id="pCard2"></div>
+            <div id="pCard3"></div>
+            <div id="pCard4"></div>
+            <div id="playerName">Player</div>
+        </div>
     </div>
 
 </div>
@@ -77,12 +85,88 @@
     .midArea {
         width: 100%;
         height: 600px;
-        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
-        background-size: 1100px 600px;
         border-style: solid;
         border-width: 1px;
         border-color: black;
         margin-top: 5px;
+    }
+
+    #startPage {
+        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); 
+        background-size: 1100px 600px;
+        height: 600px;
+        width: 100%;
+    }
+
+    #playingPage {
+        background-image: url(https://images.pexels.com/photos/1040499/pexels-photo-1040499.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+        background-size: 1100px 600px;
+        height: 600px;
+        width: 100%;
+    }
+
+    #middleDeck {
+        height: 120px;
+        width: 80px;
+        margin-top:160px;
+        margin-left: 500px;
+        border-color: white;
+        border-style: solid;
+        border-width: 2px;
+        background-color: yellow;
+    }
+
+    #playerCards {
+        margin-top: 80px;
+        height: 100px;
+        width: 100%;
+    }
+
+    #pCard1{
+        height:120px;
+        width: 80px;
+        margin-left:340px;
+        border-color: white;
+        border-style: solid;
+        border-width: 2px;
+        background-color: yellow;
+    }
+    #pCard2 {
+        height: 120px;
+        width: 80px;
+        margin-left: 440px;
+        margin-top:-120px;
+        border-color: white;
+        border-style: solid;
+        border-width: 2px;
+        background-color: yellow;
+    }
+    #pCard3 {
+        height: 120px;
+        width: 80px;
+        margin-left: 540px;
+        margin-top:-120px;
+        border-color: white;
+        border-style: solid;
+        border-width: 2px;
+        background-color: yellow;
+    }
+    #pCard4 {
+        height: 120px;
+        width: 80px;
+        margin-left: 640px;
+        margin-top:-120px;
+        border-color: white;
+        border-style: solid;
+        border-width: 2px;
+        background-color: yellow;
+    }
+
+    #playerName{
+        color:white;
+        margin-left:460px;
+        font-family:monospace;
+        font-size:40px;
     }
 
     #startButton {
@@ -109,6 +193,8 @@
         height:40px;
         margin-top:20px;
         margin-left:20px;
+        font-family:monospace;
+        font-size:20px;
         color:yellow;
     }
 
