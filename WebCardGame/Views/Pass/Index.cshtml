@@ -5,6 +5,9 @@
 @{
     Layout = "_Layout";
 }
+
+@model PassViewModel
+
 <head>
     <style>
         <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/ >
@@ -53,16 +56,6 @@
 
 @*footer implemenation*@
 <div class="footer"></div>
-
-<script>
-    var app = new Vue({
-        el:".midArea",
-
-        data:{
-            state: "start"
-        }
-    });
-</script>
 
 <style>
     .title {
@@ -129,7 +122,7 @@
         border-color: white;
         border-style: solid;
         border-width: 2px;
-        background-color: yellow;
+        background-image:url('../wwwroot/images/cards/2C.jpg');
     }
     #pCard2 {
         height: 120px;
@@ -209,3 +202,50 @@
         margin-top: 5px;
     }
 </style>
+
+@section Scripts{ 
+<script>
+    var app = new Vue({
+        el:".midArea",
+
+        data:{
+            state: "start"
+        }
+    });
+
+    var deck = [];
+    var temp;
+
+    var player =[];
+    var bot1 = [];
+    var bot2 = [];
+    var bot3 = [];
+
+    @foreach(var item in Model.PassGame.DrawDeck.Cards)
+    {
+        @:temp = @Html.Raw(Json.Serialize(item));
+        @:deck.push(temp);
+    }
+
+    var size = deck.length;
+    for(i=0;i<size;i++)
+    {
+        player.push(deck.pop());
+        i++
+        bot1.push(deck.pop());
+        i++
+        bot2.push(deck.pop());
+        i++
+        bot3.push(deck.pop());
+    }
+
+    @*document.getElementById("pCard1").setAttribute('style',"background-image: url(../wwwroot/images/cards/"+2C+".jpg)");*@
+
+    console.log(deck);
+    console.log(player);
+    console.log(bot1);
+    console.log(bot2);
+    console.log(bot3);
+</script>
+
+}
