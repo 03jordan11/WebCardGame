@@ -40,5 +40,30 @@ namespace WebCardGame.Domains
             }
             return Shuffle(new Deck() { Cards = temp });
         }
+        public static Deck Pass(int players)
+        {
+
+            var temp = new List<Card>();
+            for (int i = 0; i < players; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    temp.Add(new Card()
+                    {
+                        Suit = j == 0 ? "Clubs" : i == 1 ? "Diamonds" : i == 2 ? "Hearts" : "Spades",
+                        Value = i == 0 ? 1 :
+                                i == 1 ? 2 :
+                                i == 2 ? 3 :
+                                i == 3 ? 4 :
+                                i == 4 ? 5 :
+                                i == 5 ? 6 :
+                                i == 6 ? 7 :
+                                8
+                    });
+                }
+            }
+            return Shuffle(new Deck() { Cards = temp });
+
+        }
     }
 }
