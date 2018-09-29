@@ -5,6 +5,7 @@
 @{
 	Layout = "_Layout";
 }
+@model OhNoViewModel
 
 <!--Title-->
 <h2>Oh No, 99!</h2>
@@ -54,4 +55,175 @@
 </style>
 
 
-@section Scripts{}
+@section Scripts{
+
+	<script type="text/javascript">
+
+		// select number of players including user
+
+		
+
+	//	debugger;
+		var deck = [];
+		var cardStack = [];
+		var startCard;
+		var temp;
+
+		var player = [];
+		var bot1 = [];
+		var bot2 = [];
+		//var bot3 = [];
+
+		@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
+		{
+			@:temp = @Html.Raw(Json.Serialize(item));
+			@:deck.push(temp);
+		}
+
+		console.log(deck);
+
+		var count = 0;
+		for (i = 0; i < deck.length; i++)
+		{
+			if (count < 4)
+			{
+				player.push(deck.pop());
+				i++;
+				bot1.push(deck.pop());
+				bot2.push(deck.pop());
+				//bot3.push(deck.pop());
+				count++;
+			}
+		}
+
+		debugger;
+
+		var total_value = 0;
+		var value;
+		startCard = deck.pop();
+		while (startCard.value == -10 || startCard.value == -1 || startCard.value == 0) {
+			deck.push(startCard);
+			startCard = deck.pop();
+		}
+		cardStack.push(startCard);
+		total_value += startCard.value;
+
+		console.log("start = " + total_value);
+
+		var i;
+		var numPlayers = 4;
+		var turn = 1;
+		while (total_value < 100)
+		{
+			console.log("turn = " + turn);
+		//	console.log(player);
+			try {
+				i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+				value = player[i].value; // calls cardValue to return valid value
+				if (value == -1) {
+					while (1) {
+						debugger;
+						var v = parseInt(window.prompt("Enter desrired value: "));
+						try {
+							if ((v >= 0 && v < 11) || v == -10) {
+								value = v;
+								break;
+							}
+						}
+						catch (err) {
+							window.alert("value not valid");
+							continue;
+						}
+					}
+				}
+				player.splice(i, 1); // removes card from player's hand
+			//	console.log(player);
+				cardStack.push(player[i]); // puts card onto cardstack
+				total_value = total_value + value; // adds value to total_value
+				console.log("+ " + value);
+				console.log("= " +total_value); // display total_value
+				player.push(deck.pop());
+			//	console.log(player);
+			}
+			catch (err) {
+				window.alert("value did not compute");
+				break;
+			}
+
+		//	console.log(bot1);
+			try {
+				
+				i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+				value = bot1[i].value; // calls cardValue to return valid value
+				if (value == -1) {
+					while (1) {
+						debugger;
+						var v = parseInt(window.prompt("Enter desrired value: "));
+						try {
+							if ((v >= 0 && v < 11) || v == -10) {
+								value = v;
+								break;
+							}
+						}
+						catch (err) {
+							window.alert("value not valid");
+							continue;
+						}
+					}
+				}
+				bot1.splice(i, 1); // removes value (card) from player's hand
+			//	console.log(bot1);
+				cardStack.push(bot1[i]); // puts value (card) onto cardstack
+				total_value = total_value + value; // adds value to total_value
+				console.log("+ " + value);
+				console.log("= " + total_value);
+				bot1.push(deck.pop());
+			//	console.log(bot1);
+			}
+			catch (err) {
+				window.alert("value did not compute");
+				break;
+			}
+
+		//	console.log(bot2);
+			try {
+				i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+				value = bot2[i].value; // calls cardValue to return valid value
+				if (value == -1) {
+					while (1) {
+						debugger;
+						var v = parseInt(window.prompt("Enter desrired value: "));
+						try {
+							if ((v >= 0 && v < 11) || v == -10) {
+								value = v;
+								break;
+							}
+						}
+						catch (err) {
+							window.alert("value not valid");
+							continue;
+						}
+					}
+				}
+				bot2.splice(i, 1); // removes value (card) from player's hand
+			//	console.log(bot2);
+				cardStack.push(bot2[i]); // puts value (card) onto cardstack
+				total_value = total_value + value; // adds value to total_value
+				console.log("+ " + value);
+				console.log("= " + total_value);
+				bot2.push(deck.pop());
+			//	console.log(bot2);
+			}
+			catch (err) {
+				window.alert("value did not compute");
+				break;
+			}
+
+			turn++;
+		}
+
+		
+
+	</script>
+
+}

@@ -13,27 +13,42 @@ namespace WebCardGame.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var game = new Game() {
+
+			var temp = UniversalHelper.StandardDeck();
+			foreach(var item in temp.Cards)
+			{
+				if(item.Value == 11)
+				{
+					item.Value = -10;
+				}
+				else if (item.Value == 12)
+				{
+					item.Value = -1;
+				}
+				else if (item.Value == 13)
+				{
+					item.Value = 0;
+				}
+			}
+
+			var game = new Game()
+			{
 				Name = "Oh No 99!",
 				User = new User(),
 				Bots = new List<AI>(),
+				DrawDeck = temp,
 				TurnOrder = new List<Player>(),
 				CardStack = new Deck(),
-				DrawDeck = new Deck(),
 				DECKSIZE = 52,
 				MAXHAND = 4,
 				Discard = null,
 			};
 
-			var x = new OhNoViewModel() {
+			var x = new OhNoViewModel()
+			{
 				OhNoGame = game
 			};
 			return View("Index", x);
-		}
-
-		public IActionResult TestMethod()
-		{
-			return Json("test Json ");
 		}
 	}
 }
