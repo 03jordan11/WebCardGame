@@ -9,15 +9,17 @@
 
 <h1>Feud</h1>
 
-<canvas id="feudCanvas" width="50px" height="50px" style="border:1px solid brown"></canvas>
-<div id="dude">asdf</div>
 <div id="gameContainer" style="width:800px; height:600px; border:2px solid gray; position:center">
-    <div class="row" id="playerHand" style="position:relative; top: 480px; left: 260px">
-        <div class="col-sm-2" id="playerCard1" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2" id="playerCard2" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2" id="playerCard3" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2" id="playerCard4" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2" id="playerCard5" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
+    <div id="centerBoard" style="position:relative; top: 210px; left: 360px">
+            <div  id="player1Selected" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"></div>
+            <div  id="bot1Selected" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"></div>
+    </div>
+    <div class="row" id="playerHand" style="position:relative; top: 280px; left: 260px">
+        <div class="col-sm-2 hand" id="playerCard1" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
+        <div class="col-sm-2 hand" id="playerCard2" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
+        <div class="col-sm-2 hand" id="playerCard3" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
+        <div class="col-sm-2 hand" id="playerCard4" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
+        <div class="col-sm-2 hand" id="playerCard5" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
         
         <div class="col-lg-1" id="playerDraw" style="width:50px; height:70px; padding: 1px; border:1px dotted gray; position:relative; left: 20px; bottom:40px">draw</div>
         <div class="col-lg-1" id="playerDiscard" style="width:50px; height:70px; padding: 1px; border:1px dotted gray; position:relative; right: 30px; top:40px">discard</div>
@@ -31,39 +33,106 @@
 
 <script type="text/javascript">
    
-    debugger;
-    //DECK Is original deck
-    var deck =[];
+    var deck = [];
     var temp;
 
     var player = [];
+    var playerHand = [];
+    var playerDiscard = [];
+
     var bot1 = [];
+    var bot1Hand = [];
+    var bot1Discard = [];
+
     var bot2 = [];
     var bot3 = [];
-   
-    @foreach(var item in Model.FeudGame.DrawDeck.Cards)
-    {
-        @:temp = @Html.Raw(Json.Serialize(item));
-        @:deck.push(temp);
+
+    //Creating Deck from View Model
+    function CreateDeck() {
+        @foreach(var item in Model.FeudGame.DrawDeck.Cards)
+        {
+            @:temp = @Html.Raw(Json.Serialize(item));
+            @:deck.push(temp);
+        }
     }
 
-    //conditionally check players first
-   
-    var x = deck.length
-    for (i = 0; i < x; i++) {
-        player.push(deck.pop());
-        i++;
-        bot1.push(deck.pop());
+    //Ditributes cards to all players
+    //TODO give an argument for num of players
+    function DistributeCards() {
+        //conditionally check players first
+        //THIS DISTRIBUTES CARDS TO ALL PLAYERS
+        var x = deck.length
+        for (i = 0; i < x; i++) {
+            player.push(deck.pop());
+            i++;
+            bot1.push(deck.pop());
+        }
     }
 
-    //$("#playerCard1").text(JSON.stringify(player.pop()));
-    //$("#playerCard2").text(JSON.stringify(player.pop()));
-    //$("#playerCard3").text(JSON.stringify(player.pop()));
-    //$("#playerCard4").text(JSON.stringify(player.pop()));
-    //$("#playerCard5").text(JSON.stringify(player.pop()));
+    //Draws card from players deck to his hand
+    //TODO give arguemtns for checking hand size and drawing acoordingly
+    function PlayerDraw() {
+        //THIS DRAWS CARDS FROM PLAYERS DECK TO HIS HAND
+        for (i = 0; i < 5; i++)
+            playerHand.push(player.pop());
+        $("#playerCard1").text(playerHand[0].value + playerHand[0].suit.substring(0, 1));
+        $("#playerCard2").text(playerHand[1].value + playerHand[1].suit.substring(0, 1));
+        $("#playerCard3").text(playerHand[2].value + playerHand[2].suit.substring(0, 1));
+        $("#playerCard4").text(playerHand[3].value + playerHand[3].suit.substring(0, 1));
+        $("#playerCard5").text(playerHand[4].value + playerHand[4].suit.substring(0, 1));
+
+        $("#playerDiscard").text(playerDiscard.length);
+        $("#playerDraw").text(player.length)
+    }
+    
+
+    //Bot Draws Card
+    //TODO Add arguments for drawing # of cards based on state
+    function BotDraw() {
+        //THIS DRAWS CARDS FOR BOT
+        for (i = 0; i < 5; i++)
+            bot1Hand.push(bot1.pop());
+    }
 
 
-    $("#dude").text(JSON.stringify(player.pop()));
+    //Bot Picks card
+    //TODO add logic to pick based on others, and add argument for difficulty level
+    function BotPick() {
+        if (bot1Hand.length > 0)
+            return bot1Hand.pop();
+    }
 
+    //Returns number to find card in array from formated string 'card'
+    function FindCardInDeck(deck, card) {
+        for (i = 0; i < deck.length; i++){
+            var a = deck[i].suit.substring(0, 1);
+            var b = card.slice(-1);
+            var c = deck[i].value.toString();
+            var d = card.slice(0, -1);
+            if(deck[i].suit.substring(0, 1) === card.slice(-1) && deck[i].value.toString() === card.slice(0, -1))
+                return i;
+        }
+        return i;
+    }
+
+
+    $(document).ready( function () {
+        CreateDeck();
+        DistributeCards();
+        PlayerDraw();
+        BotDraw();
+        console.log(player);
+        console.log(deck);
+        console.log(playerHand);
+        console.log(bot1);
+        console.log(bot1Hand);
+
+        $(".hand").on('click', function () {
+            var playerVal = this.innerHTML;
+            var xx = FindCardInDeck(playerHand, playerVal);
+            var botPick = BotPick();
+        });
+
+    });
 </script>
     }

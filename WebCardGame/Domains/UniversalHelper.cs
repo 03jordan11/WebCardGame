@@ -50,7 +50,7 @@ namespace WebCardGame.Domains
                 {
                     temp.Add(new Card()
                     {
-                        Suit = j == 0 ? "Clubs" : i == 1 ? "Diamonds" : i == 2 ? "Hearts" : "Spades",
+                        Suit = j == 0 ? "Clubs" : j == 1 ? "Diamonds" : j == 2 ? "Hearts" : "Spades",
                         Value = i == 0 ? 1 :
                                 i == 1 ? 2 :
                                 i == 2 ? 3 :
@@ -60,10 +60,9 @@ namespace WebCardGame.Domains
                                 i == 6 ? 7 :
                                 8 
                     });
-                    return Shuffle(new Deck() { Cards = temp });
                 }
             }
-
+            return Shuffle(new Deck() { Cards = temp });
         }
     }
 }
