@@ -116,7 +116,7 @@
 
     #winner {
         height: 30px;
-        width: 900px;
+        width: 600px;
         margin-left: 500px;
         font-family: monospace;
         font-size: 30px;
@@ -127,7 +127,7 @@
    
     #middleDeck {
         height: 100px;
-        width: 65px;
+        width: 66px;
         margin-top: 140px;
         margin-left: 500px;
         border: solid 1px gray;
@@ -250,6 +250,7 @@
     var bot3 = [];
 
     var playerChoice = 0;
+    var winner = false;
     var difficulty = $("#difficultyChoice").val();
     console.log("suruma difficulty: "+difficulty);
 
@@ -349,8 +350,10 @@
     function timedCount() {
         $("#timer").val(c);
         c = c + 1;
-        if(c==2)
+        if(c==3)
         {
+            c=0;
+            $("#timer").val(c);
             passCards();
             $("#pCard"+(playerChoice+1)).css('transform','scale(1.4)');
             $("#playButton").prop('disabled',false);
@@ -401,22 +404,22 @@
         if(checkWinCase(player))
         {
             $("#winner").val("Player won this round!");
-            disableAll();
+            winner = true;
         }
         else if(checkWinCase(bot1))
         {
             $("#winner").val("BOT-1 won this round!");
-            disableAll();
+            winner = true;
         }
         else if(checkWinCase(bot2))
         {
             $("#winner").val("BOT-2 won this round!");
-            disableAll();
+            winner = true;
         }
         else if(checkWinCase(bot3))
         {
             $("#winner").val("BOT-3 won this round!");
-            disableAll();
+            winner = true;
         }
     }
 
@@ -450,11 +453,14 @@
 
     @*ENABLE ALL CLICKS*@
     function enableAll(){
-        $("#playButton").prop('disabled',false);
-        $("#pCard1").on('click',pCard1Click);
-        $("#pCard2").on('click',pCard2Click);
-        $("#pCard3").on('click',pCard3Click);
-        $("#pCard4").on('click',pCard4Click);
+        if(!winner)
+        {
+            $("#playButton").prop('disabled',false);
+            $("#pCard1").on('click',pCard1Click);
+            $("#pCard2").on('click',pCard2Click);
+            $("#pCard3").on('click',pCard3Click);
+            $("#pCard4").on('click',pCard4Click);
+        }
     }
 
 
