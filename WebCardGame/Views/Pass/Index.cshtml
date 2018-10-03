@@ -26,13 +26,13 @@
 
 @*middle area implementation*@
 <div class="midArea">
-    <div v-if="state=='start'" id="startPage">
+    <div id="startPage">
         @*start button*@
-        <button type="button" class="btn btn-success" id="startButton" v-on:click="state='play'">START</button>
+        <button type="button" class="btn btn-success" id="startButton">START</button>
 
         @*dropdown menu for difficulty selection*@
         <div id="difficultyDropDown">Difficulty:<br />
-            <select style="background-color:black">
+            <select style="background-color:black" id="difficultyChoice">
                 <option value="easy">Easy</option>
                 <option value="normal">Normal</option>
                 <option value="hard">Hard</option>
@@ -40,15 +40,17 @@
         </div>
     </div>
 
-    <div v-if="state=='play'" id="playingPage">
-        <button type="button" class="btn btn-success" id="restartButton" v-on:click="state='start'">Restart</button>
+    <div id="playingPage">
+        <button type="button" class="btn btn-success" id="restartButton">Restart</button>
+        <input type="text" id="timer" />
+        <input type="text" id="winner" />
         <div id="middleDeck"></div>
         <div id="playerCards">
             <div id="pCard1"></div>
             <div id="pCard2"></div>
             <div id="pCard3"></div>
             <div id="pCard4"></div>
-            <button id="playButton"></button>
+            @*<button id="playButton">Play</button>*@
             <div id="playerName">Player</div>
         </div>
     </div>
@@ -79,6 +81,8 @@
     .midArea {
         width: 100%;
         height: 600px;
+        background-color: black;
+        background-size: 550px 180px;
         border-style: solid;
         border-width: 1px;
         border-color: black;
@@ -99,19 +103,41 @@
         width: 100%;
     }
 
-    #middleDeck {
-        height: 120px;
-        width: 80px;
-        margin-top:160px;
+    #timer{
+        width:50px;
+        height: 30px;
+        margin-left:900px;
+        font-family:monospace;
+        font-size:40px;
+        color: white;
+        background-color:black;
+        border-color:black;
+    }
+
+    #winner {
+        height: 30px;
+        width: 900px;
         margin-left: 500px;
-        border-color: white;
-        border-style: solid;
-        border-width: 2px;
-        background-color: yellow;
+        font-family: monospace;
+        font-size: 30px;
+        color: white;
+        background-color: black;
+        border-color: black;
+    }
+   
+    #middleDeck {
+        height: 100px;
+        width: 65px;
+        margin-top: 140px;
+        margin-left: 500px;
+        border: solid 1px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.5);
     }
 
     #playerCards {
-        margin-top: 80px;
+        margin-top: 120px;
         height: 100px;
         width: 100%;
         color:black;
@@ -120,51 +146,57 @@
     #pCard1{
         height: 100px;
         width: 70px;
-        margin-left: 340px;
-        border:solid 2px black;
+        margin-left: 450px;
+        border:solid 1px gray;
+        border-radius:10%;
         color:black;
+        transform:scale(1.4);
     }
 
     #pCard2 {
         height: 100px;
         width: 70px;
-        margin-left: 420px;
+        margin-left: 500px;
         margin-top: -100px;
-        border: solid 2px black;
+        border: solid 2px gray;
+        border-radius: 10%;
+        transform: scale(1.4);
     }
 
     #pCard3 {
         height: 100px;
         width: 70px;
-        margin-left: 500px;
+        margin-left: 550px;
         margin-top: -100px;
-        border: solid 2px black;
+        border: solid 2px gray;
+        border-radius: 10%;
+        transform: scale(1.4);
     }
 
     #pCard4 {
         height: 100px;
         width: 70px;
-        margin-left: 580px;
+        margin-left: 600px;
         margin-top: -100px;
-        border: solid 2px black;
+        border: solid 2px gray;
+        border-radius: 10%;
+        transform: scale(1.4);
     }
 
     #playerName{
         color:white;
-        margin-left:420px;
+        margin-left:500px;
+        margin-top:10px;
         font-family:monospace;
-        font-size:40px;
+        font-size:30px;
     }
 
     #playButton {
-        height: 20px;
-        width: 20px;
+        height: 30px;
+        width: 50px;
         margin-left: 700px;
-        border-color: white;
-        border-style: solid;
-        border-width: 2px;
+        border: solid 2px white;
     }
-
 
     #startButton {
         width: 300px;
@@ -209,15 +241,6 @@
 
 @section Scripts{ 
 <script>
-    var app = new Vue({
-        el:".midArea",
-
-        data:{
-            state: "play",
-            player:[]
-        }
-    });
-
     var deck = [];
     var temp;
 
@@ -226,48 +249,215 @@
     var bot2 = [];
     var bot3 = [];
 
+    var playerChoice = 0;
+    var difficulty = $("#difficultyChoice").val();
+    console.log("suruma difficulty: "+difficulty);
+
     @foreach(var item in Model.PassGame.DrawDeck.Cards)
     {
         @:temp = @Html.Raw(Json.Serialize(item));
         @:deck.push(temp);
     }
 
-    var size = deck.length;
-    for(i=0;i<size;i++)
-    {
-        player.push(deck.pop());
-        i++
-        bot1.push(deck.pop());
-        i++
-        bot2.push(deck.pop());
-        i++
-        bot3.push(deck.pop());
-    }
+    @*hide the playing page initially*@
+    $("#playingPage").hide();
 
-    @*var playerCard = player[0];*@
 
-    $("#playButton").on('click',function(){
-        bot1.push(player.pop());
-        bot2.push(bot1.pop());
-        bot3.push(bot2.pop());
-        player.push(bot3.pop());
+    @*BUTTON CLICK FUNCTIONS*@
+
+    @*START BUTTON AT LANDING PAGE*@
+    $("#startButton").on('click',function(){
+        $("#startPage").hide();
+        $("#playingPage").show();
+        difficulty = $("#difficultyChoice").val();
+        console.log("pachhi difficulty: "+difficulty);
+        gameStart();
     })
 
+    @*RESTART BUTTON AT PLAYING PAGE*@
+    $("#restartButton").on('click',function(){
+        $("#startPage").show();
+        $("#playingPage").hide();
+        location.reload();
+    })
 
+    $("#playButton").on('click',function(){
+        $("#winner").val("");
+        startCount();
+    })
+
+    @*BUTTONS FOR PLAYER'S EACH CARD*@
+    $("#pCard1").on('click',pCard1Click);
+    $("#pCard2").on('click',pCard2Click);
+    $("#pCard3").on('click',pCard3Click);
+    $("#pCard4").on('click',pCard4Click);
+
+    function pCard1Click(){
+        $("#winner").val("");
+        $("#pCard1").css('transform','scale(1.6)');
+        playerChoice = 0;
+        startCount();
+    }
+    function pCard2Click(){
+        $("#winner").val("");
+        $("#pCard2").css('transform','scale(1.6)');
+        playerChoice = 1;
+        startCount();
+    }
+    function pCard3Click(){
+        $("#winner").val("");
+        $("#pCard3").css('transform','scale(1.6)');
+        playerChoice = 2;
+        startCount();
+    }
+    function pCard4Click(){
+        $("#winner").val("");
+        $("#pCard4").css('transform','scale(1.6)');
+        playerChoice = 3;
+        startCount();
+    }
+
+
+    @*start of the game*@
+    function gameStart(){
+        $("#winner").prop('disabled',true);
+        $("#timer").prop('disabled',true);
+        distributeCards();
+        displayCards();
+    }
+
+
+    @*distribute 4 cards each*@
+    function distributeCards(@*totalPlayers*@){
+        var size = deck.length;
+        for(i=0;i<size;i++)
+        {
+            player.push(deck.pop());
+            i++
+            bot1.push(deck.pop());
+            i++
+            bot2.push(deck.pop());
+            i++
+            bot3.push(deck.pop());
+        }
+    }
+
+
+    @*4 second timer*@
+    var c = 0;
+    var t;
+    function timedCount() {
+        $("#timer").val(c);
+        c = c + 1;
+        if(c==2)
+        {
+            passCards();
+            $("#pCard"+(playerChoice+1)).css('transform','scale(1.4)');
+            $("#playButton").prop('disabled',false);
+            enableAll();
+            return;
+        }
+        t = setTimeout(timedCount, 1000);
+    }
+    function startCount() {
+        c = 0;
+        $("#playButton").prop('disabled',true);
+        disableAll();
+        timedCount();
+    }
+
+
+    @*pass the first card to the right*@
+    function passCards(){
+        bot1.push(...player.splice(playerChoice,1));
+        bot2.push(bot1.shift());
+        bot3.push(bot2.shift());
+        player.push(bot3.shift());
+        displayCards();
+        checkForWin();
+    }
+
+
+    @*display the current cards*@
     var pCardId = "#pCard1";
     var card = '';
     var cardUrl = '';
-    for(i=0;i<4;i++)
-    {
-        if(player[i].value == 1)
-            card = "A" + player[i].suit.charAt(0);
-        else
-            card = player[i].value + player[i].suit.charAt(0);
+    function displayCards(){
+        for(i=0;i<4;i++)
+        {
+            if(player[i].value == 1)
+                card = "A" + player[i].suit.charAt(0);
+            else
+                card = player[i].value + player[i].suit.charAt(0);
 
-        cardUrl = "url('images/cards/"+card+".jpg')";
-        $("#pCard"+(i+1)).css("background-image", cardUrl);
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#pCard"+(i+1)).css("background-image", cardUrl);
+        }
     }
-    
+
+
+    @*CHECK FOR WINNER*@
+    function checkForWin(){
+        if(checkWinCase(player))
+        {
+            $("#winner").val("Player won this round!");
+            disableAll();
+        }
+        else if(checkWinCase(bot1))
+        {
+            $("#winner").val("BOT-1 won this round!");
+            disableAll();
+        }
+        else if(checkWinCase(bot2))
+        {
+            $("#winner").val("BOT-2 won this round!");
+            disableAll();
+        }
+        else if(checkWinCase(bot3))
+        {
+            $("#winner").val("BOT-3 won this round!");
+            disableAll();
+        }
+    }
+
+    @*CHECK FOR WINNER helper*@
+    function checkWinCase(checkPlayer){
+        var checkThis = [];
+        for(i=0;i<4;i++)
+        {
+            checkThis.push(checkPlayer[i].value);
+        }
+        console.log(checkThis);
+        console.log("------");
+        @*if(checkThis[0].value==checkThis[1].value && checkThis[1].value==checkThis[2].value && checkThis[2].value == checkThis[3].value)*@
+        if(checkThis[0]==checkThis[1] && checkThis[1]==checkThis[2] && checkThis[2] == checkThis[3])
+        {
+            $("#restartButton").html("New Game");
+            return true;
+        }   
+
+        return false;
+    }
+
+    @*DISABLE ALL CLICKS*@
+    function disableAll(){
+        $("#playButton").prop('disabled',true);
+        $("#pCard1").off('click');
+        $("#pCard2").off('click');
+        $("#pCard3").off('click');
+        $("#pCard4").off('click');
+    }
+
+    @*ENABLE ALL CLICKS*@
+    function enableAll(){
+        $("#playButton").prop('disabled',false);
+        $("#pCard1").on('click',pCard1Click);
+        $("#pCard2").on('click',pCard2Click);
+        $("#pCard3").on('click',pCard3Click);
+        $("#pCard4").on('click',pCard4Click);
+    }
+
+
     console.log(deck);
     console.log(player);
     console.log(bot1);
