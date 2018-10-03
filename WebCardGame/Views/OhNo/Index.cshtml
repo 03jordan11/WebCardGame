@@ -21,57 +21,53 @@
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
 <!--Title-->
-<h2>Oh No, 99!</h2>
-<div class="title" Oh No, 99!</div>
+<div class="title">Oh No, 99!</div>
 
 <!--middle area implementation-->
 <div class="midArea">
 	<div id="startPage">
-		@*start button*@
+		<!--start button-->
 		<button type="button" class="btn btn-success" id="startButton">START</button>
 
 		@*dropdown menu for difficulty selection*@
-		<div id="difficultyDropDown">
-			Difficulty:<br />
-			<select style="background-color:black" id="difficultyChoice">
-				<option value="Easy">Easy</option>
-				<option value="Normal">Normal</option>
-				<option value="Hard">Hard</option>
-			</select>
+		<div id="DropDowns">
+				<!--Select Difficulty DropDown-->
+				<label text-size="15">Difficulty: #Players:</label>
+				<select style="background-color:black; width:100px" id="difficultyChoice">
+					<option value="Easy">Easy</option>
+					<option value="Normal">Normal</option>
+					<option value="Hard">Hard</option>
+				</select>
+				<!--Select Number of Players DropDown-->
+				<select style="background-color:black; width:80px" id="numPlayersChoice">
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select>
+			</div>
 		</div>
-
-		@*dropdown menu for player selection*@
-		<div id="selectPlayersDropDown">Number of Players:<br />
-			<select style="background-color:black" id="numPlayersChoice">
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-			</select>
-		</div>
+		
 
 		<!--dropdown menu for game mode
-		<div id="modeDropDown">Mode:<br />
-			<select style="background-color:black" id="gameMode">
-				<option value="Standard">Standard</option>
-				<option value="Standard">Ghost</option>
-			</select>
-		</div>
-			-->
+	<div id="modeDropDown">Mode:<br />
+		<select style="background-color:black" id="gameMode">
+			<option value="Standard">Standard</option>
+			<option value="Standard">Ghost</option>
+		</select>
 	</div>
-	
+		-->
+	</div>
+
 	<div id="playingPage">
 		<button type="button" class="btn btn-success" id="restartButton">Restart</button>
 		<input type="text" id="winner" />
-		<div id="middleDeck"></div>
 		<div id="cardStack"></div>
 		<div id="playerCards">
 			<div id="pCard1"></div>
 			<div id="pCard2"></div>
 			<div id="pCard3"></div>
 			<div id="pCard4"></div>
-			@*<button id="playButton">Play</button>*@
-			<div id="playerName">Player</div>
 		</div>
 	</div>
 </div>
@@ -86,7 +82,7 @@
 		background-image: url(https://images.pexels.com/photos/274096/pexels-photo-274096.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
 		background-size: 550px 180px;
 		color: white;
-		font-family: arial;
+		font-family: monospace;
 		font-size: 40px;
 		font-weight: bold;
 		text-align: center;
@@ -125,33 +121,30 @@
 		width: 300px;
 		height: 100px;
 		margin-top: 250px;
-		margin-left: -50%;
+		margin-left: 10%;
 		color: yellow;
 		font-family: arial;
 		font-size: 40px;
 		border-radius: 20px;
 	}
 
+	#DropDowns {
+		font-family: monospace;
+		font-size: 15px;
+		color: white;
+		margin-top: -320px;
+		margin-left: 80%;
+	}
+
 	#winner {
 		height: 30px;
 		width: 900px;
 		margin-left: 500px;
-		font-family: arial;
+		font-family: monospace;
 		font-size: 30px;
 		color: white;
 		background-color: black;
 		border-color: black;
-	}
-
-	#middleDeck {
-		height: 100px;
-		width: 65px;
-		margin-top: 140px;
-		margin-left: 500px;
-		border: solid 1px gray;
-		border-radius: 10%;
-		background-image: url(images/cards/Gray_back.jpg);
-		transform: scale(1.5);
 	}
 
 	#cardStack {
@@ -160,7 +153,8 @@
 		border: solid 1px gray;
 		border-radius: 10%;
 		transform: scale(1.4);
-		margin-left: 0%;
+		margin-left: 500px;
+		margin-top: 150px;
 	}
 
 	#playerCards {
@@ -210,43 +204,12 @@
 		transform: scale(1.4);
 	}
 
-	#playerName {
-		color: white;
-		margin-left: 500px;
-		margin-top: 10px;
-		font-family: arial;
-		font-size: 30px;
-	}
-
-	#playButton {
-		height: 30px;
-		width: 50px;
-		margin-left: 700px;
-		border: solid 2px white;
-	}
-
-	#difficultyDropDown {
-		font-family: Arial;
-		font-size: 15px;
-		color: white;
-		margin-top: -320px;
-		margin-left: 80%;
-	}
-
-	#selectPlayersDropDown {
-		font-family: Arial;
-		font-size: 15px;
-		color: white;
-		margin-top: -320px;
-		margin-left: 70%;
-	}
-
 	#restartButton {
 		width: 150px;
 		height: 40px;
 		margin-top: 20px;
 		margin-left: 20px;
-		font-family: arial;
+		font-family: monospace;
 		font-size: 20px;
 		color: yellow;
 	}
@@ -266,13 +229,9 @@
 
 @section Scripts{
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
 	//debugger;
-
-	// select number of players including user
-	var numPlayers = $("#numPlayersChoice").val();
-	console.log("number of players: " + numPlayers);
 
 	var player = []
 	var bot1 = []
@@ -286,6 +245,9 @@
 	var cardStack = [];
 	var startCard;
 	var temp;
+	var difficulty;
+	var numPlayers;
+	var playerChoice = 0;
 
 	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
 	{
@@ -304,11 +266,11 @@
 	$("#startButton").on('click', function() {
 		$("#startPage").hide();
 		$("#playingPage").show();
-		$("#playerName").html($("#nameInput").val());
 		$("#winner").prop('disabled', true);
-		$("#timer").prop('disabled', true);
-		$("#timer").val(0);
 		difficulty = $("#difficultyChoice").val();
+		numPlayers = $("#numPlayersChoice").val();
+		console.log("difficulty = " + difficulty);
+		console.log("number of players: " + numPlayers);
 		gameStart();
 	})
 
@@ -358,6 +320,8 @@
 	function gameStart() {
 		dealHands(numPlayers);
 		displayCards();
+		dealStart();
+		displayCardStack();
 		if (!winner)
 			startCount();
 	}
@@ -367,7 +331,7 @@
 		var count = 0;
 		if (numPlayers == 3) {
 			for (i = 0; i < deck.length; i++) {
-				if (count < numPlayers) {
+				if (count < 4) {
 					player.push(deck.pop());
 					i++;
 					bot1.push(deck.pop());
@@ -378,10 +342,14 @@
 					count++;
 				}
 			}
+			console.log(player);
+			console.log(bot1);
+			console.log(bot2);
+			console.log(bot3);
 		}
 		else if (numPlayers == 4) {
 			for (i = 0; i < deck.length; i++) {
-				if (count < numPlayers) {
+				if (count < 4) {
 					player.push(deck.pop());
 					i++;
 					bot1.push(deck.pop());
@@ -394,10 +362,15 @@
 					count++;
 				}
 			}
+			console.log(player);
+			console.log(bot1);
+			console.log(bot2);
+			console.log(bot3);
+			console.log(bot4);
 		}
 		else if (numPlayers == 5) {
 			for (i = 0; i < deck.length; i++) {
-				if (count < numPlayers) {
+				if (count < 4) {
 					player.push(deck.pop());
 					i++;
 					bot1.push(deck.pop());
@@ -412,10 +385,16 @@
 					count++;
 				}
 			}
+			console.log(player);
+			console.log(bot1);
+			console.log(bot2);
+			console.log(bot3);
+			console.log(bot4);
+			console.log(bot5);
 		}
 		else {
 			for (i = 0; i < deck.length; i++) {
-				if (count < numPlayers) {
+				if (count < 4) {
 					player.push(deck.pop());
 					i++;
 					bot1.push(deck.pop());
@@ -432,13 +411,20 @@
 					count++;
 				}
 			}
+			console.log(player);
+			console.log(bot1);
+			console.log(bot2);
+			console.log(bot3);
+			console.log(bot4);
+			console.log(bot5);
+			console.log(bot6);
 		}
 	}
 
 	// display cards in hand
 	var pCardId = "#pCard1";
 	var card = '';
-	var cardUr1 = '';
+	var cardUrl = '';
 	function displayCards() {
 		for (i = 0; i < 4; i++) {
 			if (player[i].value == 1)
@@ -446,15 +432,55 @@
 			else
 				card = player[i].value + player[i].suit.charAt(0);
 
-			cardUrl = "url('images/cards/" + card + ".jpg')";
+			if (card == '-1C' || card == '-1D' || card == '-1H' || card == '-1S') {
+				cardUrl = "url('images/cards/" + 'Q' + player[i].suit.charAt(0) + ".png')";
+			}
+			else if (card == '-10C' || card == '-10D' || card == '-10H' || card == '-10S') {
+				cardUrl = "url('images/cards/" + 'J' + player[i].suit.charAt(0) + ".png')";
+			}
+			else if (card == '0C' || card == '0D' || card == '0H' || card == '0S') {
+				cardUrl = "url('images/cards/" + 'K' + player[i].suit.charAt(0) + ".png')";
+			}
+			else {
+				cardUrl = "url('images/cards/" + card + ".png')";
+			}
+			
 			$("#pCard" + (i + 1)).css("background-image", cardUrl);
+			console.log(cardUrl);
 		}
 	}
+
+	// display card stack
+	var topCard = '';
+	var tcUrl = '';
+	function displayCardStack() {
+		topCard = cardStack[cardStack.length - 1]
+		console.log(topCard);
+
+		if (cardStack[cardStack.length-1].value == 1)
+			topCard = "A" + cardStack[cardStack.length-1].suit.charAt(0);
+		else
+			topCard = cardStack[cardStack.length - 1].value + cardStack[cardStack.length - 1].suit.charAt(0);
+
+		if (topCard == '-1C' || topCard == '-1D' || topCard == '-1H' || topCard == '-1S') {
+			tcUrl = "url('images/cards/" + 'Q' + cardStack[cardStack.length - 1].suit.charAt(0) + ".png')";
+		}
+		else if (topCard == '-10C' || topCard == '-10D' || topCard == '-10H' || topCard == '-10S') {
+			tcUrl = "url('images/cards/" + 'J' + cardStack[cardStack.length - 1].suit.charAt(0) + ".png')";
+		}
+		else if (topCard == '0C' || topCard == '0D' || topCard == '0H' || topCard == '0S') {
+			tcUrl = "url('images/cards/" + 'K' + cardStack[cardStack.length - 1].suit.charAt(0) + ".png')";
+		}
+		else {
+			tcUrl = "url('images/cards/" + topCard + ".png')";
+		}
+		$("#cardStack").css("background-image", tcUrl);
+	}
+	
 
 	// deal starting card
 	var total_value = 0;
 	function dealStart() {
-		var value;
 		startCard = deck.pop();
 		while (startCard.value == -10 || startCard.value == -1 || startCard.value == 0) {
 			deck.push(startCard);
@@ -617,6 +643,6 @@
 		turn++;
 	}
 */
-</script>
+	</script>
 
 }
