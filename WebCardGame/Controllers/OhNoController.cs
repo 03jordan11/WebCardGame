@@ -38,7 +38,6 @@ namespace WebCardGame.Controllers
 				Bots = new List<AI>(),
 				DrawDeck = temp,
 				TurnOrder = new List<Player>(),
-				CardStack = new Deck(),
 				DECKSIZE = 52,
 				MAXHAND = 4,
 				Discard = null,

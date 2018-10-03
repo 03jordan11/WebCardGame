@@ -7,14 +7,78 @@
 }
 @model OhNoViewModel
 
+<head>
+	<style>
+		<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/ >
+		<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/ >
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" >
+	</style>
+</head>
+
+@*required scripts*@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
 <!--Title-->
 <h2>Oh No, 99!</h2>
-
 <div class="title" Oh No, 99!</div>
-<div class="playArea"></div>
+
+<!--middle area implementation-->
+<div class="midArea">
+	<div id="startPage">
+		@*start button*@
+		<button type="button" class="btn btn-success" id="startButton">START</button>
+
+		@*dropdown menu for difficulty selection*@
+		<div id="difficultyDropDown">
+			Difficulty:<br />
+			<select style="background-color:black" id="difficultyChoice">
+				<option value="Easy">Easy</option>
+				<option value="Normal">Normal</option>
+				<option value="Hard">Hard</option>
+			</select>
+		</div>
+
+		@*dropdown menu for player selection*@
+		<div id="selectPlayersDropDown">Number of Players:<br />
+			<select style="background-color:black" id="numPlayersChoice">
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+			</select>
+		</div>
+
+		<!--dropdown menu for game mode
+		<div id="modeDropDown">Mode:<br />
+			<select style="background-color:black" id="gameMode">
+				<option value="Standard">Standard</option>
+				<option value="Standard">Ghost</option>
+			</select>
+		</div>
+			-->
+	</div>
+	
+	<div id="playingPage">
+		<button type="button" class="btn btn-success" id="restartButton">Restart</button>
+		<input type="text" id="winner" />
+		<div id="middleDeck"></div>
+		<div id="cardStack"></div>
+		<div id="playerCards">
+			<div id="pCard1"></div>
+			<div id="pCard2"></div>
+			<div id="pCard3"></div>
+			<div id="pCard4"></div>
+			@*<button id="playButton">Play</button>*@
+			<div id="playerName">Player</div>
+		</div>
+	</div>
+</div>
+
+<!--footer implementation-->
 <div class="footer"></div>
 
-<!--Stylings for game canvas, include header and footer-->
 <style>
 	.title {
 		width: 100%;
@@ -22,7 +86,7 @@
 		background-image: url(https://images.pexels.com/photos/274096/pexels-photo-274096.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
 		background-size: 550px 180px;
 		color: white;
-		font-family: monospace;
+		font-family: arial;
 		font-size: 40px;
 		font-weight: bold;
 		text-align: center;
@@ -33,13 +97,158 @@
 		margin-top: 5px;
 	}
 
-	.playArea {
+	.midArea {
 		width: 100%;
 		height: 600px;
+		background-color: black;
+		background-size: 550px 180px;
 		border-style: solid;
 		border-width: 1px;
 		border-color: black;
 		margin-top: 5px;
+	}
+
+	#startPage {
+		background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+		background-size: 1100px 600px;
+		height: 600px;
+		width: 100%;
+	}
+
+	#playingPage {
+		background-size: 1100px 600px;
+		height: 600px;
+		width: 100%;
+	}
+
+	#startButton {
+		width: 300px;
+		height: 100px;
+		margin-top: 250px;
+		margin-left: -50%;
+		color: yellow;
+		font-family: arial;
+		font-size: 40px;
+		border-radius: 20px;
+	}
+
+	#winner {
+		height: 30px;
+		width: 900px;
+		margin-left: 500px;
+		font-family: arial;
+		font-size: 30px;
+		color: white;
+		background-color: black;
+		border-color: black;
+	}
+
+	#middleDeck {
+		height: 100px;
+		width: 65px;
+		margin-top: 140px;
+		margin-left: 500px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		background-image: url(images/cards/Gray_back.jpg);
+		transform: scale(1.5);
+	}
+
+	#cardStack {
+		height: 100px;
+		width: 70px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		transform: scale(1.4);
+		margin-left: 0%;
+	}
+
+	#playerCards {
+		margin-top: 120px;
+		height: 100px;
+		width: 100%;
+		color: black;
+	}
+
+	#pCard1 {
+		height: 100px;
+		width: 70px;
+		margin-left: 450px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		color: black;
+		transform: scale(1.4);
+	}
+
+	#pCard2 {
+		height: 100px;
+		width: 70px;
+		margin-left: 500px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		transform: scale(1.4);
+	}
+
+	#pCard3 {
+		height: 100px;
+		width: 70px;
+		margin-left: 550px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		transform: scale(1.4);
+	}
+
+	#pCard4 {
+		height: 100px;
+		width: 70px;
+		margin-left: 600px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		transform: scale(1.4);
+	}
+
+	#playerName {
+		color: white;
+		margin-left: 500px;
+		margin-top: 10px;
+		font-family: arial;
+		font-size: 30px;
+	}
+
+	#playButton {
+		height: 30px;
+		width: 50px;
+		margin-left: 700px;
+		border: solid 2px white;
+	}
+
+	#difficultyDropDown {
+		font-family: Arial;
+		font-size: 15px;
+		color: white;
+		margin-top: -320px;
+		margin-left: 80%;
+	}
+
+	#selectPlayersDropDown {
+		font-family: Arial;
+		font-size: 15px;
+		color: white;
+		margin-top: -320px;
+		margin-left: 70%;
+	}
+
+	#restartButton {
+		width: 150px;
+		height: 40px;
+		margin-top: 20px;
+		margin-left: 20px;
+		font-family: arial;
+		font-size: 20px;
+		color: yellow;
 	}
 
 	.footer {
@@ -57,48 +266,194 @@
 
 @section Scripts{
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
-		// select number of players including user
+	//debugger;
 
-		
+	// select number of players including user
+	var numPlayers = $("#numPlayersChoice").val();
+	console.log("number of players: " + numPlayers);
 
-	//	debugger;
-		var deck = [];
-		var cardStack = [];
-		var startCard;
-		var temp;
+	var player = []
+	var bot1 = []
+	var bot2 = []
+	var bot3 = []
+	var bot4 = []
+	var bot5 = []
+	var bot5 = []
 
-		var player = [];
-		var bot1 = [];
-		var bot2 = [];
-		//var bot3 = [];
+	var deck = [];
+	var cardStack = [];
+	var startCard;
+	var temp;
 
-		@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
-		{
-			@:temp = @Html.Raw(Json.Serialize(item));
-			@:deck.push(temp);
-		}
+	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
+	{
+		@:temp = @Html.Raw(Json.Serialize(item));
+		@:deck.push(temp);
+	}
 
-		console.log(deck);
+	//hide page
+	$("#playingPage").hide();
 
+	console.log(deck);
+
+	/* button click functions */
+
+	// start button at landing page
+	$("#startButton").on('click', function() {
+		$("#startPage").hide();
+		$("#playingPage").show();
+		$("#playerName").html($("#nameInput").val());
+		$("#winner").prop('disabled', true);
+		$("#timer").prop('disabled', true);
+		$("#timer").val(0);
+		difficulty = $("#difficultyChoice").val();
+		gameStart();
+	})
+
+	// restart button at playing page
+	$("#restartButton").on('click', function () {
+		$("#startPage").show();
+		$("#playingPage").hide();
+		location.reload();
+	})
+
+	// buttons for cards in player's hand
+	$("#pCard1").on('click', pCard1Click);
+	$("#pCard2").on('click', pCard2Click);
+	$("#pCard3").on('click', pCard3Click);
+	$("#pCard4").on('click', pCard4Click);
+
+	function pCard1Click() {
+		$("#pCard1").css('transform', 'scale(1.6)');
+		$("#pCard2").css('transform', 'scale(1.4)');
+		$("#pCard3").css('transform', 'scale(1.4)');
+		$("#pCard4").css('transform', 'scale(1.4)');
+		playerChoice = 0;
+	}
+	function pCard2Click() {
+		$("#pCard1").css('transform', 'scale(1.4)');
+		$("#pCard2").css('transform', 'scale(1.6)');
+		$("#pCard3").css('transform', 'scale(1.4)');
+		$("#pCard4").css('transform', 'scale(1.4)');
+		playerChoice = 1;
+	}
+	function pCard3Click() {
+		$("#pCard1").css('transform', 'scale(1.4)');
+		$("#pCard2").css('transform', 'scale(1.4)');
+		$("#pCard3").css('transform', 'scale(1.6)');
+		$("#pCard4").css('transform', 'scale(1.4)');
+		playerChoice = 2;
+	}
+	function pCard4Click() {
+		$("#pCard1").css('transform', 'scale(1.4)');
+		$("#pCard2").css('transform', 'scale(1.4)');
+		$("#pCard3").css('transform', 'scale(1.4)');
+		$("#pCard4").css('transform', 'scale(1.6)');
+		playerChoice = 3;
+	}
+
+	// start of the game
+	function gameStart() {
+		dealHands(numPlayers);
+		displayCards();
+		if (!winner)
+			startCount();
+	}
+
+	// deal Hands to all players
+	function dealHands(numPlayers) {
 		var count = 0;
-		for (i = 0; i < deck.length; i++)
-		{
-			if (count < 4)
-			{
-				player.push(deck.pop());
-				i++;
-				bot1.push(deck.pop());
-				bot2.push(deck.pop());
-				//bot3.push(deck.pop());
-				count++;
+		if (numPlayers == 3) {
+			for (i = 0; i < deck.length; i++) {
+				if (count < numPlayers) {
+					player.push(deck.pop());
+					i++;
+					bot1.push(deck.pop());
+					i++;
+					bot2.push(deck.pop());
+					i++;
+					bot3.push(deck.pop());
+					count++;
+				}
 			}
 		}
+		else if (numPlayers == 4) {
+			for (i = 0; i < deck.length; i++) {
+				if (count < numPlayers) {
+					player.push(deck.pop());
+					i++;
+					bot1.push(deck.pop());
+					i++;
+					bot2.push(deck.pop());
+					i++;
+					bot3.push(deck.pop());
+					i++;
+					bot4.push(deck.pop());
+					count++;
+				}
+			}
+		}
+		else if (numPlayers == 5) {
+			for (i = 0; i < deck.length; i++) {
+				if (count < numPlayers) {
+					player.push(deck.pop());
+					i++;
+					bot1.push(deck.pop());
+					i++;
+					bot2.push(deck.pop());
+					i++;
+					bot3.push(deck.pop());
+					i++;
+					bot4.push(deck.pop());
+					i++;
+					bot5.push(deck.pop());
+					count++;
+				}
+			}
+		}
+		else {
+			for (i = 0; i < deck.length; i++) {
+				if (count < numPlayers) {
+					player.push(deck.pop());
+					i++;
+					bot1.push(deck.pop());
+					i++;
+					bot2.push(deck.pop());
+					i++;
+					bot3.push(deck.pop());
+					i++;
+					bot4.push(deck.pop());
+					i++;
+					bot5.push(deck.pop());
+					i++;
+					bot6.push(deck.pop());
+					count++;
+				}
+			}
+		}
+	}
 
-		debugger;
+	// display cards in hand
+	var pCardId = "#pCard1";
+	var card = '';
+	var cardUr1 = '';
+	function displayCards() {
+		for (i = 0; i < 4; i++) {
+			if (player[i].value == 1)
+				card = "A" + player[i].suit.charAt(0);
+			else
+				card = player[i].value + player[i].suit.charAt(0);
 
-		var total_value = 0;
+			cardUrl = "url('images/cards/" + card + ".jpg')";
+			$("#pCard" + (i + 1)).css("background-image", cardUrl);
+		}
+	}
+
+	// deal starting card
+	var total_value = 0;
+	function dealStart() {
 		var value;
 		startCard = deck.pop();
 		while (startCard.value == -10 || startCard.value == -1 || startCard.value == 0) {
@@ -109,121 +464,159 @@
 		total_value += startCard.value;
 
 		console.log("start = " + total_value);
+	}
 
-		var i;
-		var numPlayers = 4;
-		var turn = 1;
-		while (total_value < 100)
-		{
-			console.log("turn = " + turn);
-		//	console.log(player);
-			try {
-				i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-				value = player[i].value; // calls cardValue to return valid value
-				if (value == -1) {
-					while (1) {
-						debugger;
-						var v = parseInt(window.prompt("Enter desrired value: "));
-						try {
-							if ((v >= 0 && v < 11) || v == -10) {
-								value = v;
-								break;
-							}
-						}
-						catch (err) {
-							window.alert("value not valid");
-							continue;
-						}
-					}
-				}
-				player.splice(i, 1); // removes card from player's hand
-			//	console.log(player);
-				cardStack.push(player[i]); // puts card onto cardstack
-				total_value = total_value + value; // adds value to total_value
-				console.log("+ " + value);
-				console.log("= " +total_value); // display total_value
-				player.push(deck.pop());
-			//	console.log(player);
-			}
-			catch (err) {
-				window.alert("value did not compute");
-				break;
-			}
+	// card play logic
+	// play card onto table
+	function playCards() {
+		if (difficulty == "Easy") {
 
-		//	console.log(bot1);
-			try {
-				
-				i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-				value = bot1[i].value; // calls cardValue to return valid value
-				if (value == -1) {
-					while (1) {
-						debugger;
-						var v = parseInt(window.prompt("Enter desrired value: "));
-						try {
-							if ((v >= 0 && v < 11) || v == -10) {
-								value = v;
-								break;
-							}
-						}
-						catch (err) {
-							window.alert("value not valid");
-							continue;
-						}
-					}
-				}
-				bot1.splice(i, 1); // removes value (card) from player's hand
-			//	console.log(bot1);
-				cardStack.push(bot1[i]); // puts value (card) onto cardstack
-				total_value = total_value + value; // adds value to total_value
-				console.log("+ " + value);
-				console.log("= " + total_value);
-				bot1.push(deck.pop());
-			//	console.log(bot1);
-			}
-			catch (err) {
-				window.alert("value did not compute");
-				break;
-			}
+		}
+		else if (difficulty == "Normal") {
 
-		//	console.log(bot2);
-			try {
-				i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-				value = bot2[i].value; // calls cardValue to return valid value
-				if (value == -1) {
-					while (1) {
-						debugger;
-						var v = parseInt(window.prompt("Enter desrired value: "));
-						try {
-							if ((v >= 0 && v < 11) || v == -10) {
-								value = v;
-								break;
-							}
-						}
-						catch (err) {
-							window.alert("value not valid");
-							continue;
-						}
-					}
-				}
-				bot2.splice(i, 1); // removes value (card) from player's hand
-			//	console.log(bot2);
-				cardStack.push(bot2[i]); // puts value (card) onto cardstack
-				total_value = total_value + value; // adds value to total_value
-				console.log("+ " + value);
-				console.log("= " + total_value);
-				bot2.push(deck.pop());
-			//	console.log(bot2);
-			}
-			catch (err) {
-				window.alert("value did not compute");
-				break;
-			}
+		}
+		else if (difficulty == "Hard") {
 
-			turn++;
 		}
 
-		
+		displayCards();
+		checkForWin();
+		c = 1;
+	}
 
-	</script>
+
+	// disable all clicks
+	function disableAll() {
+		$("#pCard1").off('click');
+		$("#pCard2").off('click');
+		$("#pCard3").off('click');
+		$("#pCard4").off('click');
+	}
+
+	// enable all clicks
+	function enableAll() {
+		if (!winner) {
+			$("#pCard1").on('click', pCard1Click);
+			$("#pCard2").on('click', pCard2Click);
+			$("#pCard3").on('click', pCard3Click);
+			$("#pCard4").on('click', pCard4Click);
+		}
+	}
+
+
+
+
+	var i;
+	var numPlayers = 4;
+	var turn = 1;
+/*	while (total_value < 100)
+	{
+		console.log("turn = " + turn);
+	//	console.log(player);
+		try {
+			i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+			value = player[i].value; // calls cardValue to return valid value
+			if (value == -1) {
+				while (1) {
+					debugger;
+					var v = parseInt(window.prompt("Enter desrired value: "));
+					try {
+						if ((v >= 0 && v < 11) || v == -10) {
+							value = v;
+							break;
+						}
+					}
+					catch (err) {
+						window.alert("value not valid");
+						continue;
+					}
+				}
+			}
+			player.splice(i, 1); // removes card from player's hand
+		//	console.log(player);
+			cardStack.push(player[i]); // puts card onto cardstack
+			total_value = total_value + value; // adds value to total_value
+			console.log("+ " + value);
+			console.log("= " +total_value); // display total_value
+			player.push(deck.pop());
+		//	console.log(player);
+		}
+		catch (err) {
+			window.alert("value did not compute");
+			break;
+		}
+
+	//	console.log(bot1);
+		try {
+			i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+			value = bot1[i].value; // calls cardValue to return valid value
+			if (value == -1) {
+				while (1) {
+					debugger;
+					var v = parseInt(window.prompt("Enter desrired value: "));
+					try {
+						if ((v >= 0 && v < 11) || v == -10) {
+							value = v;
+							break;
+						}
+					}
+					catch (err) {
+						window.alert("value not valid");
+						continue;
+					}
+				}
+			}
+			bot1.splice(i, 1); // removes value (card) from player's hand
+		//	console.log(bot1);
+			cardStack.push(bot1[i]); // puts value (card) onto cardstack
+			total_value = total_value + value; // adds value to total_value
+			console.log("+ " + value);
+			console.log("= " + total_value);
+			bot1.push(deck.pop());
+		//	console.log(bot1);
+		}
+		catch (err) {
+			window.alert("value did not compute");
+			break;
+		}
+
+	//	console.log(bot2);
+		try {
+			i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+			value = bot2[i].value; // calls cardValue to return valid value
+			if (value == -1) {
+				while (1) {
+					debugger;
+					var v = parseInt(window.prompt("Enter desrired value: "));
+					try {
+						if ((v >= 0 && v < 11) || v == -10) {
+							value = v;
+							break;
+						}
+					}
+					catch (err) {
+						window.alert("value not valid");
+						continue;
+					}
+				}
+			}
+			bot2.splice(i, 1); // removes value (card) from player's hand
+		//	console.log(bot2);
+			cardStack.push(bot2[i]); // puts value (card) onto cardstack
+			total_value = total_value + value; // adds value to total_value
+			console.log("+ " + value);
+			console.log("= " + total_value);
+			bot2.push(deck.pop());
+		//	console.log(bot2);
+		}
+		catch (err) {
+			window.alert("value did not compute");
+			break;
+		}
+
+		turn++;
+	}
+*/
+</script>
 
 }
