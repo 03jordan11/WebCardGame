@@ -6,7 +6,7 @@
 }
 @model FeudViewModel
 
-
+@using WebCardGame.Domains;
 <h1>Feud</h1>
 
 <div id="gameContainer" style="width:800px; height:600px; border:2px solid gray; position:center">
@@ -36,6 +36,7 @@
     var deck = [];
     var temp;
 
+
     var player = [];
     var playerHand = [];
     var playerDiscard = [];
@@ -56,6 +57,16 @@
         }
     }
 
+
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds) {
+                break;
+            }
+        }
+    }
+
     //Ditributes cards to all players
     //TODO give an argument for num of players
     function DistributeCards() {
@@ -71,10 +82,17 @@
 
     //Draws card from players deck to his hand
     //TODO give arguemtns for checking hand size and drawing acoordingly
-    function PlayerDraw() {
-        //THIS DRAWS CARDS FROM PLAYERS DECK TO HIS HAND
-        for (i = 0; i < 5; i++)
+    function PlayerDraw(firstTurn) {
+        debugger;
+        if (firstTurn === false) {
             playerHand.push(player.pop());
+        }
+        else {
+            for (i = 0; i < 5; i++)
+                playerHand.push(player.pop());
+        }
+        //THIS DRAWS CARDS FROM PLAYERS DECK TO HIS HAND
+       
         $("#playerCard1").text(playerHand[0].value + playerHand[0].suit.substring(0, 1));
         $("#playerCard2").text(playerHand[1].value + playerHand[1].suit.substring(0, 1));
         $("#playerCard3").text(playerHand[2].value + playerHand[2].suit.substring(0, 1));
@@ -82,7 +100,7 @@
         $("#playerCard5").text(playerHand[4].value + playerHand[4].suit.substring(0, 1));
 
         $("#playerDiscard").text(playerDiscard.length);
-        $("#playerDraw").text(player.length)
+        $("#playerDraw").text(player.length);
     }
     
 
@@ -115,11 +133,18 @@
         return i;
     }
 
+    function endTurn(winner, cards) {
+        debugger;
+        for (item in cards) {
+            winner.push(cards[item]);
+        }
+        PlayerDraw(false);
+    }
 
     $(document).ready( function () {
         CreateDeck();
         DistributeCards();
-        PlayerDraw();
+        PlayerDraw(true);
         BotDraw();
         console.log(player);
         console.log(deck);
@@ -128,11 +153,32 @@
         console.log(bot1Hand);
 
         $(".hand").on('click', function () {
-            var playerVal = this.innerHTML;
-            var xx = FindCardInDeck(playerHand, playerVal);
+            debugger;
+            var playerDisplay = this.innerHTML;
+            var handPosition = FindCardInDeck(playerHand, playerDisplay);
+            var playerVal = playerHand[handPosition];
+            playerHand.splice(handPosition, 1);
             var botPick = BotPick();
+            this.innerHTML = "";
+            $("#player1Selected").text(playerDisplay);
+            $.when($("#bot1Selected").text(botPick.value)).then(function () {
+                if (playerVal.value > botPick.value) {
+                    sleep(2000);
+                    alert("Your Card is Higher");
+                    //playerDiscard.push
+                }
+            }).then(function () {
+                endTurn(playerDiscard, [playerVal, botPick]);
+            });
         });
-
     });
+
+
+
+
+
+
+
+
 </script>
     }
