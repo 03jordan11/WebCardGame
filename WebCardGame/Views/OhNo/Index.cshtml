@@ -47,7 +47,6 @@
 				</select>
 			</div>
 		</div>
-		
 
 		<!--dropdown menu for game mode
 	<div id="modeDropDown">Mode:<br />
@@ -248,6 +247,8 @@
 	var difficulty;
 	var numPlayers;
 	var playerChoice = 0;
+	var turn;
+	var total_value;
 
 	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
 	{
@@ -322,8 +323,6 @@
 		displayCards();
 		dealStart();
 		displayCardStack();
-		if (!winner)
-			startCount();
 	}
 
 	// deal Hands to all players
@@ -479,7 +478,6 @@
 	
 
 	// deal starting card
-	var total_value = 0;
 	function dealStart() {
 		startCard = deck.pop();
 		while (startCard.value == -10 || startCard.value == -1 || startCard.value == 0) {
@@ -487,7 +485,7 @@
 			startCard = deck.pop();
 		}
 		cardStack.push(startCard);
-		total_value += startCard.value;
+		total_value = startCard.value;
 
 		console.log("start = " + total_value);
 	}
@@ -496,13 +494,13 @@
 	// play card onto table
 	function playCards() {
 		if (difficulty == "Easy") {
-
+			difficultyEasy();
 		}
 		else if (difficulty == "Normal") {
-
+			difficultyNormal();
 		}
 		else if (difficulty == "Hard") {
-
+			difficultyHard();
 		}
 
 		displayCards();
@@ -529,120 +527,135 @@
 		}
 	}
 
-
-
-
-	var i;
-	var numPlayers = 4;
-	var turn = 1;
-/*	while (total_value < 100)
-	{
-		console.log("turn = " + turn);
-	//	console.log(player);
-		try {
-			i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-			value = player[i].value; // calls cardValue to return valid value
-			if (value == -1) {
-				while (1) {
-					debugger;
-					var v = parseInt(window.prompt("Enter desrired value: "));
-					try {
-						if ((v >= 0 && v < 11) || v == -10) {
-							value = v;
-							break;
-						}
+	// actions at player's turn
+	var value;
+	function playerTurn() {
+		value = player[playerChoice].value; // value of card to sum
+		if (value == -1) { // if card is a queen, prompt user for value
+			while (1) {
+				//debugger;
+				var v = window.prompt("Enter desrired value: (2,3,4,5,6,7,8,9,10,J,K,A)");
+				try {
+					if (v != 'J' && v != 'K' && v != 'A') {
+						value = parseInt(v);
+						break;
 					}
-					catch (err) {
-						window.alert("value not valid");
-						continue;
+					else if (v == 'J') {
+						value = -10;
+						break;
+					}
+					else if (v == 'K') {
+						value = 0;
+						break;
+					}
+					else if (v == 'A') {
+						value = 1;
+						break;
 					}
 				}
-			}
-			player.splice(i, 1); // removes card from player's hand
-		//	console.log(player);
-			cardStack.push(player[i]); // puts card onto cardstack
-			total_value = total_value + value; // adds value to total_value
-			console.log("+ " + value);
-			console.log("= " +total_value); // display total_value
-			player.push(deck.pop());
-		//	console.log(player);
-		}
-		catch (err) {
-			window.alert("value did not compute");
-			break;
-		}
-
-	//	console.log(bot1);
-		try {
-			i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-			value = bot1[i].value; // calls cardValue to return valid value
-			if (value == -1) {
-				while (1) {
-					debugger;
-					var v = parseInt(window.prompt("Enter desrired value: "));
-					try {
-						if ((v >= 0 && v < 11) || v == -10) {
-							value = v;
-							break;
-						}
-					}
-					catch (err) {
-						window.alert("value not valid");
-						continue;
-					}
+				catch (err) {
+					continue;
 				}
 			}
-			bot1.splice(i, 1); // removes value (card) from player's hand
-		//	console.log(bot1);
-			cardStack.push(bot1[i]); // puts value (card) onto cardstack
+			cardStack.push(...player.splice(playerChoice, 1)); // removes card from player's hand and places card onto cardStack
+			player.push(deck.pop()); // player draws new card from deck
 			total_value = total_value + value; // adds value to total_value
-			console.log("+ " + value);
-			console.log("= " + total_value);
-			bot1.push(deck.pop());
-		//	console.log(bot1);
+			console.log("+ " + value + " = " + total_value);
+			console.log(player);
+			console.log(cardStack);
+			displayCardStack();
 		}
-		catch (err) {
-			window.alert("value did not compute");
-			break;
-		}
-
-	//	console.log(bot2);
-		try {
-			i = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-			value = bot2[i].value; // calls cardValue to return valid value
-			if (value == -1) {
-				while (1) {
-					debugger;
-					var v = parseInt(window.prompt("Enter desrired value: "));
-					try {
-						if ((v >= 0 && v < 11) || v == -10) {
-							value = v;
-							break;
-						}
-					}
-					catch (err) {
-						window.alert("value not valid");
-						continue;
-					}
-				}
-			}
-			bot2.splice(i, 1); // removes value (card) from player's hand
-		//	console.log(bot2);
-			cardStack.push(bot2[i]); // puts value (card) onto cardstack
-			total_value = total_value + value; // adds value to total_value
-			console.log("+ " + value);
-			console.log("= " + total_value);
-			bot2.push(deck.pop());
-		//	console.log(bot2);
-		}
-		catch (err) {
-			window.alert("value did not compute");
-			break;
-		}
-
-		turn++;
 	}
-*/
+
+	// actions of bots at easy difficulty (random)
+	function botsTurnEasy(n) {
+		var i;
+		var x;
+		for (i = 1; i < n + 1; i++) {
+			x = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
+			value = ("bot"+i)[x].value; // value of card to sum
+			if (value == -1) { // if card is a queen, prompt user for value
+				while (1) {
+					//debugger;
+					var v = Math.floor((Math.random() * 12)); // gets random value for queen
+					try {
+						if (v != 11 && v != 12) {
+							value = v;
+							break;
+						}
+						else if (v == 11) { //Jack
+							value = -10;
+							break;
+						}
+						else if (v == 12) { //King
+							value = 0;
+							break;
+						}
+					}
+					catch (err) {
+						continue;
+					}
+				}
+				cardStack.push(...("bot"+i).splice(x, 1)); // removes card from player's hand and places card onto cardStack
+				("bot"+i).push(deck.pop()); // player draws new card from deck
+				console.log(cardStack);
+				total_value = total_value + value; // adds value to total_value
+				console.log("+ " + value + " = " + total_value);
+				console.log("bot = " + "bot" + i);
+				console.log("bot" + i);
+				displayCardStack();
+			}
+		}
+	}
+
+	// actions of bots at normal difficulty (calculated)
+	function botsTurnNormal() {
+
+	}
+
+	// actions of bots at hard diffuculty 
+	function botsTurnHard() {
+
+	}
+
+	// score hidden
+	function ghostMode() {
+
+	}
+
+
+	function difficultyEasy() {
+		// game continues until winner is found
+		turn = 1;
+		while (!winner) {
+			console.log("turn = " + turn); // print turn number
+			playerTurnEasy();
+			botsTurnEasy(numPlayers - 1);
+			turn += 1;
+		}
+
+	}
+
+	function difficultyNormal() {
+		turn = 1;
+		while (!winnder) {
+			console.log("turn = " + turn);
+			playerTurn();
+			botsTurnNormal(numPlayers - 1);
+			turn += 1;
+		}
+	}
+
+	function difficultyHard() {
+		turn = 1;
+		while (!winner) {
+			console.log("turn + " + turn);
+			playerTurnHard();
+			botsTurnHard(numPlayers - 1);
+			turn += 1;
+		}
+	}
+
 	</script>
 
 }
