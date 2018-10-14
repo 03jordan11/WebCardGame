@@ -41,9 +41,27 @@
         <button type="button" id="rulesButton">Rules</button>
         <div id="rules">
             <p><b><u>Rules:</u></b></p>
-            <p>At the start, Each Player will be distributed four cards. You should try to get four of a kind in order to win.
-            <br />Each Player will pass one card to the player to their right and receive one card from the player to their left.
-            <br />You will get 4 seconds to select which card to pass to the right. The game continues until one player wins the game.</p>
+            <p>
+Deck: 4 cards of 1 card type, per player<br />
+    i.e. 3 players = 12 cards   Ace of Hearts, Spade, Diamond, & Clubs<br />
+                    2 of Hearts, Spade, Diamond, & Clubs<br />
+                    3 of Hearts, Spade, Diamond, & Clubs<br /><br />
+
+
+    i.e. 2 players = 8 cards    Ace of Hearts, Spade, Diamond, & Clubs<br />
+                    2 of Hearts, Spade, Diamond, & Clubs<br /><br />
+
+Rules: <br />
+    Objective: Player's goal is to collect 4 cards of a kind.<br /><br />
+
+    At the start of the game, players will be dealt 4 cards each.<br /><br />
+    
+    Players will have 4 seconds to select a card from their hand to discard.<br /><br />
+    
+    At the end of 4 seconds, all players will pass their card face-down, to the player to the right. <br /><br />
+
+    This process is repeated until one player has collected 4 of a kind, displaying it on the table.<br /><br />
+            </p>
         </div>
     </div>
 
@@ -176,12 +194,13 @@
     }
 
     #rules{
-        height:420px;
-        width:300px;
-        margin-left:70%;
+        height:410px;
+        width:600px;
+        margin-left:45%;
+        margin-top:30px;
         padding:10px;
         background-color:white;
-        font-size:20px;
+        font-size:14px;
         border:solid 2px yellow;
     }
 
