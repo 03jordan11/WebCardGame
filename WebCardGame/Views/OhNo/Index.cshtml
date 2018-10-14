@@ -32,20 +32,11 @@
 		@*dropdown menu for difficulty selection*@
 		<div id="DropDowns">
 				<!--Select Difficulty DropDown-->
-				<label text-size="15">Difficulty: #Players:</label>
+				<label text-size="15">Difficulty:</label>
 				<select style="background-color:black; width:100px" id="difficultyChoice">
-					<option value="Easy">Easy</option>
 					<option value="Normal">Normal</option>
 					<option value="Hard">Hard</option>
 				</select>
-				<!--Select Number of Players DropDown-->
-				<select style="background-color:black; width:80px" id="numPlayersChoice">
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-				</select>
-			</div>
 		</div>
 
 		<!--dropdown menu for game mode
@@ -60,7 +51,7 @@
 
 	<div id="playingPage">
 		<button type="button" class="btn btn-success" id="restartButton">Restart</button>
-		<input type="text" id="winner" />
+		<input type="text" id="deckCount"/>
 		<div id="cardStack"></div>
 		<div id="playerCards">
 			<div id="pCard1"></div>
@@ -135,17 +126,6 @@
 		margin-left: 80%;
 	}
 
-	#winner {
-		height: 30px;
-		width: 900px;
-		margin-left: 500px;
-		font-family: monospace;
-		font-size: 30px;
-		color: white;
-		background-color: black;
-		border-color: black;
-	}
-
 	#cardStack {
 		height: 100px;
 		width: 70px;
@@ -213,6 +193,18 @@
 		color: yellow;
 	}
 
+	#deckCount {
+		width: 120px;
+		height: 40px;
+		margin-left: 840px;
+		margin-top: 20px;
+		font-family: monospace;
+		font-size: 40px;
+		color: white;
+		background-color: black;
+		border-color: black;
+	}
+
 	.footer {
 		width: 100%;
 		height: 90px;
@@ -231,24 +223,33 @@
 	<script type="text/javascript">
 
 	//debugger;
-
-	var player = []
-	var bot1 = []
-	var bot2 = []
-	var bot3 = []
-	var bot4 = []
-	var bot5 = []
-	var bot5 = []
+	/* DECLARE GLOBAL VARIABLES */
+	var player = [];
+	var bot1 = [];
+	var bot2 = [];
+	var bot3 = [];
+	var bot4 = [];
+	var bot5 = [];
 
 	var deck = [];
 	var cardStack = [];
-	var startCard;
-	var temp;
+	var ranks = [];
+	var numPlayers = 6;
 	var difficulty;
-	var numPlayers;
-	var playerChoice = 0;
-	var turn;
+	var timerId;
+	var startCard;
+	var playerChoice;
 	var total_value;
+	var turn;
+	var temp;
+	var index;
+	var winner = false;
+	var pActive = true;
+	var b1Active = true;
+	var b2Active = true;
+	var b3Active = true;
+	var b4Active = true;
+	var b5Active = true;
 
 	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
 	{
@@ -256,176 +257,147 @@
 		@:deck.push(temp);
 	}
 
-	//hide page
+	/* HIDE PLAYING PAGE */
 	$("#playingPage").hide();
-
 	console.log(deck);
 
-	/* button click functions */
-
-	// start button at landing page
+	/* BUTTON CLICK FUNCTIONS */
+	// Start button at landing page
 	$("#startButton").on('click', function() {
 		$("#startPage").hide();
 		$("#playingPage").show();
-		$("#winner").prop('disabled', true);
+		$("#deckCount").prop('disabled',true);
+		$("#deckCount").val(0);
 		difficulty = $("#difficultyChoice").val();
-		numPlayers = $("#numPlayersChoice").val();
 		console.log("difficulty = " + difficulty);
-		console.log("number of players: " + numPlayers);
 		gameStart();
 	})
 
-	// restart button at playing page
+	// Restart button at playing page
 	$("#restartButton").on('click', function () {
 		$("#startPage").show();
 		$("#playingPage").hide();
 		location.reload();
 	})
 
-	// buttons for cards in player's hand
+	// Buttons for cards in player's hand
 	$("#pCard1").on('click', pCard1Click);
 	$("#pCard2").on('click', pCard2Click);
 	$("#pCard3").on('click', pCard3Click);
 	$("#pCard4").on('click', pCard4Click);
 
+	// Actions when card 1 is clicked
 	function pCard1Click() {
-		$("#pCard1").css('transform', 'scale(1.6)');
+		$("#pCard1").css('transform', 'scale(1.4)');
 		$("#pCard2").css('transform', 'scale(1.4)');
 		$("#pCard3").css('transform', 'scale(1.4)');
 		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 0;
+		playerTurn();
+		if (difficulty == 'Normal') {
+			botsTurnNormal();
+		}
+		else if (difficulty == 'Hard') {
+			botsTurnHard();
+		}
 	}
+	
+	// Actions when card 2 is clicked
 	function pCard2Click() {
 		$("#pCard1").css('transform', 'scale(1.4)');
-		$("#pCard2").css('transform', 'scale(1.6)');
+		$("#pCard2").css('transform', 'scale(1.4)');
 		$("#pCard3").css('transform', 'scale(1.4)');
 		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 1;
+		playerTurn();
+		if (difficulty == 'Normal') {
+			botsTurnNormal();
+		}
+		else if (difficulty == 'Hard') {
+			botsTurnHard();
+		}
 	}
+
+	// Actions when card 3 is clicked
 	function pCard3Click() {
 		$("#pCard1").css('transform', 'scale(1.4)');
 		$("#pCard2").css('transform', 'scale(1.4)');
-		$("#pCard3").css('transform', 'scale(1.6)');
+		$("#pCard3").css('transform', 'scale(1.4)');
 		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 2;
+		playerTurn();
+		if (difficulty == 'Normal') {
+			botsTurnNormal();
+		}
+		else if (difficulty == 'Hard') {
+			botsTurnHard();
+		}
 	}
+
+	// Actions when card 4 is clicked
 	function pCard4Click() {
 		$("#pCard1").css('transform', 'scale(1.4)');
 		$("#pCard2").css('transform', 'scale(1.4)');
 		$("#pCard3").css('transform', 'scale(1.4)');
-		$("#pCard4").css('transform', 'scale(1.6)');
+		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 3;
+		playerTurn();
+		if (difficulty == 'Normal') {
+			botsTurnNormal();
+		}
+		else if (difficulty == 'Hard') {
+			botsTurnHard();
+		}
 	}
 
-	// start of the game
+	/* GAME PREP FOR START */
 	function gameStart() {
-		dealHands(numPlayers);
+		dealHands();
 		displayCards();
 		dealStart();
 		displayCardStack();
 	}
 
-	// deal Hands to all players
-	function dealHands(numPlayers) {
+	/* DEAL HAND TO ALL PLAYERS */
+	function dealHands() {
 		var count = 0;
-		if (numPlayers == 3) {
-			for (i = 0; i < deck.length; i++) {
-				if (count < 4) {
-					player.push(deck.pop());
-					i++;
-					bot1.push(deck.pop());
-					i++;
-					bot2.push(deck.pop());
-					i++;
-					bot3.push(deck.pop());
-					count++;
-				}
+		for (i = 0; i < deck.length; i++) {
+			if (count < 4) {
+				player.push(deck.pop());
+				i++;
+				bot1.push(deck.pop());
+				i++;
+				bot2.push(deck.pop());
+				i++;
+				bot3.push(deck.pop());
+				i++;
+				bot4.push(deck.pop());
+				i++;
+				bot5.push(deck.pop());
+				count++;
 			}
-			console.log(player);
-			console.log(bot1);
-			console.log(bot2);
-			console.log(bot3);
 		}
-		else if (numPlayers == 4) {
-			for (i = 0; i < deck.length; i++) {
-				if (count < 4) {
-					player.push(deck.pop());
-					i++;
-					bot1.push(deck.pop());
-					i++;
-					bot2.push(deck.pop());
-					i++;
-					bot3.push(deck.pop());
-					i++;
-					bot4.push(deck.pop());
-					count++;
-				}
-			}
-			console.log(player);
-			console.log(bot1);
-			console.log(bot2);
-			console.log(bot3);
-			console.log(bot4);
-		}
-		else if (numPlayers == 5) {
-			for (i = 0; i < deck.length; i++) {
-				if (count < 4) {
-					player.push(deck.pop());
-					i++;
-					bot1.push(deck.pop());
-					i++;
-					bot2.push(deck.pop());
-					i++;
-					bot3.push(deck.pop());
-					i++;
-					bot4.push(deck.pop());
-					i++;
-					bot5.push(deck.pop());
-					count++;
-				}
-			}
-			console.log(player);
-			console.log(bot1);
-			console.log(bot2);
-			console.log(bot3);
-			console.log(bot4);
-			console.log(bot5);
-		}
-		else {
-			for (i = 0; i < deck.length; i++) {
-				if (count < 4) {
-					player.push(deck.pop());
-					i++;
-					bot1.push(deck.pop());
-					i++;
-					bot2.push(deck.pop());
-					i++;
-					bot3.push(deck.pop());
-					i++;
-					bot4.push(deck.pop());
-					i++;
-					bot5.push(deck.pop());
-					i++;
-					bot6.push(deck.pop());
-					count++;
-				}
-			}
-			console.log(player);
-			console.log(bot1);
-			console.log(bot2);
-			console.log(bot3);
-			console.log(bot4);
-			console.log(bot5);
-			console.log(bot6);
-		}
+		console.log(player);
+		console.log(bot1);
+		console.log(bot2);
+		console.log(bot3);
+		console.log(bot4);
+		console.log(bot5);
+		//console.log("cards left in deck: " + deck.length);
+
+		$("#deckCount").val(deck.length);
 	}
 
-	// display cards in hand
-	var pCardId = "#pCard1";
-	var card = '';
-	var cardUrl = '';
+	/* DISPLAY CARDS IN HAND */
 	function displayCards() {
+		var card = '';
+		var cardUrl = '';
+
 		for (i = 0; i < 4; i++) {
+			if (player[i] == "00") {
+				continue;
+			}
+
 			if (player[i].value == 1)
 				card = "A" + player[i].suit.charAt(0);
 			else
@@ -445,71 +417,56 @@
 			}
 			
 			$("#pCard" + (i + 1)).css("background-image", cardUrl);
-			console.log(cardUrl);
+			//console.log(cardUrl);
 		}
 	}
 
-	// display card stack
-	var topCard = '';
-	var tcUrl = '';
+	/* DISPLAY CARDS PLAYED ON TABLE */
 	function displayCardStack() {
-		topCard = cardStack[cardStack.length - 1]
-		console.log(topCard);
+		var topCard = '';
+		var tcUrl = '';
 
-		if (cardStack[cardStack.length-1].value == 1)
-			topCard = "A" + cardStack[cardStack.length-1].suit.charAt(0);
-		else
-			topCard = cardStack[cardStack.length - 1].value + cardStack[cardStack.length - 1].suit.charAt(0);
+		topCard = cardStack[cardStack.length - 1];
 
-		if (topCard == '-1C' || topCard == '-1D' || topCard == '-1H' || topCard == '-1S') {
-			tcUrl = "url('images/cards/" + 'Q' + cardStack[cardStack.length - 1].suit.charAt(0) + ".png')";
+		if (topCard.value == 1) {
+			tcUrl = "url('images/cards/" + "A" + topCard.suit.charAt(0) + ".png')";
 		}
-		else if (topCard == '-10C' || topCard == '-10D' || topCard == '-10H' || topCard == '-10S') {
-			tcUrl = "url('images/cards/" + 'J' + cardStack[cardStack.length - 1].suit.charAt(0) + ".png')";
+		else if (topCard.value == -10) {
+			tcUrl = "url('images/cards/" + "J" + topCard.suit.charAt(0) + ".png')";
 		}
-		else if (topCard == '0C' || topCard == '0D' || topCard == '0H' || topCard == '0S') {
-			tcUrl = "url('images/cards/" + 'K' + cardStack[cardStack.length - 1].suit.charAt(0) + ".png')";
+		else if (topCard.value == -1) {
+			tcUrl = "url('images/cards/" + "Q" + topCard.suit.charAt(0) + ".png')";
+		}
+		else if (topCard.value == 0) {
+			tcUrl = "url('images/cards/" + "K" + topCard.suit.charAt(0) + ".png')";
 		}
 		else {
+			topCard = topCard.value + topCard.suit.charAt(0);
 			tcUrl = "url('images/cards/" + topCard + ".png')";
 		}
+
 		$("#cardStack").css("background-image", tcUrl);
+		//console.log(tcUrl);
 	}
 	
 
-	// deal starting card
+	/* DEAL STARTING CARD ONTO TABLE */
 	function dealStart() {
 		startCard = deck.pop();
 		while (startCard.value == -10 || startCard.value == -1 || startCard.value == 0) {
+			temp = deck.pop();
 			deck.push(startCard);
-			startCard = deck.pop();
+			startCard = temp;
 		}
 		cardStack.push(startCard);
 		total_value = startCard.value;
 
+		$("#deckCount").val(deck.length);
+		//console.log("cards left in deck: " + deck.length);
 		console.log("start = " + total_value);
 	}
 
-	// card play logic
-	// play card onto table
-	function playCards() {
-		if (difficulty == "Easy") {
-			difficultyEasy();
-		}
-		else if (difficulty == "Normal") {
-			difficultyNormal();
-		}
-		else if (difficulty == "Hard") {
-			difficultyHard();
-		}
-
-		displayCards();
-		checkForWin();
-		c = 1;
-	}
-
-
-	// disable all clicks
+	/* DISABLE ALL CLICKS */
 	function disableAll() {
 		$("#pCard1").off('click');
 		$("#pCard2").off('click');
@@ -517,9 +474,11 @@
 		$("#pCard4").off('click');
 	}
 
-	// enable all clicks
+	/* ENABLE ALL CLICKS */
 	function enableAll() {
-		if (!winner) {
+		// player clicks enabled if there is no winner
+		// or player is active
+		if (!winner || pActive) {
 			$("#pCard1").on('click', pCard1Click);
 			$("#pCard2").on('click', pCard2Click);
 			$("#pCard3").on('click', pCard3Click);
@@ -527,14 +486,39 @@
 		}
 	}
 
-	// actions at player's turn
-	var value;
+	/* CHECK IF THERE IS A WINNER */
+	function checkWinner() {
+		if (ranks.length == 5) 
+		{
+			winner = true;
+			if (!pActive)
+				console.log("WINNER IS PLAYER");
+			else if (!b1Active)
+				console.log("WINNER IS BOT 1");
+			else if (!b2Active)
+				console.log("WINNER IS BOT 2");
+			else if (!b3Active)
+				console.log("WINNER IS BOT 3");
+			else if (!b4Active)
+				console.log("WINNER IS BOT 4");
+			else if (!b5Active)
+				console.log("WINNER IS BOT 5");
+		}
+		return;
+	}
+
+	/* PLAYER TURN ACTIONS */
 	function playerTurn() {
-		value = player[playerChoice].value; // value of card to sum
-		if (value == -1) { // if card is a queen, prompt user for value
+		// Declares and initializes numerical value of card
+		var value = player[playerChoice].value;
+
+		// Prompts user for value if player chooses Queen
+		if (value == -1) {
 			while (1) {
-				//debugger;
-				var v = window.prompt("Enter desrired value: (2,3,4,5,6,7,8,9,10,J,K,A)");
+				/* note - currently window prompt; eventually change to buttons? */
+				var v = window.prompt("Enter desrired value");
+
+				// Current valid responses - 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A
 				try {
 					if (v != 'J' && v != 'K' && v != 'A') {
 						value = parseInt(v);
@@ -554,29 +538,157 @@
 					}
 				}
 				catch (err) {
+					// Error message if entered value is invalid
+					// While loop will continue until valid value is entered
+					alert("Invalid Value. Please enter another value.");
 					continue;
 				}
 			}
-			cardStack.push(...player.splice(playerChoice, 1)); // removes card from player's hand and places card onto cardStack
-			player.push(deck.pop()); // player draws new card from deck
-			total_value = total_value + value; // adds value to total_value
-			console.log("+ " + value + " = " + total_value);
-			console.log(player);
-			console.log(cardStack);
-			displayCardStack();
 		}
+
+		// Total value is updated after adding value of card played
+		total_value = total_value + value;
+
+		// Checks if total_value is over 99
+		if (total_value > 99) {
+			alert("Player loses");
+			ranks.push(0);
+			total_value -= value;
+			console.log("PLAYER OUT");
+			disableAll();
+			pActive = false;
+			checkWinner();
+			while (!winner) {
+				if (difficulty == 'Normal') {
+					botsTurnNormal();
+				}
+				else if (difficulty == 'Hard') {
+					botsTurnHard();
+				}
+			}
+			return;
+		}
+
+		// Card of player's choice is removed from player's hand and placed onto table (CardStack)
+		// Upon removal of card, another card will be drawn from deck
+		cardStack.push(...player.splice(playerChoice, 1)); 
+		try {
+			player.push(deck.pop());
+			$("#deckCount").val(deck.length);
+		}
+		catch (err)
+		{
+			player.push("00");
+		}
+
+		// Player turn summary outputted to console (developer purposes)
+		/* note - add visible turn stats to playing page */
+		console.log("player turn: " + "+ " + value + " = " + total_value);
+
+		// Display cards on table
+		displayCards();
+		displayCardStack();
 	}
 
-	// actions of bots at easy difficulty (random)
-	function botsTurnEasy(n) {
-		var i;
-		var x;
-		for (i = 1; i < n + 1; i++) {
-			x = Math.floor((Math.random() * 4)); //get random value b/w 1 and 4
-			value = ("bot"+i)[x].value; // value of card to sum
-			if (value == -1) { // if card is a queen, prompt user for value
+	/* BOT TURN ACTIONS AT NORMAL DIFFICULTY */
+	function botsTurnNormal() {
+		// Disable player clicks during bots turn
+		if (pActive) {
+			disableAll();
+			console.log("clicks disabled");
+
+			// Timer set between 4-8 seconds during each bots turn
+			// At the end of each timer, next function will be called for next bot's turn
+			timerId = setTimeout(bot1Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+		}
+		else {
+			timerId = setTimeout(bot1Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+		}
+	}
+	
+	/* CALCULATE BEST QUEEN VALUE FOR BOTS */
+	function getQueenValue() {
+		if (total_value == 99)
+		{
+			return 0;
+		}
+
+		var ideal = 99 - total_value;
+		if (total_value >= 89)
+		{
+			return ideal;
+		}
+		
+		return 10;
+	}
+	
+	/* CALCULATE BEST CARD TO PLAY IN BOTS HAND */
+	function botsCalculated(bot) {
+		var highest = 0;
+		var num = [];
+		var num_found = false;
+		for (var i = 0; i < bot.length; i++)
+		{
+			if ((bot[i].value == -10) || (bot[i].value == -1) || (bot[i].value == 0))
+			{
+				continue;
+			}
+			else {
+				num_found = true;
+				num.push(bot[i]);
+			}
+		}
+
+		if (!num_found)
+		{
+			for (var j = 0; j < bot.length; j++)
+			{
+				if (bot[j].value == 0)
+				{
+					index = j;
+					return 0;
+				}
+				else if (bot[j].value == -1)
+				{
+					index = j;
+					return getQueenValue();
+				}
+				else if (bot[j].value == -10)
+				{
+					index = j;
+					return -10;
+				}
+			}
+		}
+		else {
+			for (var k = 0; k < num.length; k++)
+			{
+				if ((total_value + num[k].value) <= 99)
+				{
+					if (num[k].value > highest)
+					{
+						highest = num[k].value;
+					}
+				}
+			}
+		}
+		for (var i = 0; i < bot.length; i++)
+		{
+			if (highest == bot.value)
+				index = i;
+		}
+		return highest;
+	}
+
+	// Turn Logic for Bot 1
+	function bot1Turn() {
+		if (b1Active == true) {
+			/* note - change from random to calculated for all bots */
+			//var x = Math.floor((Math.random() * 4)); 
+			//value = bot1[x].value;
+			value = botsCalculated(bot1);
+		/*	if (value == -1) {
 				while (1) {
-					//debugger;
 					var v = Math.floor((Math.random() * 12)); // gets random value for queen
 					try {
 						if (v != 11 && v != 12) {
@@ -596,21 +708,248 @@
 						continue;
 					}
 				}
-				cardStack.push(...("bot"+i).splice(x, 1)); // removes card from player's hand and places card onto cardStack
-				("bot"+i).push(deck.pop()); // player draws new card from deck
-				console.log(cardStack);
-				total_value = total_value + value; // adds value to total_value
-				console.log("+ " + value + " = " + total_value);
-				console.log("bot = " + "bot" + i);
-				console.log("bot" + i);
-				displayCardStack();
 			}
+		*/
+			total_value = total_value + value;
+			// Checks if total_value is over 99
+			if (total_value > 99) {
+				alert("Bot 1 loses");
+				ranks.push(1);
+				console.log("BOT 1 OUT");
+				total_value -= value;
+				b1Active = false;
+				checkWinner();
+				timerId = setTimeout(bot2Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+				return;
+			} 
+
+			cardStack.push(...bot1.splice(index, 1)); 
+			try {
+				bot1.push(deck.pop()); 
+				$("#deckCount").val(deck.length);
+			}
+			catch (err) {
+				bot1.push("00");
+			}
+			console.log("bot1 turn: " + "+ " + value + " = " + total_value);
+			displayCardStack();
+			// After timer ends, bot2 turn will start
+			timerId = setTimeout(bot2Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+		}
+		else {
+			bot2Turn();
 		}
 	}
 
-	// actions of bots at normal difficulty (calculated)
-	function botsTurnNormal() {
+	// Turn Logic for Bot 2
+	function bot2Turn() {
+		if (b2Active == true) {
+		/*	var x = Math.floor((Math.random() * 4));
+			value = bot2[x].value;
+			if (value == -1) {
+				while (1) {
+					var v = Math.floor((Math.random() * 12)); // gets random value for queen
+					try {
+						if (v != 11 && v != 12) {
+							value = v;
+							break;
+						}
+						else if (v == 11) { //Jack
+							value = -10;
+							break;
+						}
+						else if (v == 12) { //King
+							value = 0;
+							break;
+						}
+					}
+					catch (err) {
+						continue;
+					}
+				}
+			}
+		*/
+			value = botsCalculated(bot2);
+			total_value = total_value + value;
+			// Checks if the value is over 99
+			if (total_value > 99) {
+				alert("Bot 2 loses");
+				ranks.push(2);
+				console.log("BOT 2 OUT");
+				total_value -= value;
+				b2Active = false;
+				checkWinner();
+				timerId = setTimeout(bot3Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+				return;
+			} 
 
+			cardStack.push(...bot2.splice(index, 1));
+			bot2.push(deck.pop());
+			console.log("bot2 turn: " + "+ " + value + " = " + total_value);
+			displayCardStack();
+			// After timer ends, bot3 turn will start
+			timerId = setTimeout(bot3Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+		}
+		else {
+			bot3Turn();
+		}
+	}
+
+	// Turn Logic for Bot 3
+	function bot3Turn() {
+		if (b3Active == true) {
+		/*	var x = Math.floor((Math.random() * 4));
+			value = bot3[x].value;
+			if (value == -1) {
+				while (1) {
+					var v = Math.floor((Math.random() * 12)); // gets random value for queen
+					try {
+						if (v != 11 && v != 12) {
+							value = v;
+							break;
+						}
+						else if (v == 11) { //Jack
+							value = -10;
+							break;
+						}
+						else if (v == 12) { //King
+							value = 0;
+							break;
+						}
+					}
+					catch (err) {
+						continue;
+					}
+				}
+			}
+		*/
+			value = botsCalculated(bot3);
+			total_value = total_value + value;
+			// Checks if the value is over 99
+			if (total_value > 99) {
+				alert("Bot 3 loses");
+				ranks.push(3);
+				console.log("BOT 3 OUT");
+				total_value -= value;
+				b3Active = false;
+				checkWinner();
+				timerId = setTimeout(bot4Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+				return;
+			} 
+
+			cardStack.push(...bot3.splice(index, 1));
+			bot3.push(deck.pop());
+			console.log("bot3 turn: " + "+ " + value + " = " + total_value);
+			displayCardStack();
+			// After timer ends, bot4 turn will start
+			timerId = setTimeout(bot4Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+		}
+		else {
+			bot4Turn();
+		}
+	}
+
+	// Turn Logic for Bot 4
+	function bot4Turn() {
+		if (b4Active == true) {
+		/*	var x = Math.floor((Math.random() * 4));
+			value = bot4[x].value;
+			if (value == -1) {
+				while (1) {
+					var v = Math.floor((Math.random() * 12)); // gets random value for queen
+					try {
+						if (v != 11 && v != 12) {
+							value = v;
+							break;
+						}
+						else if (v == 11) { //Jack
+							value = -10;
+							break;
+						}
+						else if (v == 12) { //King
+							value = 0;
+							break;
+						}
+					}
+					catch (err) {
+						continue;
+					}
+				}
+			}
+		*/
+			value = botsCalculated(bot4);
+			total_value = total_value + value; 
+			// Checks if the value is over 99
+			if (total_value > 99) {
+				alert("Bot 4 loses");
+				ranks.push(4);
+				console.log("BOT 4 OUT");
+				total_value -= value;
+				b4Active = false;
+				checkWinner();
+				timerId = setTimeout(bot5Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+				return;
+			} 
+
+			cardStack.push(...bot4.splice(index, 1));
+			bot4.push(deck.pop());
+			console.log("bot4 turn: " + "+ " + value + " = " + total_value);
+			displayCardStack();
+			// After timer ends, bot5 turn will start
+			timerId = setTimeout(bot5Turn, Math.floor(Math.random() * (9000 - 4000)) + 4000);
+		}
+		else {
+			bot5Turn();
+		}
+	}
+
+	// Turn Logic for Bot 5
+	function bot5Turn() {
+		if (b5Active == true) {
+		/*	var x = Math.floor((Math.random() * 4));
+			value = bot5[x].value;
+			if (value == -1) {
+				while (1) {
+					var v = Math.floor((Math.random() * 12)); // gets random value for queen
+					try {
+						if (v != 11 && v != 12) {
+							value = v;
+							break;
+						}
+						else if (v == 11) { //Jack
+							value = -10;
+							break;
+						}
+						else if (v == 12) { //King
+							value = 0;
+							break;
+						}
+					}
+					catch (err) {
+						continue;
+					}
+				}
+			}
+		*/
+			value = botsCalculated(bot5);
+			total_value = total_value + value;
+			// Checks if the value is over 99
+			if (total_value > 99) {
+				alert("Bot 5 loses");
+				ranks.push(5);
+				checkWinner();
+				console.log("BOT 5 OUT");
+				total_value -= value;
+				b5Active = false;
+				checkWinner();
+				return;
+			} 
+
+			cardStack.push(...bot5.splice(index, 1));
+			bot5.push(deck.pop());
+			console.log("bot5 turn: " + "+ " + value + " = " + total_value);
+			displayCardStack();
+		}
 	}
 
 	// actions of bots at hard diffuculty 
@@ -618,42 +957,13 @@
 
 	}
 
+	function botsHardLogic(bot) {
+
+	}
+
 	// score hidden
 	function ghostMode() {
 
-	}
-
-
-	function difficultyEasy() {
-		// game continues until winner is found
-		turn = 1;
-		while (!winner) {
-			console.log("turn = " + turn); // print turn number
-			playerTurnEasy();
-			botsTurnEasy(numPlayers - 1);
-			turn += 1;
-		}
-
-	}
-
-	function difficultyNormal() {
-		turn = 1;
-		while (!winnder) {
-			console.log("turn = " + turn);
-			playerTurn();
-			botsTurnNormal(numPlayers - 1);
-			turn += 1;
-		}
-	}
-
-	function difficultyHard() {
-		turn = 1;
-		while (!winner) {
-			console.log("turn + " + turn);
-			playerTurnHard();
-			botsTurnHard(numPlayers - 1);
-			turn += 1;
-		}
 	}
 
 	</script>
