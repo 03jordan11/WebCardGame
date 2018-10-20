@@ -277,6 +277,7 @@
 	var b3Active = true;
 	var b4Active = true;
 	var b5Active = true;
+	var skip = false;
 
 	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
 	{
@@ -310,9 +311,14 @@
 	})
 
 	// Fast Forward Bot turns 
-	$("#skipButton").on('click', function () {
-		defaultTime =  0;
-	})
+	$("#skipButton").on('click', skipButtonClick);
+
+	// Function for skipButton
+	function skipButtonClick() {
+		defaultTime = 0;
+		skip = true;
+		console.log("skip");
+	}
 
 	// Buttons for cards in player's hand
 	$("#pCard1").on('click', pCard1Click);
@@ -329,12 +335,7 @@
 		playerChoice = 0;
 		playerTurn();
 		if (pActive) {
-			if (difficulty == 'Normal') {
-				botsTurnNormal();
-			}
-			else if (difficulty == 'Hard') {
-				botsTurnHard();
-			}
+			botsTurnStart();
 		}
 	}
 	
@@ -347,12 +348,7 @@
 		playerChoice = 1;
 		playerTurn();
 		if (pActive) {
-			if (difficulty == 'Normal') {
-				botsTurnNormal();
-			}
-			else if (difficulty == 'Hard') {
-				botsTurnHard();
-			}
+			botsTurnStart();
 		}
 	}
 
@@ -365,12 +361,7 @@
 		playerChoice = 2;
 		playerTurn();
 		if (pActive) {
-			if (difficulty == 'Normal') {
-				botsTurnNormal();
-			}
-			else if (difficulty == 'Hard') {
-				botsTurnHard();
-			}
+			botsTurnStart();
 		}
 	}
 
@@ -383,12 +374,7 @@
 		playerChoice = 3;
 		playerTurn();
 		if (pActive) {
-			if (difficulty == 'Normal') {
-				botsTurnNormal();
-			}
-			else if (difficulty == 'Hard') {
-				botsTurnHard();
-			}
+			botsTurnStart();
 		}
 	}
 
@@ -419,12 +405,15 @@
 		$("#skipButton").off('click');
 		$("#skipButton").hide();
 		defaultTime = Math.floor(Math.random() * (6000 - 3000)) + 3000;
+		skip = false;
+		console.log("disabled. default = " + defaultTime);
 	}
 
 	// Enable skip button
 	function enableSkip() {
 		$("#skipButton").show();
-		$("#skipButton").on('click');
+		$("#skipButton").on('click', skipButtonClick);
+		console.log("enabled. default = 0 on click");
 	}
 
 	/* GAME PREP WHEN START */
@@ -584,7 +573,7 @@
 
 			// List results of game
 			var rank = 2;
-			for (var i = ranks.length-1; i > 1; i--) 
+			for (var i = ranks.length-1; i > -1; i--) 
 			{
 				if (ranks[i] == 0)
 				{
@@ -663,22 +652,17 @@
 					return;
 				}
 
-				if (difficulty == 'Normal') {
-					botsTurnNormal();
-				}
-				else if (difficulty == 'Hard') {
-					botsTurnHard();
-				}
+				botsTurnStart();
 
 				return;
 			}
 
 			// Card of player's choice is removed from player's hand and placed onto table (CardStack)
 			// Upon removal of card, another card will be drawn from deck
-			var cardNum = player.length;
 			cardStack.push(...player.splice(playerChoice, 1)); 
+			console.log(player);
 	
-			// As long as amound of cards in deck are greater than 0, cards can be drawn
+			// As long as amount of cards in deck are greater than 0, cards can be drawn
 			// User and Bots will play with current cards in hand if no cards in deck
 			if (deck.length > 0) {
 				try {
@@ -690,7 +674,8 @@
 				}
 			}
 			else {
-				$("#pCard" + (cardNum-1)).hide();
+				$("#pCard" + (player.length+1)).hide();
+				//console.log(player);
 			}
 
 			// Player turn summary outputted to console (developer purposes)
@@ -704,8 +689,8 @@
 		}
 	}
 
-	/* BOT TURN ACTIONS AT NORMAL DIFFICULTY */
-	function botsTurnNormal() {
+	/* START BOT TURN ACTIONS */
+	function botsTurnStart() {
 		// Disable player card clicks during bots turn
 		// Enable skip button during bots turn
 		if (pActive) {
@@ -867,20 +852,18 @@
 					{
 						for (var j = 0; j < bot.length; j++) 
 						{
-							if (bot[j].value == 0) 
-							{
+							if (bot[j].value == -10) {
 								index = j;
-								return 0;
+								return -10;
 							}
 							else if (bot[j].value == -1) 
 							{
 								index = j;
 								return getQueenValue();
 							}
-							else if (bot[j].value == -10) 
-							{
+							else if (bot[j].value == 0) {
 								index = j;
-								return -10;
+								return 0;
 							}
 						}
 					}
@@ -925,28 +908,38 @@
 		return highest;
 	}
 
-	// Turn Logic for Bot 1
+	/* TURN LOGIC FOR BOT 1 */
 	function bot1Turn() {
+		if (winner) {
+			return;
+		}
+
 		// Bot will play if active in game (not out)
 		if (b1Active == true) {
 			turn[1] += 1;
+
+			// Play card and add value to total_value
 			value = botsCalculated(bot1);
 			total_value = total_value + value;
+
 			// Checks if total_value is over 99
-			if (total_value > 99) {
-				alert("Bot 1 loses");
+			if (total_value > 99 || bot1.length == 0) {
+				if (!skip) {
+					alert("Bot 1 loses");
+				}
 				ranks.push(1);
 				console.log("BOT 1 OUT");
 				total_value -= value;
 				b1Active = false;
-				checkWinner();
 				if (winner) {
 					return;
 				}
+				checkWinner();
 				timerId = setTimeout(bot2Turn, defaultTime);
 				return;
 			} 
 
+			// Card played to cardStack, new card is drawn if there are still cards in deck
 			cardStack.push(...bot1.splice(index, 1)); 
 			if (deck.length > 0)
 			{
@@ -959,10 +952,15 @@
 				}
 			}
 
+			// Output summary of turn results to console (developer purposes)
 			console.log("bot1 turn " + turn[1] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot1.length);
+
+			// Update total sum on page
 			$("#sumTotal").val(total_value);
 
+			// Update cardStack view 
 			displayCardStack();
+
 			// After timer ends, bot2 turn will start
 			timerId = setTimeout(bot2Turn,defaultTime);
 		}
@@ -971,24 +969,38 @@
 		}
 	}
 
-	// Turn Logic for Bot 2
+	/* TURN LOGIC FOR BOT 2 */
 	function bot2Turn() {
+		if (winner) {
+			return;
+		}
+
+		// Bot wil play if active in game (not out)
 		if (b2Active == true) {
 			turn[2] += 1;
+
+			// Play card and add value to total_value
 			value = botsCalculated(bot2);
 			total_value = total_value + value;
+
 			// Checks if the value is over 99
-			if (total_value > 99) {
-				alert("Bot 2 loses");
+			if (total_value > 99 || bot2.length == 0) {
+				if (!skip) {
+					alert("Bot 2 loses");
+				}
 				ranks.push(2);
 				console.log("BOT 2 OUT");
 				total_value -= value;
 				b2Active = false;
+				if (winner) {
+					return;
+				}
 				checkWinner();
 				timerId = setTimeout(bot3Turn, defaultTime);
 				return;
 			} 
 
+			// Card played to cardStack, new card is drawn if there are still cards in deck
 			cardStack.push(...bot2.splice(index, 1));
 			if (deck.length > 0)
 			{
@@ -1000,9 +1012,16 @@
 					console.log("no cards to draw");
 				}
 			}
+
+			// Output summary of turn results to console (developer purposes)
 			console.log("bot2 turn " + turn[2] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot2.length);
+
+			// Update total sum on page
 			$("#sumTotal").val(total_value);
+
+			// Update cardStack view
 			displayCardStack();
+
 			// After timer ends, bot3 turn will start
 			timerId = setTimeout(bot3Turn, defaultTime);
 		}
@@ -1011,24 +1030,38 @@
 		}
 	}
 
-	// Turn Logic for Bot 3
+	/* TURN LOGIC FOR BOT 3 */
 	function bot3Turn() {
+		if (winner) {
+			return;
+		}
+
+		// Bot will play if active in game (not out)
 		if (b3Active == true) {
 			turn[3] += 1;
+
+			// Play card and add value to total_value
 			value = botsCalculated(bot3);
 			total_value = total_value + value;
+
 			// Checks if the value is over 99
-			if (total_value > 99) {
-				alert("Bot 3 loses");
+			if (total_value > 99 || bot3.length == 0) {
+				if (!skip) {
+					alert("Bot 3 loses");
+				}
 				ranks.push(3);
 				console.log("BOT 3 OUT");
 				total_value -= value;
 				b3Active = false;
+				if (winner) {
+					return;
+				}
 				checkWinner();
 				timerId = setTimeout(bot4Turn, defaultTime);
 				return;
 			} 
 
+			// Card played to cardStack, new card is drawn if there are still cards in deck
 			cardStack.push(...bot3.splice(index, 1));
 			if (deck.length > 0)
 			{
@@ -1040,9 +1073,16 @@
 					console.log("no cards to draw");
 				}
 			}
+
+			// Output summary of turn results to console (developer purposes)
 			console.log("bot3 turn " + turn[3] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot3.length);
+
+			// Update total sum on page
 			$("#sumTotal").val(total_value);
+
+			// Update cardStack view
 			displayCardStack();
+
 			// After timer ends, bot4 turn will start
 			timerId = setTimeout(bot4Turn, defaultTime);
 		}
@@ -1051,24 +1091,38 @@
 		}
 	}
 
-	// Turn Logic for Bot 4
+	/* TURN LOGIC FOR BOT 4 */
 	function bot4Turn() {
+		if (winner) {
+			return;
+		}
+
+		// Bot will play if active in game (not out)
 		if (b4Active == true) {
 			turn[4] += 1;
+
+			// Play card and add value to total_value
 			value = botsCalculated(bot4);
 			total_value = total_value + value; 
+
 			// Checks if the value is over 99
-			if (total_value > 99) {
-				alert("Bot 4 loses");
+			if (total_value > 99 || bot4.length == 0) {
+				if (!skip) {
+					alert("Bot 4 loses");
+				}
 				ranks.push(4);
 				console.log("BOT 4 OUT");
 				total_value -= value;
 				b4Active = false;
+				if (winner) {
+					return;
+				}
 				checkWinner();
 				timerId = setTimeout(bot5Turn, defaultTime);
 				return;
 			} 
 
+			// Card played to cardStack, new card is drawn if there are still cards in deck
 			cardStack.push(...bot4.splice(index, 1));
 			if (deck.length > 0)
 			{
@@ -1080,9 +1134,16 @@
 					console.log("no cards to draw");
 				}
 			}
+
+			// Output summary of turn results to console (developer purposes)
 			console.log("bot4 turn " + turn[4] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot4.length);
+
+			// Update total sum on page
 			$("#sumTotal").val(total_value);
+
+			// Update cardStack view
 			displayCardStack();
+
 			// After timer ends, bot5 turn will start
 			timerId = setTimeout(bot5Turn, defaultTime);
 		}
@@ -1091,29 +1152,46 @@
 		}
 	}
 
-	// Turn Logic for Bot 5
+	/* TURN LOGIC ON BOT 5 */
 	function bot5Turn() {
+		if (winner)
+		{
+			return;
+		}
+
+		// Bot will play if active in game (not out)
 		if (b5Active == true) {
 			turn[5] += 1;
+
+			// Play card and add value to total_value
 			value = botsCalculated(bot5);
 			total_value = total_value + value;
+
 			// Checks if the value is over 99
-			if (total_value > 99) {
-				alert("Bot 5 loses");
+			if (total_value > 99 || bot5.length == 0) {
+				if (!skip) {
+					alert("Bot 5 loses");
+				}
 				ranks.push(5);
+				if (winner) {
+					return;
+				}
 				checkWinner();
 				console.log("BOT 5 OUT");
 				total_value -= value;
 				b5Active = false;
-				checkWinner();
-				if (winner)
-				{
-					return;
+				
+				if (pActive) {
+					enableAll();
+					disableSkip();
 				}
-				enableAll();
-				disableSkip();
+				else {
+					botsTurnStart();
+				}
+				return;
 			} 
 
+			// Card played to cardStack, new card is drawn if there are still cards in deck
 			cardStack.push(...bot5.splice(index, 1));
 			if (deck.length > 0)
 			{
@@ -1125,30 +1203,43 @@
 					console.log("no cards to draw");
 				}
 			}
+
+			// Output summary of turn results to console (developer purposes)
 			console.log("bot5 turn " + turn[5] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot5.length);
+
+			// Update total sum on page
 			$("#sumTotal").val(total_value);
+
+			// Update cardStack view
 			displayCardStack();
 
+			// Enable player clicks if player is still active
+			// Otherwise restart bots turn
 			if (pActive) {
 				enableAll();
 				disableSkip();
 			}
 			else {
-				bot1Turn();
+				botsTurnStart();
 			}
 		}
 		else {
+			// enable player clicks if player is still active
+			// Otherwise restart bots turn
 			if (pActive)
 			{
 				enableAll();
 				disableSkip();
 			}
+			else {
+				botsTurnStart();
+			}
 		}
 	}
 
-	// score hidden
+	/* SCORE HIDDEN */
 	function ghostMode() {
-
+		$("#sumTotal").hide();
 	}
 
 	</script>
