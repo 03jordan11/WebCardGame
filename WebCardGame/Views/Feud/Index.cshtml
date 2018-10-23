@@ -15,7 +15,7 @@
             <div  id="bot1Selected" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"></div>
     </div>
     <div class="row" id="playerHand" style="position:relative; top: 280px; left: 260px">
-        <div class="col-sm-2 hand" id="playerCard1" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
+        <div class="col-sm-2 hand" id="playerCard1" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img src="https://media.discordapp.net/attachments/154793307967455232/502947778209513473/2cfeb06c3195bafbf56f702ddf871b7886f94ab47e396696851cd8c7dff4d413_1.jpg?width=449&height=537" /></div>
         <div class="col-sm-2 hand" id="playerCard2" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
         <div class="col-sm-2 hand" id="playerCard3" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
         <div class="col-sm-2 hand" id="playerCard4" style="width:50px; height:70px; padding: 1px; border:1px dotted gray;"><img /></div>
@@ -82,15 +82,27 @@
 
     //Draws card from players deck to his hand
     //TODO give arguemtns for checking hand size and drawing acoordingly
-    function PlayerDraw(firstTurn) {
+    function PlayerDraw(firstTurn, person) {
         debugger;
-        if (firstTurn === false) {
-            playerHand.push(player.pop());
-        }
-        else {
-            for (i = 0; i < 5; i++)
+        if (person === "player") {
+            if (firstTurn === false) {
                 playerHand.push(player.pop());
+            }
+            else {
+                for (i = 0; i < 5; i++)
+                    playerHand.push(player.pop());
+            }
         }
+        else if (person === "bot1") {
+            if (firstTurn === false) {
+                bot1Hand.push(bot1.pop());
+            }
+            else {
+                for (i = 0; i < 5; i++)
+                    bot1Hand.push(bot1.pop());
+            }
+        }
+        
         //THIS DRAWS CARDS FROM PLAYERS DECK TO HIS HAND
        
         $("#playerCard1").text(playerHand[0].value + playerHand[0].suit.substring(0, 1));
@@ -102,16 +114,6 @@
         $("#playerDiscard").text(playerDiscard.length);
         $("#playerDraw").text(player.length);
     }
-    
-
-    //Bot Draws Card
-    //TODO Add arguments for drawing # of cards based on state
-    function BotDraw() {
-        //THIS DRAWS CARDS FOR BOT
-        for (i = 0; i < 5; i++)
-            bot1Hand.push(bot1.pop());
-    }
-
 
     //Bot Picks card
     //TODO add logic to pick based on others, and add argument for difficulty level
@@ -123,10 +125,6 @@
     //Returns number to find card in array from formated string 'card'
     function FindCardInDeck(deck, card) {
         for (i = 0; i < deck.length; i++){
-            var a = deck[i].suit.substring(0, 1);
-            var b = card.slice(-1);
-            var c = deck[i].value.toString();
-            var d = card.slice(0, -1);
             if(deck[i].suit.substring(0, 1) === card.slice(-1) && deck[i].value.toString() === card.slice(0, -1))
                 return i;
         }
@@ -138,38 +136,71 @@
         for (item in cards) {
             winner.push(cards[item]);
         }
-        PlayerDraw(false);
+        if(player.length>0)
+            PlayerDraw(false, "player");
+        if (playerHand.length === 0) { //if player has no more cards in hand, reset from discard
+            if (playerDiscard.length === 0) {
+                alert("You lost");
+                //end game, ask to play again
+            }
+            player = playerDiscard;
+            playerDiscard = [];
+            PlayerDraw(true, "player");
+        }
+
+        if(bot1.length>0)
+            PlayerDraw(false, "bot1");
+        if (bot1Hand.length === 0) {
+            if (bot1Discard.length === 0) {
+                //end game, you win
+            }
+            bot1 = bot1Discard;
+            bot1Discard = [];
+            PlayerDraw(true, "bot1");
+        }
     }
 
-    $(document).ready( function () {
+    $(document).ready(function () {
+        //creates inital deck to play with
         CreateDeck();
+        //gives cards to players
         DistributeCards();
-        PlayerDraw(true);
-        BotDraw();
-        console.log(player);
-        console.log(deck);
-        console.log(playerHand);
-        console.log(bot1);
-        console.log(bot1Hand);
+        //player and bot draws, set to true so he draws for first turn
+        PlayerDraw(true, "player");
+        PlayerDraw(true, "bot1");
 
         $(".hand").on('click', function () {
+            //gets value associated with card clicked on
             debugger;
             var playerDisplay = this.innerHTML;
-            var handPosition = FindCardInDeck(playerHand, playerDisplay);
+            //gets numerical position related to deck for what card was clicked on, then removes that from the players hand and sets the center to it
+            var handPosition = FindCardInDeck(playerHand, this.innerHTML);
             var playerVal = playerHand[handPosition];
             playerHand.splice(handPosition, 1);
             var botPick = BotPick();
             this.innerHTML = "";
             $("#player1Selected").text(playerDisplay);
+
             $.when($("#bot1Selected").text(botPick.value)).then(function () {
                 if (playerVal.value > botPick.value) {
-                    sleep(2000);
+                    sleep(500);
                     alert("Your Card is Higher");
-                    //playerDiscard.push
+                }
+                else {
+                    sleep(500);
+                    alert("Bot's Card is Higher");
                 }
             }).then(function () {
-                endTurn(playerDiscard, [playerVal, botPick]);
-            });
+                if (playerVal.value > botPick.value) {
+                    endTurn(playerDiscard, [playerVal, botPick]);
+                }
+                else {
+                    endTurn(bot1Discard, [playerVal, botPick]);
+                }
+                }).then(function () {
+                    $("#playerDiscard").text(playerDiscard.length);
+                    $("#playerDraw").text(player.length);
+                });
         });
     });
 
