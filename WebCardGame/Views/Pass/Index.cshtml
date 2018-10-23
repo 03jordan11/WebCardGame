@@ -5,6 +5,9 @@
 @{
     Layout = "_Layout";
 }
+
+@model PassViewModel
+
 <head>
     <style>
         <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/ >
@@ -23,38 +26,82 @@
 
 @*middle area implementation*@
 <div class="midArea">
-    <div v-if="state=='start'" id="startPage">
+    <div id="startPage">
         @*start button*@
-        <button type="button" class="btn btn-success" id="startButton" v-on:click="state='play'">START</button>
-
+        <button type="button" class="btn btn-success" id="startButton">START</button>
+        <span id="userName">Player name</span>
+        <input type="text" id="nameInput" value="Player"/>
         @*dropdown menu for difficulty selection*@
         <div id="difficultyDropDown">Difficulty:<br />
-            <select style="background-color:black">
-                <option value="easy">Easy</option>
+            <select style="background-color:black" id="difficultyChoice">
                 <option value="normal">Normal</option>
                 <option value="hard">Hard</option>
             </select>
         </div>
+        <button type="button" id="rulesButton">Rules</button>
+        <div id="rules">
+            <p><b><u>Rules:</u></b></p>
+            <p>
+Deck: 4 cards of 1 card type, per player<br />
+    i.e. 3 players = 12 cards   Ace of Hearts, Spade, Diamond, & Clubs<br />
+                    2 of Hearts, Spade, Diamond, & Clubs<br />
+                    3 of Hearts, Spade, Diamond, & Clubs<br /><br />
+
+
+    i.e. 2 players = 8 cards    Ace of Hearts, Spade, Diamond, & Clubs<br />
+                    2 of Hearts, Spade, Diamond, & Clubs<br /><br />
+
+Rules: <br />
+    Objective: Player's goal is to collect 4 cards of a kind.<br /><br />
+
+    At the start of the game, players will be dealt 4 cards each.<br /><br />
+    
+    Players will have 4 seconds to select a card from their hand to discard.<br /><br />
+    
+    At the end of 4 seconds, all players will pass their card face-down, to the player to the right. <br /><br />
+
+    This process is repeated until one player has collected 4 of a kind, displaying it on the table.<br /><br />
+            </p>
+        </div>
     </div>
 
-    <div v-if="state=='play'" id="playing">
-        <button type="button" class="btn btn-success" id="restartButton" v-on:click="state='start'">Restart</button>
+    <div id="playingPage">
+        <button type="button" class="btn btn-success" id="restartButton">Restart</button>
+        <input type="text" id="timer" />
+
+        <div id="bot2Cards">
+            <div id="b2Card1"></div>
+            <div id="b2Card2"></div>
+            <div id="b2Card3"></div>
+            <div id="b2Card4"></div>
+            <p>BOT-2</p>
+        </div>
+        <div id="playerCards">
+            <div id="pCard1"></div>
+            <div id="pCard2"></div>
+            <div id="pCard3"></div>
+            <div id="pCard4"></div>
+            <div id="playerName"></div>
+        </div>
+        <div id="bot13Cards">
+            <input type="text" id="winner"/>
+            <div id="b3Card1"></div>
+            <div id="b3Card2"></div>
+            <div id="b3Card3"></div>
+            <div id="b3Card4"></div>
+            <p id="bot3Name">BOT-3</p>
+            <div id="b1Card1"></div>
+            <div id="b1Card2"></div>
+            <div id="b1Card3"></div>
+            <div id="b1Card4"></div>
+            <p id="bot1Name">BOT-1</p>
+        </div>
     </div>
 
 </div>
 
 @*footer implemenation*@
 <div class="footer"></div>
-
-<script>
-    var app = new Vue({
-        el:".midArea",
-
-        data:{
-            state: "start"
-        }
-    });
-</script>
 
 <style>
     .title {
@@ -77,31 +124,334 @@
     .midArea {
         width: 100%;
         height: 600px;
-        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
-        background-size: 1100px 600px;
+        background-size: 550px 180px;
         border-style: solid;
         border-width: 1px;
         border-color: black;
         margin-top: 5px;
     }
 
+    #startPage {
+        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); 
+        background-size: 1100px 600px;
+        height: 600px;
+        width: 100%;
+    }
+
+    #playingPage {
+        background-color: black;
+        background-size: 1100px 600px;
+        height: 600px;
+        width: 100%;
+    }
+
     #startButton {
         width: 300px;
         height: 100px;
         margin-top: 250px;
-        margin-left: 10%;
+        margin-left: 2%;
         color: yellow;
         font-family: monospace;
         font-size: 40px;
-        border-radius:20px;
+        border-radius: 20px;
     }
 
     #difficultyDropDown {
         font-family: monospace;
+        font-size: 30px;
+        color: white;
+        margin-top: -320px;
+        margin-left: 70%;
+    }
+
+    #userName{
+        font-family:monospace;
         font-size:30px;
         color:white;
-        margin-top:-320px;
-        margin-left: 70%;
+    }
+
+    #nameInput {
+        width: 180px;
+        height: 40px;
+        padding-left:20px;
+        color: white;
+        font-family: monospace;
+        font-size: 30px;
+        background-color:black;
+        border:solid 2px white;
+        border-radius: 20px;
+    }
+
+    #rulesButton{
+        margin-left:70%;
+        margin-top:10px;
+        color:white;
+        font-family:monospace;
+        font-size:25px;
+        background-color:black;
+        border:solid 1px white;
+        border-radius:5%;    
+    }
+
+    #rules{
+        height:410px;
+        width:600px;
+        margin-left:45%;
+        margin-top:30px;
+        padding:10px;
+        background-color:white;
+        font-size:14px;
+        border:solid 2px yellow;
+    }
+
+    #timer{
+        width:120px;
+        height: 40px;
+        margin-left:840px;
+        margin-top:20px;
+        font-family:monospace;
+        font-size:40px;
+        color: white;
+        background-color:black;
+        border-color:black;
+    }
+
+    #winner {
+        height: 30px;
+        width: 400px;
+        margin-left: 380px;
+        font-family: monospace;
+        font-size: 30px;
+        color: white;
+        background-color: black;
+        border-color:black;
+    }
+
+    #bot2Cards {
+        margin-top:-20px;
+        height: 100px;
+        color:white;
+    }
+
+    #bot2Cards p{
+        margin-left:500px;
+        margin-top:20px;
+        font-family:monospace;
+        font-size:30px;
+    }
+
+    #b2Card1 {
+        height: 100px;
+        width: 70px;
+        margin-left: 450px;
+        border: solid 1px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b2Card2 {
+        height: 100px;
+        width: 70px;
+        margin-left: 500px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b2Card3 {
+        height: 100px;
+        width: 70px;
+        margin-left: 550px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b2Card4 {
+        height: 100px;
+        width: 70px;
+        margin-left: 600px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #playerCards {
+        margin-top: 290px;
+        height: 100px;
+    }
+
+    #pCard1{
+        height: 100px;
+        width: 70px;
+        margin-left: 450px;
+        border:solid 1px gray;
+        border-radius:10%;
+        color:black;
+        transform:scale(1.4);
+    }
+
+    #pCard2 {
+        height: 100px;
+        width: 70px;
+        margin-left: 500px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        transform: scale(1.4);
+    }
+
+    #pCard3 {
+        height: 100px;
+        width: 70px;
+        margin-left: 550px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        transform: scale(1.4);
+    }
+
+    #pCard4 {
+        height: 100px;
+        width: 70px;
+        margin-left: 600px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        transform: scale(1.4);
+    }
+
+    #playerName{
+        color:white;
+        margin-left:500px;
+        margin-top:10px;
+        font-family:monospace;
+        font-size:30px;
+    }
+
+    #bot13Cards {
+        margin-top: -270px;
+        height: 100px;
+        color: white;
+    }
+
+    #bot3Name {
+        margin-left: 100px;
+        margin-top:20px;
+        font-family: monospace;
+        font-size: 30px;
+    }
+
+    #b3Card1 {
+        height: 100px;
+        width: 70px;
+        margin-left: 50px;
+        border: solid 1px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b3Card2 {
+        height: 100px;
+        width: 70px;
+        margin-left: 100px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b3Card3 {
+        height: 100px;
+        width: 70px;
+        margin-left: 150px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b3Card4 {
+        height: 100px;
+        width: 70px;
+        margin-left: 200px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #middleDeck {
+        height: 100px;
+        width: 66px;
+        margin-top: -100px;
+        margin-left: 500px;
+        border: solid 1px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #bot1Name {
+        margin-left: 900px;
+        margin-top:20px;
+        font-family: monospace;
+        font-size: 30px;
+    }
+
+    #b1Card1 {
+        height: 100px;
+        width: 70px;
+        margin-left: 850px;
+        margin-top: -180px;
+        border: solid 1px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b1Card2 {
+        height: 100px;
+        width: 70px;
+        margin-left: 900px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b1Card3 {
+        height: 100px;
+        width: 70px;
+        margin-left: 950px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b1Card4 {
+        height: 100px;
+        width: 70px;
+        margin-left: 1000px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
     }
 
     #restartButton{
@@ -109,6 +459,8 @@
         height:40px;
         margin-top:20px;
         margin-left:20px;
+        font-family:monospace;
+        font-size:20px;
         color:yellow;
     }
 
@@ -123,3 +475,330 @@
         margin-top: 5px;
     }
 </style>
+
+@section Scripts{ 
+<script>
+    var deck = [];
+    var temp;
+
+    var player =[];
+    var bot1 = [];
+    var bot2 = [];
+    var bot3 = [];
+
+    var playerChoice = 0;
+    var winner = false;
+    var difficulty;
+
+    @foreach(var item in Model.PassGame.DrawDeck.Cards)
+    {
+        @:temp = @Html.Raw(Json.Serialize(item));
+        @:deck.push(temp);
+    }
+
+    @*hide the playing page at start*@
+    $("#playingPage").hide();
+    $("#rules").hide();
+
+
+    @*BUTTON CLICK FUNCTIONS*@
+    @*START BUTTON AT LANDING PAGE*@
+    $("#startButton").on('click',function(){
+        $("#startPage").hide();
+        $("#playingPage").show();
+        $("#playerName").html($("#nameInput").val());
+        $("#winner").prop('disabled',true);
+        $("#timer").prop('disabled',true);
+        $("#timer").val(0);
+        difficulty = $("#difficultyChoice").val();
+        gameStart();
+    })
+
+    @*RESTART BUTTON AT PLAYING PAGE*@
+    $("#restartButton").on('click',function(){
+        $("#startPage").show();
+        $("#playingPage").hide();
+        location.reload();
+    })
+
+    $("#rulesButton").on('click',function(){
+        $("#rules").toggle();
+    })
+
+
+    @*BUTTONS FOR PLAYER'S EACH CARD*@
+    $("#pCard1").on('click',pCard1Click);
+    $("#pCard2").on('click',pCard2Click);
+    $("#pCard3").on('click',pCard3Click);
+    $("#pCard4").on('click',pCard4Click);
+
+    function pCard1Click(){
+        $("#pCard1").css('transform','scale(1.7)');
+        $("#pCard2").css('transform','scale(1.4)');
+        $("#pCard3").css('transform','scale(1.4)');
+        $("#pCard4").css('transform','scale(1.4)');
+        playerChoice = 0;
+    }
+    function pCard2Click(){
+        $("#pCard1").css('transform','scale(1.4)');
+        $("#pCard2").css('transform','scale(1.7)');
+        $("#pCard3").css('transform','scale(1.4)');
+        $("#pCard4").css('transform','scale(1.4)');
+        playerChoice = 1;
+    }
+    function pCard3Click(){
+        $("#pCard1").css('transform','scale(1.4)');
+        $("#pCard2").css('transform','scale(1.4)');
+        $("#pCard3").css('transform','scale(1.7)');
+        $("#pCard4").css('transform','scale(1.4)');
+        playerChoice = 2;
+    }
+    function pCard4Click(){
+        $("#pCard1").css('transform','scale(1.4)');
+        $("#pCard2").css('transform','scale(1.4)');
+        $("#pCard3").css('transform','scale(1.4)');
+        $("#pCard4").css('transform','scale(1.7)');
+        playerChoice = 3;
+    }
+
+
+    @*start of the game*@
+    function gameStart(){
+        distributeCards();
+        displayCards(player);
+        if(!winner)
+           startCount();
+    }
+
+
+    @*distribute 4 cards each*@
+    function distributeCards(@*totalPlayers*@){
+        var size = deck.length;
+        for(i=0;i<size;i++)
+        {
+            player.push(deck.pop());
+            i++
+            bot1.push(deck.pop());
+            i++
+            bot2.push(deck.pop());
+            i++
+            bot3.push(deck.pop());
+        }
+    }
+
+    @*display the cards in hand*@
+    var pCardId = "#pCard1";
+    var card = '';
+    var cardUrl = '';
+    function displayCards(checkPlayer){
+        if(checkPlayer == "all")
+        {
+            for(i=0;i<4;i++)
+            {
+                if(bot1[i].value == 1)
+                    card = "A" + bot1[i].suit.charAt(0);
+                else
+                    card = bot1[i].value + bot1[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#b1Card"+(i+1)).css("background-image", cardUrl);
+            }
+
+            for(i=0;i<4;i++)
+            {
+                if(bot2[i].value == 1)
+                    card = "A" + bot2[i].suit.charAt(0);
+                else
+                    card = bot2[i].value + bot2[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#b2Card"+(i+1)).css("background-image", cardUrl);
+            }
+
+            for(i=0;i<4;i++)
+            {
+                if(bot3[i].value == 1)
+                    card = "A" + bot3[i].suit.charAt(0);
+                else
+                    card = bot3[i].value + bot3[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#b3Card"+(i+1)).css("background-image", cardUrl);
+            }
+
+            for(i=0;i<4;i++)
+            {
+                if(player[i].value == 1)
+                    card = "A" + player[i].suit.charAt(0);
+                else
+                    card = player[i].value + bot1[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#pCard"+(i+1)).css("background-image", cardUrl);
+            }
+        }
+        else
+        {
+            for(i=0;i<4;i++)
+            {
+                if(checkPlayer[i].value == 1)
+                    card = "A" + checkPlayer[i].suit.charAt(0);
+                else
+                    card = checkPlayer[i].value + checkPlayer[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#pCard"+(i+1)).css("background-image", cardUrl);
+            }
+        }
+
+    }
+
+    @*timer*@
+    var c = 1;
+    var t;
+    function startCount() {
+        $("#timer").val(c);
+        c = c + 1;
+        if(c==5)
+        {
+            c="Pass!"
+            $("#timer").val(c);
+            passCards();
+            $("#pCard"+(playerChoice+1)).css('transform','scale(1.4)');
+        }
+        if(!winner)
+            t = setTimeout(startCount, 1000);
+    }
+
+    @*CARD PASS LOGIC*@
+    @*pass the first card to the right*@
+    function passCards(){
+        if(difficulty === "normal")
+        {
+            bot1.push(...player.splice(playerChoice,1));
+            bot2.push(...bot1.splice(getOddCard(bot1),1));
+            bot3.push(...bot2.splice(getOddCard(bot2),1));
+            player.push(...bot3.splice(getOddCard(bot3),1));
+        }
+        else if(difficulty === "hard")
+        {
+
+        }
+
+        displayCards(player);
+        checkForWin();
+        c=1;
+    }
+
+    @*GET THE ODD CARD*@
+    function getOddCard(checkPlayer){
+        var checkThis = [];
+        for(i=0;i<4;i++)
+        {
+            checkThis.push(checkPlayer[i].value);
+        }
+
+        //*-1-1-1
+        if(checkThis[1]==checkThis[2] && checkThis[2]==checkThis[3])
+            return 0;
+        //1-*-1-1
+        else if(checkThis[0]==checkThis[2] && checkThis[2]==checkThis[3])
+            return 1;
+        //1-1-*-1
+        else if(checkThis[0]==checkThis[1] && checkThis[1]==checkThis[3])
+            return 2;
+        //1-1-1-*
+        else if(checkThis[0]==checkThis[1] && checkThis[1]==checkThis[2])
+            return 3;
+        //1-1-2-2
+        else if(checkThis[0]==checkThis[1] || checkThis[2]==checkThis[3])
+            return 2;
+        //*-*-1-1
+        else if(checkThis[2]==checkThis[3])
+            return 0;
+        //1-*-*-1
+        else if(checkThis[0]==checkThis[3])
+            return 1;
+        //1-1-*-*
+        else if(checkThis[0]==checkThis[1])
+            return 2;
+        //*-1-1-*
+        else if(checkThis[1]==checkThis[2])
+            return 0;
+    }
+
+    @*CHECK FOR WINNER*@
+    function checkForWin(){
+        if(checkWinCase(player))
+        {
+            $("#winner").val($("#nameInput").val()+" won this round!");
+            winner = true;
+            displayCards("all");
+        }
+        else if(checkWinCase(bot1))
+        {
+            $("#winner").val("BOT-1 won this round!");
+            winner = true;
+            displayCards("all");
+        }
+        else if(checkWinCase(bot2))
+        {
+            $("#winner").val("BOT-2 won this round!");
+            winner = true;
+            displayCards("all");
+        }
+        else if(checkWinCase(bot3))
+        {
+            $("#winner").val("BOT-3 won this round!");
+            winner = true;
+            displayCards("all");
+        }
+    }
+
+    @*CHECK FOR WINNER helper*@
+    function checkWinCase(checkPlayer){
+        var checkThis = [];
+        for(i=0;i<4;i++)
+        {
+            checkThis.push(checkPlayer[i].value);
+        }
+        console.log(checkThis);
+        console.log("------");
+        @*if(checkThis[0].value==checkThis[1].value && checkThis[1].value==checkThis[2].value && checkThis[2].value == checkThis[3].value)*@
+        if(checkThis[0]==checkThis[1] && checkThis[1]==checkThis[2] && checkThis[2] == checkThis[3])
+        {
+            $("#restartButton").html("New Game");
+            disableAll();
+            return true;
+        }
+
+        return false;
+    }
+
+    @*DISABLE ALL CLICKS*@
+    function disableAll(){
+        $("#pCard1").off('click');
+        $("#pCard2").off('click');
+        $("#pCard3").off('click');
+        $("#pCard4").off('click');
+    }
+
+    @*ENABLE ALL CLICKS*@
+    function enableAll(){
+        if(!winner)
+        {
+            $("#pCard1").on('click',pCard1Click);
+            $("#pCard2").on('click',pCard2Click);
+            $("#pCard3").on('click',pCard3Click);
+            $("#pCard4").on('click',pCard4Click);
+        }
+    }
+
+    console.log(deck);
+    console.log(player);
+    console.log(bot1);
+    console.log(bot2);
+    console.log(bot3);
+</script>
+
+}
