@@ -22,7 +22,7 @@ namespace WebCardGame.Controllers
                 Bots = new List<AI>(),
                 TurnOrder = new List<Player>(),
                 CardStack = new Deck(),
-                DrawDeck = new Deck(),
+                DrawDeck = UniversalHelper.Pass(4),
                 DECKSIZE = 52,
                 MAXHAND = 4,
                 Discard = null,
