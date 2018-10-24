@@ -31,22 +31,13 @@
 
 		@*dropdown menu for difficulty selection*@
 		<div id="DropDowns">
-				<!--Select Difficulty DropDown-->
-				<label text-size="15">Difficulty:</label>
-				<select style="background-color:black; width:100px" id="difficultyChoice">
-					<option value="Normal">Normal</option>
-					<option value="Hard">Hard</option>
-				</select>
+			<!--Select Difficulty DropDown-->
+			<label text-size="15">Difficulty:</label>
+			<select style="background-color:black; width:100px" id="difficultyChoice">
+				<option value="Normal">Normal</option>
+				<option value="Hard">Hard</option>
+			</select>
 		</div>
-
-		<!--dropdown menu for game mode
-	<div id="modeDropDown">Mode:<br />
-		<select style="background-color:black" id="gameMode">
-			<option value="Standard">Standard</option>
-			<option value="Standard">Ghost</option>
-		</select>
-	</div>
-		-->
 	</div>
 
 	<div id="playingPage">
@@ -65,6 +56,7 @@
 			<input type="text" id="sumTotal">
 		</div>
 	</div>
+</div>
 
 <!--footer implementation-->
 <div class="footer"></div>
@@ -116,7 +108,6 @@
 		height: 100px;
 		margin-top: 250px;
 		margin-left: 10%;
-		color: yellow;
 		font-family: arial;
 		font-size: 40px;
 		border-radius: 20px;
@@ -194,7 +185,6 @@
 		margin-left: 20px;
 		font-family: monospace;
 		font-size: 20px;
-		color: black;
 	}
 
 	#skipButton {
@@ -302,6 +292,13 @@
 		console.log("difficulty = " + difficulty);
 		gameStart();
 	})
+
+	// Rules Button
+	$("#rulesButton").ready(function () {
+		$('[data-toggle="popover"]').popover({
+			container: 'body'
+		});
+	});
 
 	// Restart button at playing page
 	$("#restartButton").on('click', function () {
