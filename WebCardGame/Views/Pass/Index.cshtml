@@ -28,7 +28,7 @@
 <div class="midArea">
     <div id="startPage">
         @*start button*@
-        <button type="button" class="btn btn-success" id="startButton">START</button>
+        <button type="button" class="btn btn-success" id="startButton">PLAY</button>
         <span id="userName">Player name</span>
         <input type="text" id="nameInput" value="Player"/>
         @*dropdown menu for difficulty selection*@
@@ -91,7 +91,8 @@ Rules: <br />
             <div id="playerName"></div>
         </div>
         <div id="bot13Cards">
-            <input type="text" id="winner"/>
+            <button type="button" class="btn btn-success" id="confirmButton">START!</button><br />
+            <input type="text" id="winner" />
             <div id="b3Card1"></div>
             <div id="b3Card2"></div>
             <div id="b3Card3"></div>
@@ -340,14 +341,15 @@ Rules: <br />
         height: 100px;
     }
 
-    #pCard1{
+    #pCard1 {
         height: 100px;
         width: 70px;
         margin-left: 450px;
-        border:solid 1px gray;
-        border-radius:10%;
-        color:black;
-        transform:scale(1.4);
+        border: solid 1px gray;
+        border-radius: 10%;
+        color: black;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
     }
 
     #pCard2 {
@@ -357,6 +359,7 @@ Rules: <br />
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -367,6 +370,7 @@ Rules: <br />
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -377,6 +381,7 @@ Rules: <br />
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -506,6 +511,16 @@ Rules: <br />
         transform: scale(1.4);
     }
 
+    #confirmButton {
+        width: 150px;
+        height: 40px;
+        margin-top: -50px;
+        margin-left: 500px;
+        font-family: monospace;
+        font-size: 20px;
+        color: yellow;
+    }
+
     #restartButton{
         width:150px;
         height:40px;
@@ -560,6 +575,11 @@ Rules: <br />
         $("#startPage").hide();
         $("#playingPage").show();
         $("#playerName").html($("#nameInput").val());
+    })
+
+    @*CONFIRM GAME START*@
+    $("#confirmButton").on('click',function(){
+        $("#confirmButton").hide();
         $("#winner").prop('disabled',true);
         $("#timer").prop('disabled',true);
         $("#timer").val(0);
@@ -718,6 +738,7 @@ Rules: <br />
         }
 
     }
+    
 
     @*timer*@
     var c = 1;
