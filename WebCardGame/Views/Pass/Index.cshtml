@@ -537,6 +537,7 @@ Rules: <br />
     var bot1 = [];
     var bot2 = [];
     var bot3 = [];
+    var bot4 = [];
 
     var playerChoice = 0;
     var winner = false;
@@ -635,6 +636,8 @@ Rules: <br />
             bot2.push(deck.pop());
             i++
             bot3.push(deck.pop());
+            i++
+            bot4.push(deck.pop());
         }
     }
 
@@ -676,6 +679,17 @@ Rules: <br />
 
             cardUrl = "url('images/cards/"+card+".jpg')";
             $("#b3Card"+(i+1)).css("background-image", cardUrl);
+            }
+
+            for(i=0;i<4;i++)
+            {
+                if(bot4[i].value == 1)
+                    card = "A" + bot4[i].suit.charAt(0);
+                else
+                    card = bot4[i].value + bot4[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#b4Card"+(i+1)).css("background-image", cardUrl);
             }
 
             for(i=0;i<4;i++)
@@ -728,7 +742,8 @@ Rules: <br />
         if(difficulty === "normal")
         {
             bot1.push(...player.splice(playerChoice,1));
-            bot2.push(...bot1.splice(getOddCard(bot1),1));
+            bot4.push(...bot1.splice(getOddCard(bot1),1));
+            bot2.push(...bot4.splice(getOddCard(bot4),1));
             bot3.push(...bot2.splice(getOddCard(bot2),1));
             player.push(...bot3.splice(getOddCard(bot3),1));
         }
@@ -805,6 +820,12 @@ Rules: <br />
             winner = true;
             displayCards("all");
         }
+         else if(checkWinCase(bot4))
+        {
+            $("#winner").val("BOT-4 won this round!");
+            winner = true;
+            displayCards("all");
+        }
     }
 
     @*CHECK FOR WINNER helper*@
@@ -851,6 +872,7 @@ Rules: <br />
     console.log(bot1);
     console.log(bot2);
     console.log(bot3);
+    console.log(bot4);
 </script>
 
 }
