@@ -603,8 +603,20 @@
 					// Current valid responses - 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A
 					try {
 						if (v != 'J' && v != 'K' && v != 'A') {
-							value = parseInt(v);
-							break;
+							try {
+								if (parseInt(v) > 1 && parseInt(v) < 11) {
+									value = parseInt(v);
+									break;
+								}
+								else {
+									alert("Invalid input. Please enter another value.\n Valid values are:\n 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A");
+									continue;
+								}
+							}
+							catch (err) {
+								alert("Invalid input. Please enter another value.");
+								continue;
+							}
 						}
 						else if (v == 'J') {
 							value = -10;
