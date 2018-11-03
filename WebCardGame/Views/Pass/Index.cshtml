@@ -28,12 +28,11 @@
 <div class="midArea">
     <div id="startPage">
         @*start button*@
-        <button type="button" class="btn btn-success" id="startButton">START</button>
+        <button type="button" class="btn btn-success" id="startButton">PLAY</button>
         <span id="userName">Player name</span>
-        <input type="text" id="nameInput" value="Player" />
+        <input type="text" id="nameInput" value="Player"/>
         @*dropdown menu for difficulty selection*@
-        <div id="difficultyDropDown">
-            Difficulty:<br />
+        <div id="difficultyDropDown">Difficulty:<br />
             <select style="background-color:black" id="difficultyChoice">
                 <option value="normal">Normal</option>
                 <option value="hard">Hard</option>
@@ -43,25 +42,25 @@
         <div id="rules">
             <p><b><u>Rules:</u></b></p>
             <p>
-                Deck: 4 cards of 1 card type, per player<br />
-                i.e. 3 players = 12 cards   Ace of Hearts, Spade, Diamond, & Clubs<br />
-                2 of Hearts, Spade, Diamond, & Clubs<br />
-                3 of Hearts, Spade, Diamond, & Clubs<br /><br />
+Deck: 4 cards of 1 card type, per player<br />
+    i.e. 3 players = 12 cards   Ace of Hearts, Spade, Diamond, & Clubs<br />
+                    2 of Hearts, Spade, Diamond, & Clubs<br />
+                    3 of Hearts, Spade, Diamond, & Clubs<br /><br />
 
 
-                i.e. 2 players = 8 cards    Ace of Hearts, Spade, Diamond, & Clubs<br />
-                2 of Hearts, Spade, Diamond, & Clubs<br /><br />
+    i.e. 2 players = 8 cards    Ace of Hearts, Spade, Diamond, & Clubs<br />
+                    2 of Hearts, Spade, Diamond, & Clubs<br /><br />
 
-                Rules: <br />
-                Objective: Player's goal is to collect 4 cards of a kind.<br /><br />
+Rules: <br />
+    Objective: Player's goal is to collect 4 cards of a kind.<br /><br />
 
-                At the start of the game, players will be dealt 4 cards each.<br /><br />
+    At the start of the game, players will be dealt 4 cards each.<br /><br />
+    
+    Players will have 4 seconds to select a card from their hand to discard.<br /><br />
+    
+    At the end of 4 seconds, all players will pass their card face-down, to the player to the right. <br /><br />
 
-                Players will have 4 seconds to select a card from their hand to discard.<br /><br />
-
-                At the end of 4 seconds, all players will pass their card face-down, to the player to the right. <br /><br />
-
-                This process is repeated until one player has collected 4 of a kind, displaying it on the table.<br /><br />
+    This process is repeated until one player has collected 4 of a kind, displaying it on the table.<br /><br />
             </p>
         </div>
     </div>
@@ -76,6 +75,13 @@
             <div id="b2Card3"></div>
             <div id="b2Card4"></div>
             <p>BOT-2</p>
+        @*</div>
+        <div id="bot4Cards">*@
+            <div id="b4Card1"></div>
+            <div id="b4Card2"></div>
+            <div id="b4Card3"></div>
+            <div id="b4Card4"></div>
+            <p style="padding-left:400px;">BOT-4</p>
         </div>
         <div id="playerCards">
             <div id="pCard1"></div>
@@ -85,6 +91,7 @@
             <div id="playerName"></div>
         </div>
         <div id="bot13Cards">
+            <button type="button" class="btn btn-success" id="confirmButton">START!</button><br />
             <input type="text" id="winner" />
             <div id="b3Card1"></div>
             <div id="b3Card2"></div>
@@ -133,7 +140,7 @@
     }
 
     #startPage {
-        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+        background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); 
         background-size: 1100px 600px;
         height: 600px;
         width: 100%;
@@ -165,56 +172,56 @@
         margin-left: 70%;
     }
 
-    #userName {
-        font-family: monospace;
-        font-size: 30px;
-        color: white;
+    #userName{
+        font-family:monospace;
+        font-size:30px;
+        color:white;
     }
 
     #nameInput {
         width: 180px;
         height: 40px;
-        padding-left: 20px;
+        padding-left:20px;
         color: white;
         font-family: monospace;
         font-size: 30px;
-        background-color: black;
-        border: solid 2px white;
+        background-color:black;
+        border:solid 2px white;
         border-radius: 20px;
     }
 
-    #rulesButton {
-        margin-left: 70%;
-        margin-top: 10px;
-        color: white;
-        font-family: monospace;
-        font-size: 25px;
-        background-color: black;
-        border: solid 1px white;
-        border-radius: 5%;
+    #rulesButton{
+        margin-left:70%;
+        margin-top:10px;
+        color:white;
+        font-family:monospace;
+        font-size:25px;
+        background-color:black;
+        border:solid 1px white;
+        border-radius:5%;    
     }
 
-    #rules {
-        height: 410px;
-        width: 600px;
-        margin-left: 45%;
-        margin-top: 30px;
-        padding: 10px;
-        background-color: white;
-        font-size: 14px;
-        border: solid 2px yellow;
+    #rules{
+        height:410px;
+        width:600px;
+        margin-left:45%;
+        margin-top:30px;
+        padding:10px;
+        background-color:white;
+        font-size:14px;
+        border:solid 2px yellow;
     }
 
-    #timer {
-        width: 120px;
+    #timer{
+        width:120px;
         height: 40px;
-        margin-left: 840px;
-        margin-top: 20px;
-        font-family: monospace;
-        font-size: 40px;
+        margin-left:840px;
+        margin-top:20px;
+        font-family:monospace;
+        font-size:40px;
         color: white;
-        background-color: black;
-        border-color: black;
+        background-color:black;
+        border-color:black;
     }
 
     #winner {
@@ -225,62 +232,107 @@
         font-size: 30px;
         color: white;
         background-color: black;
-        border-color: black;
+        border-color:black;
     }
 
     #bot2Cards {
-        margin-top: -20px;
+        margin-top:-20px;
         height: 100px;
-        color: white;
+        color:white;
     }
 
-        #bot2Cards p {
-            margin-left: 500px;
-            margin-top: 20px;
-            font-family: monospace;
-            font-size: 30px;
-        }
-
+    #bot2Cards p{
+        margin-left:300px;
+        margin-top:20px;
+        font-family:monospace;
+        font-size:30px;
+    }
+    
     #b2Card1 {
         height: 100px;
         width: 70px;
-        margin-left: 450px;
+        margin-left: 250px;
         border: solid 1px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
     #b2Card2 {
         height: 100px;
         width: 70px;
-        margin-left: 500px;
+        margin-left: 300px;
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
     #b2Card3 {
         height: 100px;
         width: 70px;
-        margin-left: 550px;
+        margin-left: 350px;
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
     #b2Card4 {
         height: 100px;
         width: 70px;
-        margin-left: 600px;
+        margin-left: 400px;
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+    
+
+    #b4Card1 {
+        height: 100px;
+        width: 70px;
+        margin-left: 650px;
+        margin-top: -170px;
+        border: solid 1px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b4Card2 {
+        height: 100px;
+        width: 70px;
+        margin-left: 700px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b4Card3 {
+        height: 100px;
+        width: 70px;
+        margin-left: 750px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
+        transform: scale(1.4);
+    }
+
+    #b4Card4 {
+        height: 100px;
+        width: 70px;
+        margin-left: 800px;
+        margin-top: -100px;
+        border: solid 2px gray;
+        border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -296,6 +348,7 @@
         border: solid 1px gray;
         border-radius: 10%;
         color: black;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -306,6 +359,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -316,6 +370,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -326,15 +381,16 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
-    #playerName {
-        color: white;
-        margin-left: 500px;
-        margin-top: 10px;
-        font-family: monospace;
-        font-size: 30px;
+    #playerName{
+        color:white;
+        margin-left:500px;
+        margin-top:10px;
+        font-family:monospace;
+        font-size:30px;
     }
 
     #bot13Cards {
@@ -345,7 +401,7 @@
 
     #bot3Name {
         margin-left: 100px;
-        margin-top: 20px;
+        margin-top:20px;
         font-family: monospace;
         font-size: 30px;
     }
@@ -356,7 +412,7 @@
         margin-left: 50px;
         border: solid 1px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -367,7 +423,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -378,7 +434,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -389,7 +445,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -400,13 +456,13 @@
         margin-left: 500px;
         border: solid 1px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
     #bot1Name {
         margin-left: 900px;
-        margin-top: 20px;
+        margin-top:20px;
         font-family: monospace;
         font-size: 30px;
     }
@@ -418,7 +474,7 @@
         margin-top: -180px;
         border: solid 1px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -429,7 +485,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -440,7 +496,7 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
@@ -451,18 +507,28 @@
         margin-top: -100px;
         border: solid 2px gray;
         border-radius: 10%;
-        background-image: url(images/cards/Gray_back.png);
+        background-image: url(images/cards/Gray_back.jpg);
         transform: scale(1.4);
     }
 
-    #restartButton {
+    #confirmButton {
         width: 150px;
         height: 40px;
-        margin-top: 20px;
-        margin-left: 20px;
+        margin-top: -50px;
+        margin-left: 500px;
         font-family: monospace;
         font-size: 20px;
         color: yellow;
+    }
+
+    #restartButton{
+        width:150px;
+        height:40px;
+        margin-top:20px;
+        margin-left:20px;
+        font-family:monospace;
+        font-size:20px;
+        color:yellow;
     }
 
     .footer {
@@ -477,8 +543,8 @@
     }
 </style>
 
-@section Scripts{
-    <script>
+@section Scripts{ 
+<script>
     var deck = [];
     var temp;
 
@@ -486,6 +552,7 @@
     var bot1 = [];
     var bot2 = [];
     var bot3 = [];
+    var bot4 = [];
 
     var playerChoice = 0;
     var winner = false;
@@ -508,6 +575,11 @@
         $("#startPage").hide();
         $("#playingPage").show();
         $("#playerName").html($("#nameInput").val());
+    })
+
+    @*CONFIRM GAME START*@
+    $("#confirmButton").on('click',function(){
+        $("#confirmButton").hide();
         $("#winner").prop('disabled',true);
         $("#timer").prop('disabled',true);
         $("#timer").val(0);
@@ -584,6 +656,8 @@
             bot2.push(deck.pop());
             i++
             bot3.push(deck.pop());
+            i++
+            bot4.push(deck.pop());
         }
     }
 
@@ -601,7 +675,7 @@
                 else
                     card = bot1[i].value + bot1[i].suit.charAt(0);
 
-            cardUrl = "url('images/cards/"+card+".png')";
+            cardUrl = "url('images/cards/"+card+".jpg')";
             $("#b1Card"+(i+1)).css("background-image", cardUrl);
             }
 
@@ -612,7 +686,7 @@
                 else
                     card = bot2[i].value + bot2[i].suit.charAt(0);
 
-            cardUrl = "url('images/cards/"+card+".png')";
+            cardUrl = "url('images/cards/"+card+".jpg')";
             $("#b2Card"+(i+1)).css("background-image", cardUrl);
             }
 
@@ -623,8 +697,19 @@
                 else
                     card = bot3[i].value + bot3[i].suit.charAt(0);
 
-            cardUrl = "url('images/cards/"+card+".png')";
+            cardUrl = "url('images/cards/"+card+".jpg')";
             $("#b3Card"+(i+1)).css("background-image", cardUrl);
+            }
+
+            for(i=0;i<4;i++)
+            {
+                if(bot4[i].value == 1)
+                    card = "A" + bot4[i].suit.charAt(0);
+                else
+                    card = bot4[i].value + bot4[i].suit.charAt(0);
+
+            cardUrl = "url('images/cards/"+card+".jpg')";
+            $("#b4Card"+(i+1)).css("background-image", cardUrl);
             }
 
             for(i=0;i<4;i++)
@@ -634,7 +719,7 @@
                 else
                     card = player[i].value + bot1[i].suit.charAt(0);
 
-            cardUrl = "url('images/cards/"+card+".png')";
+            cardUrl = "url('images/cards/"+card+".jpg')";
             $("#pCard"+(i+1)).css("background-image", cardUrl);
             }
         }
@@ -647,12 +732,13 @@
                 else
                     card = checkPlayer[i].value + checkPlayer[i].suit.charAt(0);
 
-            cardUrl = "url('images/cards/"+card+".png')";
+            cardUrl = "url('images/cards/"+card+".jpg')";
             $("#pCard"+(i+1)).css("background-image", cardUrl);
             }
         }
 
     }
+    
 
     @*timer*@
     var c = 1;
@@ -677,7 +763,8 @@
         if(difficulty === "normal")
         {
             bot1.push(...player.splice(playerChoice,1));
-            bot2.push(...bot1.splice(getOddCard(bot1),1));
+            bot4.push(...bot1.splice(getOddCard(bot1),1));
+            bot2.push(...bot4.splice(getOddCard(bot4),1));
             bot3.push(...bot2.splice(getOddCard(bot2),1));
             player.push(...bot3.splice(getOddCard(bot3),1));
         }
@@ -754,6 +841,12 @@
             winner = true;
             displayCards("all");
         }
+         else if(checkWinCase(bot4))
+        {
+            $("#winner").val("BOT-4 won this round!");
+            winner = true;
+            displayCards("all");
+        }
     }
 
     @*CHECK FOR WINNER helper*@
@@ -800,6 +893,7 @@
     console.log(bot1);
     console.log(bot2);
     console.log(bot3);
-    </script>
+    console.log(bot4);
+</script>
 
 }
