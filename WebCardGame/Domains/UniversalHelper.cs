@@ -40,6 +40,7 @@ namespace WebCardGame.Domains
             }
             return Shuffle(new Deck() { Cards = temp });
         }
+
         public static Deck Pass(int players)
         {
 
@@ -63,7 +64,6 @@ namespace WebCardGame.Domains
                 }
             }
             return Shuffle(new Deck() { Cards = temp });
-
         }
     }
 }
