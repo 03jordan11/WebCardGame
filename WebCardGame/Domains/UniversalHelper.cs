@@ -41,10 +41,11 @@ namespace WebCardGame.Domains
             return Shuffle(new Deck() { Cards = temp });
         }
 
-        public static Deck Pass(int players) {
+        public static Deck Pass(int players)
+        {
 
             var temp = new List<Card>();
-            for(int i = 0; i < players; i++)
+            for (int i = 0; i < players; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
@@ -58,7 +59,7 @@ namespace WebCardGame.Domains
                                 i == 4 ? 5 :
                                 i == 5 ? 6 :
                                 i == 6 ? 7 :
-                                8 
+                                8
                     });
                 }
             }
