@@ -7,19 +7,41 @@
 @model FeudViewModel
 
 @using WebCardGame.Domains;
-<h1>Feud</h1>
+<h1 id="title" hidden>Feud</h1>
+<div id="startSection">
+    <div id="startPage" class="row">
+        <div id="welcomeMessage" class="col-lg-6">
+            <h2 style="text-align: center;">
+                Welcome to Feud, a card game about taking all of your opponents cards!
+                If You don't know how to play click the rules.
+                If you do, select your difficulty and press start
+            </h2>
+        </div>
+    </div>
 
-<div id="gameContainer" style="width:1000px; height:700px; border:2px solid gray; position:center">
+    <div id="startButtons" class="row">
+        <div class="col-lg-6">
+            <select id="difficultySelect">
+                <option value="Normal">Normal</option>
+                <option value="Hard">Hard</option>
+            </select>
+            <button id="startButton" class="btn btn-secondary btn-lg" id="startGame">START</button>
+        </div>
+    </div>
+</div>
+
+
+<div hidden id="gameContainer" style="width:1000px; height:700px; border:2px solid gray; position:center">
     <div id="centerBoard" style="position:relative; top: 210px; left: 360px">
-            <div  id="player1Selected" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"></div>
-            <div  id="bot1Selected" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"></div>
+            <div class="centerCards" id="player1Selected"></div>
+            <div class="centerCards" id="bot1Selected" ></div>
     </div>
     <div class="row" id="playerHand" style="position:relative; top: 280px; left: 260px">
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard1" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"><img src="~/images/cards/10C.png" /></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard2" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard3" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard4" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"><img /></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard5" style="width:70px; height:100px; padding: 1px; border:1px dotted gray;"><img /></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard1" ></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard2" ></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard3" ></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard4" ></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard5" ></div>
         
         <div class="col-lg-1" id="playerDraw" style="width:50px; height:70px; padding: 1px; border:1px dotted gray; position:relative; left: 20px; bottom:40px">draw</div>
         <div class="col-lg-1" id="playerDiscard" style="width:50px; height:70px; padding: 1px; border:1px dotted gray; position:relative; right: 30px; top:40px">discard</div>
@@ -27,11 +49,45 @@
    
 
 </div>
-
+ 
 <style>
-    .hand {
+
+    #startPage {
+        position: fixed;
+        left: 450px;
+        top: 150px;
+        width: 800px;
+        background-color: brown;
         border-radius: 10px;
-        background-size: cover;
+    }
+    #startButton{
+        position: relative;
+        left: 160px;
+        top: 30px;
+    }
+    #startButtons{
+        position: fixed;
+        left: 600px;
+        top: 300px;
+        width: 600px;
+        height: 100px;
+        background-color: burlywood;
+        border-radius: 10px;
+    }
+    #welcomeMessage {
+        background-image: url("/images/greenfelt.png");
+        border-radius: 10px;
+        height: 150px;
+        width: 900px;
+        border: 1px ridge;
+    }
+    .hand {
+        width: 68px;
+        height: 100px;
+        padding: 1px;
+        border: 1px solid black;
+        border-radius: 10px;
+        background-size: contain;
     }
     #playerDraw {
         text-decoration-style: double;
@@ -55,11 +111,14 @@
         background-size: contain;
         background-image: url("images/cards/Gray_back.png");
     }
-    #player1Selected {
-        background-image: url("images/cards/Gray_back.png");
-    }
-    #bot1Selected {
-        background-image: url("images/cards/Gray_back.png");
+   
+    .centerCards {
+        width: 68px;
+        height: 100px;
+        padding: 1px;
+        border: 1px solid black;
+        border-radius: 10px;
+        background-image: url("/images/cards/Gray_back.png");
     }
     #gameContainer{
         position: center;
@@ -144,27 +203,20 @@
         
         //THIS DRAWS CARDS FROM PLAYERS DECK TO HIS HAND
         AppendCardImages();
-        //$("#playerCard1").text(playerHand[0].value + playerHand[0].suit.substring(0, 1));
-        //$("#playerCard2").text(playerHand[1].value + playerHand[1].suit.substring(0, 1));
-        //$("#playerCard3").text(playerHand[2].value + playerHand[2].suit.substring(0, 1));
-        //$("#playerCard4").text(playerHand[3].value + playerHand[3].suit.substring(0, 1));
-        //$("#playerCard5").text(playerHand[4].value + playerHand[4].suit.substring(0, 1));
-
-
-
         $("#playerDiscard").text(playerDiscard.length);
         $("#playerDraw").text(player.length);
     }
 
     function checkValue(card) {
+        debugger;
         var temp = card;
-        if (card === 1)
+        if (card === 1 || card === "1")
             temp = "A";
-        else if (card === 11)
+        else if (card === 11 || card === "11")
             temp = "J";
-        else if (card === 12)
+        else if (card === 12 || card === "12")
             temp = "Q"
-        else if (card === 13)
+        else if (card === 13 || card === "13")
             temp = "K"
         return temp;
     }
@@ -232,6 +284,7 @@
     }
 
     $(document).ready(function () {
+        
         //creates inital deck to play with
         CreateDeck();
         //gives cards to players
@@ -240,53 +293,86 @@
         PlayerDraw(true, "player");
         PlayerDraw(true, "bot1");
         
-        $(".hand").mouseover(function () {
-            $(this).css('transform', "scale(1.3)");
-           // $(this).animate({ height: '130px', width: '100px'});
-        });
-
-        $(".hand").mouseleave(function () {
-            $(this).css('transform', "scale(1.0)");
-
-            //$(this).animate({ height: '100px', width: '70px' });
-        });
 
         $(".hand").on('click', function () {
             //gets value associated with card clicked on
-            debugger;
             var playerDisplay = $(this).attr("card-value");
-            //var playerDisplay = this.innerHTML;
             //gets numerical position related to deck for what card was clicked on, then removes that from the players hand and sets the center to it
-            var handPosition = FindCardInDeck(playerHand, playerDisplay/*this.innerHTML*/);
+            var handPosition = FindCardInDeck(playerHand, playerDisplay);
             var playerVal = playerHand[handPosition];
             playerHand.splice(handPosition, 1);
             var botPick = BotPick();
-            //this.innerHTML = "";
             $(this).css("background-image", "");
+
+            $("#bot1Selected").attr("card-value", botPick.value + botPick.suit.substring(0, 1));
+            $("#bot1Selected").css("background-image", "url('images/cards/" + checkValue(botPick.value) + botPick.suit.substring(0, 1) + ".png')");
+
+
             $("#player1Selected").attr("card-value", playerDisplay);
-            $("#player1Selected").css("background-image", "url('images/cards/" + playerDisplay + ".png')");
-
-
-            $.when($("#bot1Selected").text(botPick.value)).then(function () {
-                if (playerVal.value > botPick.value) {
-                    sleep(500);
+            $("#player1Selected").css("background-image", "url('images/cards/" + checkValue(playerDisplay.slice(0, -1)) + playerDisplay[playerDisplay.length - 1] + ".png')");
+            
+            if (playerVal.value > botPick.value) {
+                endTurn(playerDiscard, [playerVal, botPick]);
+            }
+            else {
+                endTurn(bot1Discard, [playerVal, botPick]);
+            }
+            $("#playerDiscard").text(playerDiscard.length);
+            $("#playerDraw").text(player.length);
+            if (playerVal.value > botPick.value) {
+                setTimeout(function () {
                     alert("Your Card is Higher");
-                }
-                else {
-                    sleep(500);
-                    alert("Bot's Card is Higher");
-                }
-            }).then(function () {
-                if (playerVal.value > botPick.value) {
-                    endTurn(playerDiscard, [playerVal, botPick]);
-                }
-                else {
-                    endTurn(bot1Discard, [playerVal, botPick]);
-                }
-                }).then(function () {
-                    $("#playerDiscard").text(playerDiscard.length);
-                    $("#playerDraw").text(player.length);
-                });
+                }, 0);
+            }
+            else {
+                setTimeout(function () {
+                    alert("Bots Card is Higher");
+                }, 0);
+            }
+
+            //(function () {
+            //    $("#bot1Selected").attr("card-value", botPick.value + botPick.suit.substring(0, 1));
+            //    $("#bot1Selected").css("background-image", "url('images/cards/" + checkValue(botPick.value) + botPick.suit.substring(0, 1) + ".png')");
+
+
+            //    $("#player1Selected").attr("card-value", playerDisplay);
+            //    $("#player1Selected").css("background-image", "url('images/cards/" + checkValue(playerDisplay.slice(0, -1)) + playerDisplay[playerDisplay.length - 1] + ".png')");
+            //})();        
+            //$.when(function () {
+                
+            //}).then(function () {
+            //    if (playerVal.value > botPick.value) {
+            //        //sleep(500);
+            //        alert("Your Card is Higher");
+            //    }
+            //    else {
+            //        //sleep(500);
+            //        alert("Bot's Card is Higher");
+            //    }
+            //}).then(function () {
+            //    if (playerVal.value > botPick.value) {
+            //        endTurn(playerDiscard, [playerVal, botPick]);
+            //    }
+            //    else {
+            //        endTurn(bot1Discard, [playerVal, botPick]);
+            //    }
+            //    }).then(function () {
+            //        $("#playerDiscard").text(playerDiscard.length);
+            //        $("#playerDraw").text(player.length);
+            //    });
+        });
+
+        $("#startButton").on("click", function () {
+            $("#startSection").hide();
+            $("#title").show();
+            $("#gameContainer").show();
+        });
+
+        $(".hand").mouseover(function () {
+            $(this).css('transform', "scale(1.3)");
+        });
+        $(".hand").mouseleave(function () {
+            $(this).css('transform', "scale(1.0)");
         });
     });
 
