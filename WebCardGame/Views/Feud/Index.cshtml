@@ -7,7 +7,10 @@
 @model FeudViewModel
 
 @using WebCardGame.Domains;
-<h1 id="title" hidden>Feud</h1>
+<div id="messageBox">
+
+    </div>
+<h1 id="title" hidden>FEUD</h1>
 <div id="startSection">
     <div id="startPage" class="row">
         <div id="welcomeMessage" class="col-lg-6">
@@ -25,55 +28,205 @@
                 <option value="Normal">Normal</option>
                 <option value="Hard">Hard</option>
             </select>
-            <button id="startButton" class="btn btn-secondary btn-lg" id="startGame">START</button>
+            <button id="startButton" class="btn btn-secondary btn-lg">START</button>
+            <button type="button" id="rulesButton" class="btn btn-info" data-toggle="modal" data-target="#myModal">Rules</button>
         </div>
     </div>
 </div>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h2>Setup</h2><br />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        An entire 52 card deck is split evenly between players. In this case 26 cards each with 2 players.
+                    </li>
+                    <li class="list-group-item">
+                        Each player will draw 5 cards from his "hand" of cards, always keeping five cards in his hand if the deck allows.
+                    </li>
+                </ul>
+                <h2>Playing</h2><br />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Each player takes turns playing whichever card in their hand they wish.
+                    </li>
+                    <li class="list-group-item">
+                        Whoever plays the highest card for that turn wins that "round". He then collects the card they played, as well as all cards played by other players.
+                    </li>
+                    <li class="list-group-item">
+                        These cards go into the players "Discard" pile and will be used as their draw deck should they run out of cards to play.
+                    </li>
+                    <li class="list-group-item">
+                        If cards played are of the same value, each opponent will continue to play cards until one person has the highest card. The one with the final highest, wins all the cards played.
+                    </li>
+                </ul>
+                <h2>Winning</h2><br />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Once a player runs out of cards in his hand, draw deck, and discard deck, they are out of the game.
+                    </li>
+                    <li class="list-group-item">
+                        If you are the last players with cards in your hand or decks, then you are the winner!
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div hidden id="gameContainer" style="width:1000px; height:700px; border:2px solid gray; position:center">
-    <div id="centerBoard" style="position:relative; top: 210px; left: 360px">
-            <div class="centerCards" id="player1Selected"></div>
-            <div class="centerCards" id="bot1Selected" ></div>
+<div hidden id="gameContainer">
+
+    <div id="botArea">
+        <div class="botSideCards">
+            <div class="col-lg-1 botDecks" id="botDraw" style="width:48px; height:70px; padding: 1px; border:1px dotted gray; position:relative; left: 18px; bottom:40px; border-radius: 5px;"></div>
+            <div class="col-lg-1 botDecks" id="botDiscard" style="width:48px; height:70px; padding: 1px; border:1px dotted gray; position:relative; right: 30px; top:40px; border-radius: 5px;"></div>
+        </div>
+        <div class="col-sm-2 botHand" card-value="Gray_back"></div>
+        <div class="col-sm-2 botHand" card-value="Gray_back"></div>
+        <div class="col-sm-2 botHand" card-value="Gray_back"></div>
+        <div class="col-sm-2 botHand" card-value="Gray_back"></div>
+        <div class="col-sm-2 botHand" card-value="Gray_back"></div>
     </div>
-    <div class="row" id="playerHand" style="position:relative; top: 280px; left: 260px">
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard1" ></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard2" ></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard3" ></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard4" ></div>
-        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard5" ></div>
-        
-        <div class="col-lg-1" id="playerDraw" style="width:50px; height:70px; padding: 1px; border:1px dotted gray; position:relative; left: 20px; bottom:40px">draw</div>
-        <div class="col-lg-1" id="playerDiscard" style="width:50px; height:70px; padding: 1px; border:1px dotted gray; position:relative; right: 30px; top:40px">discard</div>
+    <div id="centerBoard">
+        <div class="centerCards" id="bot1Selected"></div>
+        <div class="centerCards" id="player1Selected"></div>
     </div>
-   
+    <div class="row" id="playerHand">
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard1"></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard2"></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard3"></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard4"></div>
+        <div class="col-sm-2 hand" card-value="Gray_back" id="playerCard5"></div>
+        <div class="sideCards">
+            <div class="col-lg-1 decks" id="playerDraw" style="width:48px; height:70px; padding: 1px; border:1px dotted gray; position:relative; left: 18px; bottom:40px; border-radius: 5px;">draw</div>
+            <div class="col-lg-1 decks" id="playerDiscard" style="width:48px; height:70px; padding: 1px; border:1px dotted gray; position:relative; right: 30px; top:40px; border-radius: 5px;">discard</div>
+        </div>
+        <p class="infoDeck">DRAW</p>
+        <p class="infoDeck">DISCARD</p>
+    </div>
+
 
 </div>
- 
+
+<audio id="cardClick" src="~/sounds/cardClick.wav"></audio>
+
 <style>
+    #messageBox {
+        color: black;
+        font-weight: bold;
+        font-size: 60px;
+        text-align: center;
+        position: relative;
+        //color: #FFFFFF;
+        //background: #333333;
+        text-shadow: 0 -1px 4px #FFF, 0 -2px 10px #ff0, 0 -10px 20px #ff8000, 0 -18px 40px #F00;
+        top: 300px;
+        left: 250px;
+        height: 100px;
+        width: 500px;
+        z-index: 100;
+        text-decoration: underline overline dotted red;
+    }
+
+    .infoDeck {
+        position: relative;
+        top: 5px;
+        left: -20px;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 25px;
+        color: black;
+        text-decoration: underline overline dotted red;
+    }
+
+    #centerBoard {
+        position: relative;
+        top: 240px;
+        left: 460px
+    }
+
+    #botArea {
+        position: relative;
+        top: 40px;
+        left: 246px;
+    }
+
+    .botSideCards {
+        position: relative;
+        top: 10px;
+    }
+
+    #playerHand {
+        position: relative;
+        top: 340px;
+        left: 350px
+    }
+
+    #title {
+        font-weight: bold;
+        color: black;
+        text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FF2D95 0px 0px 20px, #FF2D95 0px 0px 30px, #FF2D95 0px 0px 40px, #FF2D95 0px 0px 50px, #FF2D95 0px 0px 75px;
+        font-family: 'Times New Roman', Times, serif;
+        text-align: center;
+        width: 1000px;
+        background-color: #300000;
+        background-image: url("https://www.transparenttextures.com/patterns/basketball.png");
+        border-radius: 5px;
+    }
+
+    #startSection {
+        position: relative;
+        left: -60px;
+    }
+
+    body {
+        background-color: #00020d;
+        background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+    }
+
+    #difficultySelect {
+        position: relative;
+        left: 50px;
+        top: 50px;
+    }
 
     #startPage {
-        position: fixed;
-        left: 450px;
+        position: relative;
+        left: 200px;
         top: 150px;
         width: 800px;
         background-color: brown;
         border-radius: 10px;
     }
-    #startButton{
+
+    #startButton {
         position: relative;
         left: 160px;
-        top: 30px;
+        top: 50px;
     }
-    #startButtons{
-        position: fixed;
-        left: 600px;
-        top: 300px;
+
+    #rulesButton {
+        position: relative;
+        left: 280px;
+        top: 50px;
+    }
+
+    #startButtons {
+        position: relative;
+        left: 350px;
+        top: 100px;
         width: 600px;
         height: 100px;
-        background-color: burlywood;
-        border-radius: 10px;
+        background-color: #b88a00;
+        background-image: url("https://www.transparenttextures.com/patterns/cardboard-flat.png");
+        border-radius: 100px;
+        z-index: -1;
     }
+
     #welcomeMessage {
         background-image: url("/images/greenfelt.png");
         border-radius: 10px;
@@ -81,6 +234,7 @@
         width: 900px;
         border: 1px ridge;
     }
+
     .hand {
         width: 68px;
         height: 100px;
@@ -89,29 +243,44 @@
         border-radius: 10px;
         background-size: contain;
     }
-    #playerDraw {
-        text-decoration-style: double;
-        text-decoration-color: black;
-        color: orangered;
+
+    .botHand {
+        width: 68px;
+        height: 100px;
+        padding: 1px;
+        border: 1px solid black;
+        border-radius: 10px;
+        background-size: contain;
+        background-image: url("/images/cards/Gray_back.png");
+    }
+
+    .botDecks {
+        color: black;
         font-size: 25px;
         font-weight: bold;
-        font-family: Calibri;
+        font-family: 'Times New Roman', Times, serif;
         font: bold;
         text-align: center;
         background-size: contain;
         background-image: url("images/cards/Gray_back.png");
     }
-    #playerDiscard {
-        color: orangered;
+
+    .decks {
+        color: black;
         font-size: 25px;
         font-weight: bold;
-        font-family: Calibri;
+        font-family: 'Times New Roman', Times, serif;
         font: bold;
         text-align: center;
         background-size: contain;
         background-image: url("images/cards/Gray_back.png");
     }
-   
+
+    .sideCards {
+        position: relative;
+        top: 10px;
+    }
+
     .centerCards {
         width: 68px;
         height: 100px;
@@ -120,17 +289,22 @@
         border-radius: 10px;
         background-image: url("/images/cards/Gray_back.png");
     }
-    #gameContainer{
+
+    #gameContainer {
+        width: 1000px;
+        height: 700px;
         position: center;
-        background-image: url("images/greenfelt.png");
+        background-color: #153800;
+        background-image: url("https://www.transparenttextures.com/patterns/white-diamond.png");
+        border-radius: 10px;
     }
 </style>
 
 @section Scripts{
 
 
-<script type="text/javascript">
-   
+    <script type="text/javascript">
+
     var deck = [];
     var temp;
 
@@ -145,7 +319,7 @@
     var bot2 = [];
     var bot3 = [];
     //
-    
+
     //Creating Deck from View Model
     function CreateDeck() {
         @foreach(var item in Model.FeudGame.DrawDeck.Cards)
@@ -200,7 +374,7 @@
                     bot1Hand.push(bot1.pop());
             }
         }
-        
+
         //THIS DRAWS CARDS FROM PLAYERS DECK TO HIS HAND
         AppendCardImages();
         $("#playerDiscard").text(playerDiscard.length);
@@ -255,10 +429,10 @@
     }
 
     function endTurn(winner, cards) {
-        debugger;
         for (item in cards) {
             winner.push(cards[item]);
         }
+        debugger;
         if(player.length>0)
             PlayerDraw(false, "player");
         if (playerHand.length === 0) { //if player has no more cards in hand, reset from discard
@@ -284,7 +458,7 @@
     }
 
     $(document).ready(function () {
-        
+
         //creates inital deck to play with
         CreateDeck();
         //gives cards to players
@@ -292,9 +466,13 @@
         //player and bot draws, set to true so he draws for first turn
         PlayerDraw(true, "player");
         PlayerDraw(true, "bot1");
-        
+
 
         $(".hand").on('click', function () {
+            debugger;
+            var x = $("#cardClick");
+            $("#cardClick").volume = 1;
+            $("#cardClick").play;
             //gets value associated with card clicked on
             var playerDisplay = $(this).attr("card-value");
             //gets numerical position related to deck for what card was clicked on, then removes that from the players hand and sets the center to it
@@ -310,7 +488,7 @@
 
             $("#player1Selected").attr("card-value", playerDisplay);
             $("#player1Selected").css("background-image", "url('images/cards/" + checkValue(playerDisplay.slice(0, -1)) + playerDisplay[playerDisplay.length - 1] + ".png')");
-            
+
             if (playerVal.value > botPick.value) {
                 endTurn(playerDiscard, [playerVal, botPick]);
             }
@@ -321,13 +499,21 @@
             $("#playerDraw").text(player.length);
             if (playerVal.value > botPick.value) {
                 setTimeout(function () {
-                    alert("Your Card is Higher");
-                }, 0);
+                    $("#messageBox").text("Your Card Is Higher!");
+                    setTimeout(function () {
+                        $("#messageBox").text("");
+                    }, 1500)
+                }, 800)
+                $(".centerCards").css('transform', 'rotate(1080deg)');
             }
             else {
                 setTimeout(function () {
-                    alert("Bots Card is Higher");
-                }, 0);
+                    $("#messageBox").text("Bots Card Is Higher!");
+                    setTimeout(function () {
+                        $("#messageBox").text("");
+
+                    }, 1500)
+                }, 800)
             }
 
             //(function () {
@@ -337,9 +523,9 @@
 
             //    $("#player1Selected").attr("card-value", playerDisplay);
             //    $("#player1Selected").css("background-image", "url('images/cards/" + checkValue(playerDisplay.slice(0, -1)) + playerDisplay[playerDisplay.length - 1] + ".png')");
-            //})();        
+            //})();
             //$.when(function () {
-                
+
             //}).then(function () {
             //    if (playerVal.value > botPick.value) {
             //        //sleep(500);
@@ -380,5 +566,5 @@
 
 
 
-</script>
-    }
+    </script>
+}
