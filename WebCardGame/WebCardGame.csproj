@@ -17,4 +17,7 @@
   <ItemGroup>
     <Content Remove="Models\PassViewModel.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\css\feud.css" />
+  </ItemGroup>
 </Project>
