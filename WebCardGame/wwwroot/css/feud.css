@@ -1,0 +1,183 @@
+﻿
+#messageBox {
+    color: black;
+    font-weight: bold;
+    font-size: 60px;
+    text-align: center;
+    position: relative;
+    //color: #FFFFFF;
+    //background: #333333;
+    text-shadow: 0 -1px 4px #FFF, 0 -2px 10px #ff0, 0 -10px 20px #ff8000, 0 -18px 40px #F00;
+    top: 300px;
+    left: 250px;
+    height: 100px;
+    width: 500px;
+    z-index: 100;
+    text-decoration: underline overline dotted red;
+}
+
+.infoDeck {
+    position: relative;
+    top: 5px;
+    left: -20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 25px;
+    color: black;
+    text-decoration: underline overline dotted red;
+}
+
+#centerBoard {
+    position: relative;
+    top: 240px;
+    left: 460px
+}
+
+#botArea {
+    position: relative;
+    top: 40px;
+    left: 246px;
+}
+
+.botSideCards {
+    position: relative;
+    top: 10px;
+}
+
+#playerHand {
+    position: relative;
+    top: 340px;
+    left: 350px
+}
+
+#title {
+    font-weight: bold;
+    color: black;
+    text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FF2D95 0px 0px 20px, #FF2D95 0px 0px 30px, #FF2D95 0px 0px 40px, #FF2D95 0px 0px 50px, #FF2D95 0px 0px 75px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    width: 1000px;
+    background-color: #300000;
+    background-image: url("https://www.transparenttextures.com/patterns/basketball.png");
+    border-radius: 5px;
+}
+
+#startSection {
+    position: relative;
+    left: -60px;
+}
+
+body {
+    background-color: #00020d;
+    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+}
+
+#difficultySelect {
+    position: relative;
+    left: 50px;
+    top: 50px;
+}
+
+#startPage {
+    position: relative;
+    left: 200px;
+    top: 150px;
+    width: 800px;
+    background-color: brown;
+    border-radius: 10px;
+}
+
+#startButton {
+    position: relative;
+    left: 160px;
+    top: 50px;
+}
+
+#rulesButton {
+    position: relative;
+    left: 280px;
+    top: 50px;
+}
+
+#startButtons {
+    position: relative;
+    left: 350px;
+    top: 100px;
+    width: 600px;
+    height: 100px;
+    background-color: #b88a00;
+    background-image: url("https://www.transparenttextures.com/patterns/cardboard-flat.png");
+    border-radius: 100px;
+    z-index: -1;
+}
+
+#welcomeMessage {
+    background-image: url("/images/greenfelt.png");
+    border-radius: 10px;
+    height: 150px;
+    width: 900px;
+    border: 1px ridge;
+}
+
+.hand {
+    width: 68px;
+    height: 100px;
+    padding: 1px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-size: contain;
+}
+
+.botHand {
+    width: 68px;
+    height: 100px;
+    padding: 1px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-size: contain;
+    background-image: url("/images/cards/Gray_back.png");
+}
+
+.botDecks {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    font: bold;
+    text-align: center;
+    background-size: contain;
+    background-image: url("images/cards/Gray_back.png");
+}
+
+.decks {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    font: bold;
+    text-align: center;
+    background-size: contain;
+    background-image: url("images/cards/Gray_back.png");
+}
+
+.sideCards {
+    position: relative;
+    top: 10px;
+}
+
+.centerCards {
+    width: 68px;
+    height: 100px;
+    padding: 1px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-image: url("/images/cards/Gray_back.png");
+}
+
+#gameContainer {
+    width: 1000px;
+    height: 700px;
+    position: center;
+    background-color: #153800;
+    background-image: url("https://www.transparenttextures.com/patterns/white-diamond.png");
+    border-radius: 10px;
+}
