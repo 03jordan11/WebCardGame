@@ -1,12 +1,53 @@
-﻿
+﻿#botDiscard {
+    width: 48px;
+    height: 70px;
+    padding: 1px;
+    border: 1px dotted gray;
+    position: relative;
+    right: 30px;
+    top: 40px;
+    border-radius: 5px;
+}
+
+#botDraw {
+    width: 48px;
+    height: 70px;
+    padding: 1px;
+    border: 1px dotted gray;
+    position: relative;
+    left: 18px;
+    bottom: 40px;
+    border-radius: 5px;
+}
+
+#playerDiscard {
+    width: 48px;
+    height: 70px;
+    padding: 1px;
+    border: 1px dotted gray;
+    position: relative;
+    right: 30px;
+    top: 40px;
+    border-radius: 5px;
+}
+
+#playerDraw {
+    width: 48px;
+    height: 70px;
+    padding: 1px;
+    border: 1px dotted gray;
+    position: relative;
+    left: 18px;
+    bottom: 40px;
+    border-radius: 5px;
+}
+
 #messageBox {
     color: black;
     font-weight: bold;
     font-size: 60px;
     text-align: center;
     position: relative;
-    //color: #FFFFFF;
-    //background: #333333;
     text-shadow: 0 -1px 4px #FFF, 0 -2px 10px #ff0, 0 -10px 20px #ff8000, 0 -18px 40px #F00;
     top: 300px;
     left: 250px;
@@ -125,6 +166,7 @@ body {
     border: 1px solid black;
     border-radius: 10px;
     background-size: contain;
+    z-index: 1000;
 }
 
 .botHand {
