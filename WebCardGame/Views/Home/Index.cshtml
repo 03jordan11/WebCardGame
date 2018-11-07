@@ -4,17 +4,24 @@
 
 <style>
     body {
-        background-image: url("https://i.groupme.com/3000x2250.jpeg.e30d9d1f46574be5b0d8e437166a020f.large");
-        //background-image:url(https://images.freeimages.com/images/large-previews/ffe/poker-cards-1312799.jpg);
-        background-repeat: no-repeat;
-        background-size: cover;
+        //background-image: url("https://i.groupme.com/3000x2250.jpeg.e30d9d1f46574be5b0d8e437166a020f.large");
+        background-color: #000000;
+        background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
     }
 
-    #heading{
-        font-family:'Times New Roman', Times, serif;
-        font-size:40px;
-        color:white;
-        margin-left:25px;
+    hr{
+        color: white;
+    }
+
+    #heading {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 50px;
+        color: white;
+        margin-left: 25px;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        text-shadow: 0px 3px 3px rgba(255,255,255,0.5);
     }
 
     .btn {
@@ -55,7 +62,7 @@
 
 </style>
 <div class="row" style="position: relative; top: 80px">
-    <div id="heading">Select a game to play</div>
+    <div id="heading">Available Games</div><hr />
     <div class="col-md-3">
         <a href="/Feud"> <div class="btn btn-default btn-lg link feudBtn">FEUD</div></a>
     </div>
