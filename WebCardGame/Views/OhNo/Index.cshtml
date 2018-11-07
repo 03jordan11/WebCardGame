@@ -27,23 +27,25 @@
 <div class="midArea">
 	<div id="startPage">
 		<!--start button-->
-		<button type="button" class="btn btn-success" id="startButton">START</button>
+		<button type="button" class="btn btn-info" id="startButton">START</button>
+		<button type="button" id="rulesButton" class="btn btn-info" data-toggle="modal" data-target="#myModal">Rules</button>
 
 		@*dropdown menu for difficulty selection*@
 		<div id="DropDowns">
 			<!--Select Difficulty DropDown-->
-			<label text-size="15">Difficulty:</label>
-			<select style="background-color:black; width:100px" id="difficultyChoice">
-				<option value="Normal">Normal</option>
-				<option value="Hard">Hard</option>
+			<label text-size="15" ; style="color:black">Difficulty:</label>
+			<select style="background-color:black; width:100px" id="difficultyChoice" />
+			<option value="Normal">Normal</option>
+			<option value="Hard">Hard</option>
 			</select>
 		</div>
+
 	</div>
 
 	<div id="playingPage">
 		<button type="button" class="btn btn-success" id="restartButton">Restart</button>
 		<button type="button" class="btn btn-skip" id="skipButton">Fast Forward</button>
-		<input type="text" id="deckCount">
+		<input type="text" id="deckCount" class="float-right" />
 		<div id="cardStack"></div>
 		<div id="playerCards">
 			<div id="pCard1"></div>
@@ -53,7 +55,69 @@
 		</div>
 		<div>
 			<label style="font-size:35px;font-family:monospace;color:white;margin-left:20px;margin-top:10px">Total:</label>
-			<input type="text" id="sumTotal">
+			<input type="text" id="sumTotal" />
+		</div>
+	</div>
+
+	<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h2>Setup</h2><br />
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							Each player will be dealt 4 cards from an standard 52 card deck.
+						</li>
+						<li class="list-group-item">
+							One card will then be dealt onto the table. The value of that card is the starting sum. If the value of the card is not a numbered value, draw another card until it is.
+							The previous card shall be reshuffled into the deck.
+						</li>
+						<li class="list-group-item">
+							The remaining cards will be the draw pool.
+						</li>
+					</ul>
+					<h2>Rules</h2><br />
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							Numbered values is its own value. 2 is 2, 3 is 3, etc..
+						</li>
+						<li class="list-group-item">
+							Ace is 1
+						</li>
+						<li class="list-group-item">
+							Jack is minus 10
+						</li>
+						<li class="list-group-item">
+							Queen is a wild card, can be any other valid card
+						</li>
+						<li class="list-group-item">
+							King is zero
+						</li>
+					</ul>
+					<h2>Playing</h2><br />
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							Each player takes turns playing a card in their hand, increasing the total sum of cards played on the table.
+						</li>
+						<li class="list-group-item">
+							At the end of each player's turn, a card shall be drawn from the deck so the player will always have 4 cards.
+							If there are no cards available to draw from the deck, players will play with their current hand.
+						</li>
+					</ul>
+					<h2>Winning</h2><br />
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							If the value of a card played by a player totals the sum over 99, the player loses and the next player will play.
+						</li>
+						<li class="list-group-item">
+							The winner will be the last player remaining in the game!
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -62,10 +126,14 @@
 <div class="footer"></div>
 
 <style>
+	body {
+		background-color: black;
+		background-image: url("https://www.transparenttextures.com/patterns/fabric-1-dark.png");
+	}
 	.title {
 		width: 100%;
 		height: 90px;
-		background-image: url(https://images.pexels.com/photos/274096/pexels-photo-274096.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+		background-image: url("https://www.transparenttextures.com/patterns/mirrored-squares.png");
 		background-size: 550px 180px;
 		color: white;
 		font-family: monospace;
@@ -91,26 +159,34 @@
 	}
 
 	#startPage {
-		background-image: url(https://images.pexels.com/photos/297507/pexels-photo-297507.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+		background-image: url(https://images.pexels.com/photos/262333/pexels-photo-262333.jpeg?cs=srgb&dl=ace-bet-business-262333.jpg&fm=jpg);
 		background-size: 1100px 600px;
 		height: 600px;
 		width: 100%;
 	}
 
 	#playingPage {
+		background-color: #04423d;
+		background-image: url("https://www.transparenttextures.com/patterns/rebel.png");
 		background-size: 1100px 600px;
 		height: 600px;
 		width: 100%;
 	}
 
 	#startButton {
-		width: 300px;
-		height: 100px;
+		width: 250px;
+		height: 75px;
 		margin-top: 250px;
 		margin-left: 10%;
 		font-family: arial;
 		font-size: 40px;
 		border-radius: 20px;
+	}
+
+	#rulesButton {
+		position: absolute;
+		margin-top: 350px;
+		margin-left: -10%;
 	}
 
 	#DropDowns {
@@ -205,7 +281,8 @@
 		font-family: monospace;
 		font-size: 30px;
 		color: white;
-		background-color: black;
+		background-color: #04423d;
+		background-image: url("https://www.transparenttextures.com/patterns/rebel.png");
 		border: 0px solid black;
 	}
 
@@ -217,19 +294,9 @@
 		font-family: monospace;
 		font-size: 35px;
 		color: white;
-		background-color: black;
+		background-color: #04423d;
+		background-image: url("https://www.transparenttextures.com/patterns/rebel.png");
 		border: 0px solid black;
-	}
-
-	.footer {
-		width: 100%;
-		height: 90px;
-		background-image: url(https://images.pexels.com/photos/274096/pexels-photo-274096.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
-		background-size: 550px 180px;
-		border-style: solid;
-		border-width: 1px;
-		border-color: black;
-		margin-top: 5px;
 	}
 </style>
 
