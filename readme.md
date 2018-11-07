@@ -24,4 +24,7 @@
 2. Justine Batongmalaki @jbt296
 3. Jordan Burnes @03jordan11
 
+## Resources Used
+1. https://www.transparenttextures.com/
+2. https://html-css-js.com/css/generator/text-shadow/
 [Documentation](https://drive.google.com/drive/folders/1LZWzqJHkDROf3FxlJqt9z19stl5ErKpn?usp=sharing)
