@@ -253,7 +253,7 @@
 	}
 
 	#bCards15 {
-		margin-top: 100px;;
+		margin-top: 100px;
 	}
 
 	#pCard1 {
@@ -685,6 +685,12 @@
 	// Fast Forward Bot turns 
 	$("#skipButton").on('click', skipButtonClick);
 
+	// Buttons for cards in player's hand
+	$("#pCard1").on('click', pCard1Click);
+	$("#pCard2").on('click', pCard2Click);
+	$("#pCard3").on('click', pCard3Click);
+	$("#pCard4").on('click', pCard4Click);
+	
 	// Function for skipButton
 	function skipButtonClick() {
 		defaultTime = 0;
@@ -692,17 +698,12 @@
 		console.log("skip");
 	}
 
-	// Buttons for cards in player's hand
-	$("#pCard1").on('click', pCard1Click);
-	$("#pCard2").on('click', pCard2Click);
-	$("#pCard3").on('click', pCard3Click);
-	$("#pCard4").on('click', pCard4Click);
-
 	// Actions when card 1 is clicked
 	function pCard1Click() {
 		playerChoice = 0;
 		playerTurn();
 		if (pActive) {
+			turnGlowOff("playerName");
 			botsTurnStart();
 		}
 	}
@@ -712,6 +713,7 @@
 		playerChoice = 1;
 		playerTurn();
 		if (pActive) {
+			turnGlowOff("playerName");
 			botsTurnStart();
 		}
 	}
@@ -721,6 +723,7 @@
 		playerChoice = 2;
 		playerTurn();
 		if (pActive) {
+			turnGlowOff("playerName");
 			botsTurnStart();
 		}
 	}
@@ -730,6 +733,7 @@
 		playerChoice = 3;
 		playerTurn();
 		if (pActive) {
+			turnGlowOff("playerName");
 			botsTurnStart();
 		}
 	}
@@ -748,6 +752,7 @@
 		// player clicks enabled if there is no winner
 		// and player is active
 		if (!winner && pActive) {
+			turnGlowOn("playerName");
 			$("#pCard1").on('click', pCard1Click);
 			$("#pCard2").on('click', pCard2Click);
 			$("#pCard3").on('click', pCard3Click);
@@ -787,6 +792,7 @@
 		displayCards(player);
 		dealStart();
 		displayCardStack();
+		turnGlowOn("playerName");
 	}
 
 	/* DEAL HAND TO ALL PLAYERS */
@@ -808,14 +814,6 @@
 				count++;
 			}
 		}
-		console.log(player);
-		console.log(bot1);
-		console.log(bot2);
-		console.log(bot3);
-		console.log(bot4);
-		console.log(bot5);
-		//console.log("cards left in deck: " + deck.length);
-
 		$("#deckCount").val(deck.length);
 	}
 
@@ -824,9 +822,7 @@
 		var card = '';
 		var cardUrl = '';
 
-		//console.log(x);
 		for (i = 0; i < x.length; i++) {
-			//console.log("card = " + x[i].value + x[i].suit.charAt(0));
 			try {
 				card = x[i];
 				if (card.value == 1) {
@@ -846,9 +842,22 @@
 					cardUrl = "url('images/cards/" + card + ".png')";
 				}
 
-				$("#pCard" + (i + 1)).css("background-image", cardUrl);
-				//console.log(cardUrl);
+				if (x == player) {
+					$("#pCard" + (i + 1)).css("background-image", cardUrl);
 				}
+				else {
+					if (x == bot1)
+						$("#b1Card" + (i + 1)).css("background-image", cardUrl);
+					else if (x == bot2)
+						$("#b2Card" + (i + 1)).css("background-image", cardUrl);
+					else if (x == bot3)
+						$("#b3Card" + (i + 1)).css("background-image", cardUrl);
+					else if (x == bot4)
+						$("#b4Card" + (i + 1)).css("background-image", cardUrl);
+					else if (x == bot5)
+						$("#b5Card" + (i + 1)).css("background-image", cardUrl);
+				}
+			}
 			catch (err) {
 				console.log("invalid card, no image");
 			}
@@ -878,9 +887,7 @@
 			topCard = topCard.value + topCard.suit.charAt(0);
 			tcUrl = "url('images/cards/" + topCard + ".png')";
 		}
-
 		$("#cardStack").css("background-image", tcUrl);
-		//console.log(tcUrl);
 	}
 	
 
@@ -915,22 +922,27 @@
 			else if (b1Active) {
 				alert("WINNER IS BOT 1");
 				console.log("1. Bot1");
+				displayCards(bot1);
 			}
 			else if (b2Active) {
 				alert("WINNER IS BOT 2");
 				console.log("1. Bot2");
+				displayCards(bot2);
 			}
 			else if (b3Active) {
 				alert("WINNER IS BOT 3");
 				console.log("1. Bot3");
+				displayCards(bot3);
 			}
 			else if (b4Active) {
 				alert("WINNER IS BOT 4");
 				console.log("1. Bot4");
+				displayCards(bot4);
 			}
 			else if (b5Active) {
 				alert("WINNER IS BOT 5");
 				console.log("1. Bot5");
+				displayCards(bot5);
 			}
 
 			// List results of game
@@ -954,113 +966,141 @@
 	function playerTurn() {
 		// Only if player is active 
 		if (pActive) {
-			document.getElementById("playerName").style.textShadow = "0 0 3px #00FFFF";
 			turn[0] += 1;
 
-			// Declares and initializes numerical value of card
-			var value = player[playerChoice].value;
+			if (player.length != 0)
+			{
+				// Declares and initializes numerical value of card
+				var value = player[playerChoice].value;
 
-			// Prompts user for value if player chooses Queen
-			if (value == -1) {
-				while (1) {
-					/* note - currently window prompt; eventually change to buttons? */
-					var v = window.prompt("Enter desrired value");
+				// Prompts user for value if player chooses Queen
+				if (value == -1) {
+					while (1) {
+						/* note - currently window prompt; eventually change to buttons? */
+						var v = window.prompt("Enter desrired value");
 
-					// Current valid responses - 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A
-					try {
-						if (v != 'J' && v != 'K' && v != 'A') {
-							try {
-								if (parseInt(v) > 1 && parseInt(v) < 11) {
-									value = parseInt(v);
-									break;
+						// Current valid responses - 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A
+						try {
+							if (v != 'J' && v != 'K' && v != 'A') {
+								try {
+									if (parseInt(v) > 1 && parseInt(v) < 11) {
+										value = parseInt(v);
+										break;
+									}
+									else {
+										alert("Invalid input. Please enter another value.\n Valid values are:\n 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A");
+										continue;
+									}
 								}
-								else {
-									alert("Invalid input. Please enter another value.\n Valid values are:\n 2, 3, 4, 5, 6, 7, 8, 9, 10, J, K, A");
+								catch (err) {
+									alert("Invalid input. Please enter another value.");
 									continue;
 								}
 							}
-							catch (err) {
-								alert("Invalid input. Please enter another value.");
-								continue;
+							else if (v == 'J') {
+								value = -10;
+								break;
+							}
+							else if (v == 'K') {
+								value = 0;
+								break;
+							}
+							else if (v == 'A') {
+								value = 1;
+								break;
 							}
 						}
-						else if (v == 'J') {
-							value = -10;
-							break;
+						catch (err) {
+							// Error message if entered value is invalid
+							// While loop will continue until valid value is entered
+							alert("Invalid Value. Please enter another value.");
+							continue;
 						}
-						else if (v == 'K') {
-							value = 0;
-							break;
-						}
-						else if (v == 'A') {
-							value = 1;
-							break;
-						}
-					}
-					catch (err) {
-						// Error message if entered value is invalid
-						// While loop will continue until valid value is entered
-						alert("Invalid Value. Please enter another value.");
-						continue;
 					}
 				}
+
+				// Total value is updated after adding value of card played
+				total_value = total_value + value;
+
+				// Checks if total_value is over 99
+				// If true, player is out and unable to play
+				// Card clicks are disable, but user is able to skip bot turns to see results
+				if (total_value > 99) {
+					alert("Player loses");
+					ranks.push(0);
+					total_value -= value;
+					console.log("PLAYER OUT");
+					$("#playerName").css("text-decoration",'line-through');
+					disableAll();
+					enableSkip();
+					pActive = false;
+					checkWinner();
+
+					if (winner) {
+						return;
+					}
+
+					turnGlowOff("playerName");
+					botsTurnStart();
+
+					return;
+				}
+
+				// Card of player's choice is removed from player's hand and placed onto table (CardStack)
+				// Upon removal of card, another card will be drawn from deck
+				cardStack.push(...player.splice(playerChoice, 1));
+				console.log(player);
+
+				// As long as amount of cards in deck are greater than 0, cards can be drawn
+				// User and Bots will play with current cards in hand if no cards in deck
+				if (deck.length > 0) {
+					try {
+						player.push(deck.pop());
+						$("#deckCount").val(deck.length);
+					}
+					catch (err) {
+						console.log("no cards to draw. play with current hand");
+					}
+				}
+				else {
+					if (player.length == 0) {
+						$("#pCard1").css("border", 'none');
+						$("#pCard1").css("background-image", 'none');
+					}
+					else {
+						$("#pCard" + (player.length + 1)).hide();
+						//console.log(player);
+					}
+				}
+
+				// Player turn summary outputted to console (developer purposes)
+				/* note - add visible turn stats to playing page */
+				console.log("player turn " + turn[0] + ": " + "+ " + value + " = " + total_value);
+				$("#sumTotal").val(total_value);
+
+				// Display cards on table
+				displayCards(player);
+				displayCardStack();
 			}
-
-			// Total value is updated after adding value of card played
-			total_value = total_value + value;
-
-			// Checks if total_value is over 99
-			// If true, player is out and unable to play
-			// Card clicks are disable, but user is able to skip bot turns to see results
-			if (total_value > 99) 
-			{
+			else {
 				alert("Player loses");
 				ranks.push(0);
-				total_value -= value;
 				console.log("PLAYER OUT");
+				$("#playerName").css("text-decoration", 'line-through');
 				disableAll();
 				enableSkip();
 				pActive = false;
 				checkWinner();
 
-				if (winner)	{
+				if (winner) {
 					return;
 				}
 
+				turnGlowOff("playerName");
 				botsTurnStart();
 
 				return;
 			}
-
-			// Card of player's choice is removed from player's hand and placed onto table (CardStack)
-			// Upon removal of card, another card will be drawn from deck
-			cardStack.push(...player.splice(playerChoice, 1)); 
-			console.log(player);
-	
-			// As long as amount of cards in deck are greater than 0, cards can be drawn
-			// User and Bots will play with current cards in hand if no cards in deck
-			if (deck.length > 0) {
-				try {
-					player.push(deck.pop());
-					$("#deckCount").val(deck.length);
-				}
-				catch (err) {
-					console.log("no cards to draw. play with current hand");
-				}
-			}
-			else {
-				$("#pCard" + (player.length+1)).hide();
-				//console.log(player);
-			}
-
-			// Player turn summary outputted to console (developer purposes)
-			/* note - add visible turn stats to playing page */
-			console.log("player turn " + turn[0] + ": " + "+ " + value + " = " + total_value);
-			$("#sumTotal").val(total_value);
-
-			// Display cards on table
-			displayCards(player);
-			displayCardStack();
 		}
 	}
 
@@ -1084,18 +1124,34 @@
 	/* CALCULATE BEST QUEEN VALUE FOR BOTS */
 	function getQueenValue() {
 		// Checks if total_value is 99
-		// Ideal card to play is king to hinder other players so return 0
-		if (total_value == 99)
+		if (difficulty == 'Normal')
 		{
-			return 0;
-		}
+			// Play a Jack
+			if (total_value == 99)
+			{
+				return -10;
+			}
 
-		// If total_value is not 99, ideal card to play should add up to 99 if in hand
-		// Otherwise, play highest value card (10)
-		if (total_value >= 89)
-		{
-			return 99 - total_value;
+			// If total_value is not 99, ideal card to play should add up to 99 if in hand
+			// Otherwise, play highest value card (10)
+			if (total_value >= 89) {
+				return 99 - total_value;
+			}
 		}
+		else if (difficulty == 'Hard')
+		{
+			// Ideal card to play is king to hinder other players so return 0
+			if (total_value == 99) {
+				return 0;
+			}
+
+			// If total_value is not 99, ideal card to play should add up to 99 if in hand
+			// Otherwise, play highest value card (10)
+			if (total_value >= 89) {
+				return 99 - total_value;
+			}
+		}
+		
 		
 		return 10;
 	}
@@ -1122,31 +1178,37 @@
 		// Case if hand only contains face cards
 		if (!num_found)
 		{
-			// Plays first face card found in hand
+			// DIFFICULTY CASES
 			if (difficulty == 'Normal')
 			{
-				for (var j = 0; j < bot.length; j++) 
+				// Plays random face card in hand
+				index = Math.floor(Math.random() * bot.length)
+				if (bot[index].value == -1) 
 				{
-					if (bot[j].value == 0) 
-					{
-						index = j;
-						return 0;
-					}
-					else if (bot[j].value == -1) 
-					{
-						index = j;
-						return getQueenValue();
-					}
-					else if (bot[j].value == -10)
-					{
-						index = j;
-						return -10;
-					}
+					return getQueenValue();
+				}
+				else if (bot[index].value == 0) 
+				{
+					return 0;
+				}
+				else if (bot[index].value == -10)
+				{
+					return -10;
 				}
 			}
 			else if (difficulty == 'Hard')
 			{
-				// Plays best face card found in hand
+				// Plays best face card in hand
+				// Returns best value for queen if queen is found in hand
+				for (var j = 0; j < bot.length; j++) 
+				{
+					if (bot[j].value == -1) 
+					{
+						index = j;
+						return getQueenValue();
+					}
+				}
+				// If no queen is found in hand,
 				// Returns 0 if king is found in hand
 				for (var j = 0; j < bot.length; j++)
 				{
@@ -1156,56 +1218,75 @@
 						return 0;
 					}
 				}
-
-				// If no king is found in hand,
-				// Returns value for queen if queen is found in hand
+				// If no queen or king is found in hand, return jack (-10)
 				for (var j = 0; j < bot.length; j++) 
 				{
-					if (bot[j].value == -1) 
+					if (bot[j].value == -10) 
 					{
 						index = j;
-						return getQueenValue();
+						return -10;
 					}
 				}
-
-				// If not king or queen is found in hand return jack (-10)
-				return -10;
 			}
 		}
 		else {
-			// Gets highest possible value card to play from hand
-			// Case if ALL cards in hand are numerical
+			// Case if ALL cards in hand are numerical	
 			if (num.length == bot.length) 
 			{
-				var found = false;
-				for (var k = 0; k < num.length; k++) 
+				// DIFFICULTY CASES
+				if (difficulty == 'Normal')
 				{
-					if ((total_value + num[k].value) <= 99) 
+					// Random card is played from hand as long as total value sum is <= 99
+					index = Math.floor(Math.random() * bot.length)
+					if (total_value + bot[index].value <= 99)
 					{
-						found = true;
-						if (num[k].value > highest) 
+						return bot[index].value;
+					}
+					else {
+						// Gets first possible card to play from hand
+						for (i = 0; i < bot.length; i++)
 						{
-							highest = num[k].value;
+							if (total_value + bot[i].value <= 99)
+							{
+								index = i;
+								return bot[i].value;
+							}
 						}
 					}
+					return bot[index].value;
 				}
-
-				if (!found)
+				else if (difficulty == 'Hard') 
 				{
-					var lowest = 11;
-					for (k = 0; k < num.length; k++)
+					// Gets highest possible value card to play from hand
+					var found = false;
+					for (var k = 0; k < num.length; k++) 
 					{
-						if (num[k].value < lowest)
+						if ((total_value + num[k].value) <= 99) 
 						{
-							index = k;
-							lowest = num[k].value;
+							found = true;
+							if (num[k].value > highest) 
+							{
+								highest = num[k].value;
+							}
 						}
 					}
-					return lowest;
+
+					if (!found) {
+						var lowest = 11;
+						for (k = 0; k < num.length; k++) 
+						{
+							if (num[k].value < lowest)
+							{
+								index = k;
+								lowest = num[k].value;
+							}
+						}
+						return lowest;
+					}
 				}
 			}
 			else {
-				// Case if NOT all cards in hand are numerical
+				// Case if NOT all cards in hand are numerical (contains numerical and face values)
 				var high = false
 				for (var k = 0; k < num.length; k++) 
 				{
@@ -1222,29 +1303,19 @@
 				// If numerical values total sum above 99, use face cards 
 				if (!high) 
 				{
-					// Plays first face card found in hand
+					// Plays worst face card found in hand
 					if (difficulty == 'Normal')
 					{
+						// Returns -10 if jack is found in hand
 						for (var j = 0; j < bot.length; j++) 
 						{
-							if (bot[j].value == -10) {
+							if (bot[j].value == -10) 
+							{
 								index = j;
 								return -10;
 							}
-							else if (bot[j].value == -1) 
-							{
-								index = j;
-								return getQueenValue();
-							}
-							else if (bot[j].value == 0) {
-								index = j;
-								return 0;
-							}
 						}
-					}
-					else if (difficulty == 'Hard')
-					{
-						// Plays best face card found in hand
+						// If no jack is found in hand,
 						// Returns 0 if king is found in hand
 						for (var j = 0; j < bot.length; j++) 
 						{
@@ -1254,9 +1325,7 @@
 								return 0;
 							}
 						}
-
-						// If no king is found in hand,
-						// Returns value for queen if queen is found in hand
+						// If no jack or king is found in hand, return best value for queen
 						for (var j = 0; j < bot.length; j++) 
 						{
 							if (bot[j].value == -1) 
@@ -1265,9 +1334,38 @@
 								return getQueenValue();
 							}
 						}
-
-						// If not king or queen is found in hand return jack (-10)
-						return -10;
+					}
+					else if (difficulty == 'Hard')
+					{
+						// Plays best face card in hand
+						// Returns best value for queen if queen is found in hand
+						for (var j = 0; j < bot.length; j++) 
+						{
+							if (bot[j].value == -1) 
+							{
+								index = j;
+								return getQueenValue();
+							}
+						}
+						// If no queen is found in hand,
+						// Returns 0 if king is found in hand
+						for (var j = 0; j < bot.length; j++) 
+						{
+							if (bot[j].value == 0) 
+							{
+								index = j;
+								return 0;
+							}
+						}
+						// If no queen or king is found in hand, return jack (-10)
+						for (var j = 0; j < bot.length; j++) 
+						{
+							if (bot[j].value == -10) 
+							{
+								index = j;
+								return -10;
+							}
+						}
 					}
 				}
 			}
@@ -1279,7 +1377,6 @@
 			if (highest == bot[i].value)
 				index = i;
 		}
-
 		return highest;
 	}
 
@@ -1291,53 +1388,87 @@
 
 		// Bot will play if active in game (not out)
 		if (b1Active == true) {
+			turnGlowOn("b1Name");
 			turn[1] += 1;
 
-			// Play card and add value to total_value
-			value = botsCalculated(bot1);
-			total_value = total_value + value;
+			if (bot1.length != 0)
+			{
+				// Play card and add value to total_value
+				value = botsCalculated(bot1);
+				total_value = total_value + value;
 
-			// Checks if total_value is over 99
-			if (total_value > 99 || bot1.length == 0) {
+				// Checks if total_value is over 99
+				if (total_value > 99 || bot1.length == 0) {
+					if (!skip) {
+						alert("Bot 1 loses");
+					}
+					displayCards(bot1);
+					ranks.push(1);
+					console.log("BOT 1 OUT");
+					$("#b1Name").css("text-decoration", 'line-through');
+					total_value -= value;
+					b1Active = false;
+					if (winner) {
+						return;
+					}
+					checkWinner();
+					turnGlowOff("b1Name");
+					timerId = setTimeout(bot2Turn, defaultTime);
+					return;
+				}
+
+				// Card played to cardStack, new card is drawn if there are still cards in deck
+				cardStack.push(...bot1.splice(index, 1));
+				if (deck.length > 0) {
+					try {
+						bot1.push(deck.pop());
+						$("#deckCount").val(deck.length);
+					}
+					catch (err) {
+						console.log("no cards to draw");
+					}
+				}
+				else {
+					if (bot1.length == 0) {
+						console.log("none");
+						$("#b1Card1").css("border", 'none');
+						$("#b1Card1").css("background-image", 'none');
+					}
+					else {
+						$("#b1Card" + (bot1.length + 1)).hide();
+					}
+					//console.log(player);
+				}
+
+				// Output summary of turn results to console (developer purposes)
+				console.log("bot1 turn " + turn[1] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot1.length);
+
+				// Update total sum on page
+				$("#sumTotal").val(total_value);
+
+				// Update cardStack view 
+				displayCardStack();
+
+				// After timer ends, bot2 turn will start
+				turnGlowOff("b1Name");
+				timerId = setTimeout(bot2Turn, defaultTime);
+			}
+			else {
 				if (!skip) {
 					alert("Bot 1 loses");
 				}
 				ranks.push(1);
 				console.log("BOT 1 OUT");
-				total_value -= value;
+				$("#b1Name").css("text-decoration", 'line-through');
 				b1Active = false;
 				if (winner) {
 					return;
 				}
 				checkWinner();
+				turnGlowOff("b1Name");
 				timerId = setTimeout(bot2Turn, defaultTime);
 				return;
-			} 
-
-			// Card played to cardStack, new card is drawn if there are still cards in deck
-			cardStack.push(...bot1.splice(index, 1)); 
-			if (deck.length > 0)
-			{
-				try {
-					bot1.push(deck.pop()); 
-					$("#deckCount").val(deck.length);
-				}
-				catch (err) {
-					console.log("no cards to draw");
-				}
 			}
-
-			// Output summary of turn results to console (developer purposes)
-			console.log("bot1 turn " + turn[1] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot1.length);
-
-			// Update total sum on page
-			$("#sumTotal").val(total_value);
-
-			// Update cardStack view 
-			displayCardStack();
-
-			// After timer ends, bot2 turn will start
-			timerId = setTimeout(bot2Turn,defaultTime);
 		}
 		else {
 			bot2Turn();
@@ -1352,53 +1483,86 @@
 
 		// Bot wil play if active in game (not out)
 		if (b2Active == true) {
+			turnGlowOn("b2Name");
 			turn[2] += 1;
 
-			// Play card and add value to total_value
-			value = botsCalculated(bot2);
-			total_value = total_value + value;
+			if (bot2.length != 0)
+			{
+				// Play card and add value to total_value
+				value = botsCalculated(bot2);
+				total_value = total_value + value;
 
-			// Checks if the value is over 99
-			if (total_value > 99 || bot2.length == 0) {
+				// Checks if the value is over 99
+				if (total_value > 99 || bot2.length == 0) {
+					if (!skip) {
+						alert("Bot 2 loses");
+					}
+					displayCards(bot2);
+					ranks.push(2);
+					console.log("BOT 2 OUT");
+					$("#b2Name").css("text-decoration", 'line-through');
+					total_value -= value;
+					b2Active = false;
+					if (winner) {
+						return;
+					}
+					checkWinner();
+					turnGlowOff("b2Name");
+					timerId = setTimeout(bot3Turn, defaultTime);
+					return;
+				}
+
+				// Card played to cardStack, new card is drawn if there are still cards in deck
+				cardStack.push(...bot2.splice(index, 1));
+				if (deck.length > 0) {
+					try {
+						bot2.push(deck.pop());
+						$("#deckCount").val(deck.length);
+					}
+					catch {
+						console.log("no cards to draw");
+					}
+				}
+				else {
+					if (bot2.length == 0) {
+						console.log("none");
+						$("#b2Card1").css("border", 'none');
+						$("#b2Card1").css("background-image", 'none');
+					}
+					else {
+						$("#b2Card" + (bot2.length + 1)).hide();
+					}
+				}
+
+				// Output summary of turn results to console (developer purposes)
+				console.log("bot2 turn " + turn[2] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot2.length);
+
+				// Update total sum on page
+				$("#sumTotal").val(total_value);
+
+				// Update cardStack view
+				displayCardStack();
+
+				// After timer ends, bot3 turn will start
+				turnGlowOff("b2Name");
+				timerId = setTimeout(bot3Turn, defaultTime);
+			}
+			else {
 				if (!skip) {
 					alert("Bot 2 loses");
 				}
 				ranks.push(2);
 				console.log("BOT 2 OUT");
-				total_value -= value;
+				$("#b2Name").css("text-decoration", 'line-through');
 				b2Active = false;
 				if (winner) {
 					return;
 				}
 				checkWinner();
+				turnGlowOff("b2Name");
 				timerId = setTimeout(bot3Turn, defaultTime);
 				return;
-			} 
-
-			// Card played to cardStack, new card is drawn if there are still cards in deck
-			cardStack.push(...bot2.splice(index, 1));
-			if (deck.length > 0)
-			{
-				try {
-					bot2.push(deck.pop());
-					$("#deckCount").val(deck.length);
-				}
-				catch {
-					console.log("no cards to draw");
-				}
 			}
-
-			// Output summary of turn results to console (developer purposes)
-			console.log("bot2 turn " + turn[2] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot2.length);
-
-			// Update total sum on page
-			$("#sumTotal").val(total_value);
-
-			// Update cardStack view
-			displayCardStack();
-
-			// After timer ends, bot3 turn will start
-			timerId = setTimeout(bot3Turn, defaultTime);
 		}
 		else {
 			bot3Turn();
@@ -1413,53 +1577,86 @@
 
 		// Bot will play if active in game (not out)
 		if (b3Active == true) {
+			turnGlowOn("b3Name");
 			turn[3] += 1;
 
-			// Play card and add value to total_value
-			value = botsCalculated(bot3);
-			total_value = total_value + value;
+			if (bot3.length != 0)
+			{
+				// Play card and add value to total_value
+				value = botsCalculated(bot3);
+				total_value = total_value + value;
 
-			// Checks if the value is over 99
-			if (total_value > 99 || bot3.length == 0) {
+				// Checks if the value is over 99
+				if (total_value > 99 || bot3.length == 0) {
+					if (!skip) {
+						alert("Bot 3 loses");
+					}
+					displayCards(bot3);
+					ranks.push(3);
+					console.log("BOT 3 OUT");
+					$("#b3Name").css("text-decoration", 'line-through');
+					total_value -= value;
+					b3Active = false;
+					if (winner) {
+						return;
+					}
+					checkWinner();
+					turnGlowOn("b3Name");
+					timerId = setTimeout(bot4Turn, defaultTime);
+					return;
+				}
+
+				// Card played to cardStack, new card is drawn if there are still cards in deck
+				cardStack.push(...bot3.splice(index, 1));
+				if (deck.length > 0) {
+					try {
+						bot3.push(deck.pop());
+						$("#deckCount").val(deck.length);
+					}
+					catch {
+						console.log("no cards to draw");
+					}
+				}
+				else {
+					if (bot3.length == 0) {
+						console.log("none");
+						$("#b3Card1").css("border", 'none');
+						$("#b3Card1").css("background-image", 'none');
+					}
+					else {
+						$("#b3Card" + (bot3.length + 1)).hide();
+					}
+				}
+
+				// Output summary of turn results to console (developer purposes)
+				console.log("bot3 turn " + turn[3] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot3.length);
+
+				// Update total sum on page
+				$("#sumTotal").val(total_value);
+
+				// Update cardStack view
+				displayCardStack();
+
+				// After timer ends, bot4 turn will start
+				turnGlowOff("b3Name");
+				timerId = setTimeout(bot4Turn, defaultTime);
+			}
+			else {
 				if (!skip) {
 					alert("Bot 3 loses");
 				}
 				ranks.push(3);
 				console.log("BOT 3 OUT");
-				total_value -= value;
+				$("#b3Name").css("text-decoration", 'line-through');
 				b3Active = false;
 				if (winner) {
 					return;
 				}
 				checkWinner();
+				turnGlowOn("b3Name");
 				timerId = setTimeout(bot4Turn, defaultTime);
 				return;
-			} 
-
-			// Card played to cardStack, new card is drawn if there are still cards in deck
-			cardStack.push(...bot3.splice(index, 1));
-			if (deck.length > 0)
-			{
-				try {
-					bot3.push(deck.pop());
-					$("#deckCount").val(deck.length);
-				}
-				catch {
-					console.log("no cards to draw");
-				}
 			}
-
-			// Output summary of turn results to console (developer purposes)
-			console.log("bot3 turn " + turn[3] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot3.length);
-
-			// Update total sum on page
-			$("#sumTotal").val(total_value);
-
-			// Update cardStack view
-			displayCardStack();
-
-			// After timer ends, bot4 turn will start
-			timerId = setTimeout(bot4Turn, defaultTime);
 		}
 		else {
 			bot4Turn();
@@ -1474,53 +1671,86 @@
 
 		// Bot will play if active in game (not out)
 		if (b4Active == true) {
+			turnGlowOn("b4Name");
 			turn[4] += 1;
 
-			// Play card and add value to total_value
-			value = botsCalculated(bot4);
-			total_value = total_value + value; 
+			if (bot4.length != 0)
+			{
+				// Play card and add value to total_value
+				value = botsCalculated(bot4);
+				total_value = total_value + value;
 
-			// Checks if the value is over 99
-			if (total_value > 99 || bot4.length == 0) {
+				// Checks if the value is over 99
+				if (total_value > 99 || bot4.length == 0) {
+					if (!skip) {
+						alert("Bot 4 loses");
+					}
+					displayCards(bot4);
+					ranks.push(4);
+					console.log("BOT 4 OUT");
+					$("#b4Name").css("text-decoration", 'line-through');
+					total_value -= value;
+					b4Active = false;
+					if (winner) {
+						return;
+					}
+					checkWinner();
+					turnGlowOff("b4Name");
+					timerId = setTimeout(bot5Turn, defaultTime);
+					return;
+				}
+
+				// Card played to cardStack, new card is drawn if there are still cards in deck
+				cardStack.push(...bot4.splice(index, 1));
+				if (deck.length > 0) {
+					try {
+						bot4.push(deck.pop());
+						$("#deckCount").val(deck.length);
+					}
+					catch {
+						console.log("no cards to draw");
+					}
+				}
+				else {
+					if (bot4.length == 0) {
+						console.log("none")
+						$("#b4Card1").css("border", 'none');
+						$("#b4Card1").css("background-image", 'none');
+					}
+					else {
+						$("#b4Card" + (bot4.length + 1)).hide();
+					}
+				}
+
+				// Output summary of turn results to console (developer purposes)
+				console.log("bot4 turn " + turn[4] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot4.length);
+
+				// Update total sum on page
+				$("#sumTotal").val(total_value);
+
+				// Update cardStack view
+				displayCardStack();
+
+				// After timer ends, bot5 turn will start
+				turnGlowOff("b4Name");
+				timerId = setTimeout(bot5Turn, defaultTime);
+			}
+			else {
 				if (!skip) {
 					alert("Bot 4 loses");
 				}
 				ranks.push(4);
 				console.log("BOT 4 OUT");
-				total_value -= value;
+				$("#b4Name").css("text-decoration", 'line-through');
 				b4Active = false;
 				if (winner) {
 					return;
 				}
 				checkWinner();
+				turnGlowOff("b4Name");
 				timerId = setTimeout(bot5Turn, defaultTime);
 				return;
-			} 
-
-			// Card played to cardStack, new card is drawn if there are still cards in deck
-			cardStack.push(...bot4.splice(index, 1));
-			if (deck.length > 0)
-			{
-				try {
-					bot4.push(deck.pop());
-					$("#deckCount").val(deck.length);
-				}
-				catch {
-					console.log("no cards to draw");
-				}
 			}
-
-			// Output summary of turn results to console (developer purposes)
-			console.log("bot4 turn " + turn[4] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot4.length);
-
-			// Update total sum on page
-			$("#sumTotal").val(total_value);
-
-			// Update cardStack view
-			displayCardStack();
-
-			// After timer ends, bot5 turn will start
-			timerId = setTimeout(bot5Turn, defaultTime);
 		}
 		else {
 			bot5Turn();
@@ -1536,14 +1766,85 @@
 
 		// Bot will play if active in game (not out)
 		if (b5Active == true) {
+			turnGlowOn("b5Name");
 			turn[5] += 1;
 
-			// Play card and add value to total_value
-			value = botsCalculated(bot5);
-			total_value = total_value + value;
+			if (bot5.length != 0)
+			{
+				// Play card and add value to total_value
+				value = botsCalculated(bot5);
+				total_value = total_value + value;
 
-			// Checks if the value is over 99
-			if (total_value > 99 || bot5.length == 0) {
+				// Checks if the value is over 99
+				if (total_value > 99 || bot5.length == 0) {
+					if (!skip) {
+						alert("Bot 5 loses");
+					}
+					displayCards(bot5);
+					ranks.push(5);
+					if (winner) {
+						return;
+					}
+					checkWinner();
+					console.log("BOT 5 OUT");
+					$("#b5Name").css("text-decoration", 'line-through');
+					total_value -= value;
+					b5Active = false;
+
+					if (pActive) {
+						enableAll();
+						disableSkip();
+					}
+					else {
+						turnGlowOff("b5Name");
+						botsTurnStart();
+					}
+					return;
+				}
+
+				// Card played to cardStack, new card is drawn if there are still cards in deck
+				cardStack.push(...bot5.splice(index, 1));
+				if (deck.length > 0) {
+					try {
+						bot5.push(deck.pop());
+						$("#deckCount").val(deck.length);
+					}
+					catch {
+						console.log("no cards to draw");
+					}
+				}
+				else {
+					if (bot5.length == 0) {
+						console.log("none");
+						$("#b5Card1").css("border", 'none');
+						$("#b5Card1").css("background-image", 'none');
+					}
+					else {
+						$("#b5Card" + (bot5.length + 1)).hide();
+					}
+				}
+
+				// Output summary of turn results to console (developer purposes)
+				console.log("bot5 turn " + turn[5] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot5.length);
+
+				// Update total sum on page
+				$("#sumTotal").val(total_value);
+
+				// Update cardStack view
+				displayCardStack();
+
+				// Enable player clicks if player is still active
+				// Otherwise restart bots turn
+				if (pActive) {
+					enableAll();
+					disableSkip();
+					turnGlowOff("b5Name");
+				}
+				else {
+					botsTurnStart();
+				}
+			}
+			else {
 				if (!skip) {
 					alert("Bot 5 loses");
 				}
@@ -1553,49 +1854,18 @@
 				}
 				checkWinner();
 				console.log("BOT 5 OUT");
-				total_value -= value;
+				$("#b5Name").css("text-decoration", 'line-through');
 				b5Active = false;
-				
+
 				if (pActive) {
 					enableAll();
 					disableSkip();
 				}
 				else {
+					turnGlowOff("b5Name");
 					botsTurnStart();
 				}
 				return;
-			} 
-
-			// Card played to cardStack, new card is drawn if there are still cards in deck
-			cardStack.push(...bot5.splice(index, 1));
-			if (deck.length > 0)
-			{
-				try {
-					bot5.push(deck.pop());
-					$("#deckCount").val(deck.length);
-				}
-				catch {
-					console.log("no cards to draw");
-				}
-			}
-
-			// Output summary of turn results to console (developer purposes)
-			console.log("bot5 turn " + turn[5] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot5.length);
-
-			// Update total sum on page
-			$("#sumTotal").val(total_value);
-
-			// Update cardStack view
-			displayCardStack();
-
-			// Enable player clicks if player is still active
-			// Otherwise restart bots turn
-			if (pActive) {
-				enableAll();
-				disableSkip();
-			}
-			else {
-				botsTurnStart();
 			}
 		}
 		else {
@@ -1605,16 +1875,13 @@
 			{
 				enableAll();
 				disableSkip();
+				turnGlowOff("b5Name");
 			}
 			else {
+				turnGlowOff("b5Name");
 				botsTurnStart();
 			}
 		}
-	}
-
-	/* SCORE HIDDEN */
-	function ghostMode() {
-		$("#sumTotal").hide();
 	}
 
 	</script>
