@@ -8,11 +8,8 @@
 @model OhNoViewModel
 
 <head>
-	<style>
-		<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/ >
-		<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/ >
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" >
-	</style>
+	<title>Oh No 99!</title>
+	<link rel="stylesheet" type="text/css" href="ohno.css" />
 </head>
 
 @*required scripts*@
@@ -39,14 +36,48 @@
 			<option value="Hard">Hard</option>
 			</select>
 		</div>
-
 	</div>
 
 	<div id="playingPage">
-		<button type="button" class="btn btn-success" id="restartButton">Restart</button>
-		<button type="button" class="btn btn-skip" id="skipButton">Fast Forward</button>
+		<button type="button" class="btn btn-info" id="restartButton">Restart</button>
+		<button type="button" class="btn btn-warning" id="skipButton">Fast Forward</button>
+		<label id="b3Name">Bot 3</label>
+		<div id="bCards3">
+			<div id="b3Card1"></div>
+			<div id="b3Card2"></div>
+			<div id="b3Card3"></div>
+			<div id="b3Card4"></div>
+		</div>
+		<div id="botsName24">
+			<label id="b2Name">Bot 2</label>
+			<label id="b4Name">Bot 4</label>
+		</div>
 		<input type="text" id="deckCount" class="float-right" />
 		<div id="cardStack"></div>
+		<div id="botsName15">
+			<label id="b1Name">Bot 1</label>
+			<label id="b5Name">Bot 5</label>
+		</div>
+		<div id="bCards24">
+			<div id="b2Card1"></div>
+			<div id="b2Card2"></div>
+			<div id="b2Card3"></div>
+			<div id="b2Card4"></div>
+			<div id="b4Card1"></div>
+			<div id="b4Card2"></div>
+			<div id="b4Card3"></div>
+			<div id="b4Card4"></div>
+		</div>
+		<div id="bCards15">
+			<div id="b1Card1"></div>
+			<div id="b1Card2"></div>
+			<div id="b1Card3"></div>
+			<div id="b1Card4"></div>
+			<div id="b5Card1"></div>
+			<div id="b5Card2"></div>
+			<div id="b5Card3"></div>
+			<div id="b5Card4"></div>
+		</div>
 		<div id="playerCards">
 			<div id="pCard1"></div>
 			<div id="pCard2"></div>
@@ -54,8 +85,9 @@
 			<div id="pCard4"></div>
 		</div>
 		<div>
-			<label style="font-size:35px;font-family:monospace;color:white;margin-left:20px;margin-top:10px">Total:</label>
+			<label id="totalSum">Total:</label>
 			<input type="text" id="sumTotal" />
+			<label id="playerName">Player</label>
 		</div>
 	</div>
 
@@ -91,7 +123,7 @@
 							Queen is a wild card, can be any other valid card
 						</li>
 						<li class="list-group-item">
-							King is zero
+							King is 0
 						</li>
 					</ul>
 					<h2>Playing</h2><br />
@@ -122,21 +154,18 @@
 	</div>
 </div>
 
-<!--footer implementation-->
-<div class="footer"></div>
-
 <style>
 	body {
 		background-color: black;
 		background-image: url("https://www.transparenttextures.com/patterns/fabric-1-dark.png");
 	}
+
 	.title {
 		width: 100%;
 		height: 90px;
-		background-image: url("https://www.transparenttextures.com/patterns/mirrored-squares.png");
 		background-size: 550px 180px;
 		color: white;
-		font-family: monospace;
+		font-family: Calibri;
 		font-size: 40px;
 		font-weight: bold;
 		text-align: center;
@@ -202,16 +231,29 @@
 		width: 70px;
 		border: solid 1px gray;
 		border-radius: 10%;
-		transform: scale(1.4);
 		margin-left: 525px;
-		margin-top: -355px;
+		margin-top: -350px;
+		background-size: cover;
 	}
 
 	#playerCards {
-		margin-top: 100px;
-		height: 100px;
-		width: 100%;
-		color: black;
+		margin-top: -15px;
+		background-size: cover;
+	}
+
+	#bCards3 {
+		margin-top: 0px;
+		margin-right: 100px;
+		background-size: cover;
+		padding-top:0em;
+	}
+
+	#bCards24 {
+		margin-top: -200px;
+	}
+
+	#bCards15 {
+		margin-top: 100px;;
 	}
 
 	#pCard1 {
@@ -221,7 +263,6 @@
 		border: solid 1px gray;
 		border-radius: 10%;
 		color: black;
-		transform: scale(1.4);
 	}
 
 	#pCard2 {
@@ -231,7 +272,6 @@
 		margin-top: -100px;
 		border: solid 2px gray;
 		border-radius: 10%;
-		transform: scale(1.4);
 	}
 
 	#pCard3 {
@@ -241,7 +281,6 @@
 		margin-top: -100px;
 		border: solid 2px gray;
 		border-radius: 10%;
-		transform: scale(1.4);
 	}
 
 	#pCard4 {
@@ -251,32 +290,293 @@
 		margin-top: -100px;
 		border: solid 2px gray;
 		border-radius: 10%;
-		transform: scale(1.4);
+	}
+
+	#b1Card1 {
+		height: 100px;
+		width: 70px;
+		margin-left: 50px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		color: black;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b1Card2 {
+		height: 100px;
+		width: 70px;
+		margin-left: 100px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b1Card3 {
+		height: 100px;
+		width: 70px;
+		margin-left: 150px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b1Card4 {
+		height: 100px;
+		width: 70px;
+		margin-left: 200px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b2Card1 {
+		height: 100px;
+		width: 70px;
+		margin-left: 50px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		color: black;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b2Card2 {
+		height: 100px;
+		width: 70px;
+		margin-left: 100px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b2Card3 {
+		height: 100px;
+		width: 70px;
+		margin-left: 150px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b2Card4 {
+		height: 100px;
+		width: 70px;
+		margin-left: 200px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b3Card1 {
+		height: 100px;
+		width: 70px;
+		margin-left: 450px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		color: black;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b3Card2 {
+		height: 100px;
+		width: 70px;
+		margin-left: 500px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b3Card3 {
+		height: 100px;
+		width: 70px;
+		margin-left: 550px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b3Card4 {
+		height: 100px;
+		width: 70px;
+		margin-left: 600px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b4Card1 {
+		height: 100px;
+		width: 70px;
+		margin-left: 850px;
+		margin-top: -100px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		color: black;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b4Card2 {
+		height: 100px;
+		width: 70px;
+		margin-left: 900px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b4Card3 {
+		height: 100px;
+		width: 70px;
+		margin-left: 950px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b4Card4 {
+		height: 100px;
+		width: 70px;
+		margin-left: 1000px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b5Card1 {
+		height: 100px;
+		width: 70px;
+		margin-left: 850px;
+		margin-top: -100px;
+		border: solid 1px gray;
+		border-radius: 10%;
+		color: black;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b5Card2 {
+		height: 100px;
+		width: 70px;
+		margin-left: 900px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b5Card3 {
+		height: 100px;
+		width: 70px;
+		margin-left: 950px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#b5Card4 {
+		height: 100px;
+		width: 70px;
+		margin-left: 1000px;
+		margin-top: -100px;
+		border: solid 2px gray;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
 	}
 
 	#restartButton {
-		width: 150px;
-		height: 40px;
+		width: 120px;
+		height: 30px;
 		margin-top: 20px;
 		margin-left: 20px;
 		font-family: monospace;
-		font-size: 20px;
+		font-size: 12px;
+		text-align: center;
 	}
 
 	#skipButton {
-		width: 170px;
-		height: 40px;
+		width: 120px;
+		height: 30px;
 		margin-top: 20px;
 		margin-left: 30px;
 		font-family: monospace;
-		font-size: 20px;
+		font-size: 12px;
 		color: black;
+		text-align: center;
+	}
+
+	#botsName15 {
+		margin-top: -15px;
+	}
+
+	#botsName24 {
+		margin-top: -20px;
+	}
+
+	#b1Name {
+		font-family: monospace;
+		font-size: 20px;
+		color: white;
+		margin-left: 130px;
+	}
+
+	#b2Name {
+		font-family: monospace;
+		font-size: 20px;
+		color: white;
+		margin-left: 130px;
+	}
+
+	#b3Name {
+		position: absolute;
+		font-family: monospace;
+		font-size: 20px;
+		color: white;
+		margin-top: 15px;
+		margin-left: 235px;
+		padding:0px;
+		border-bottom-width:0px;
+	}
+
+	#b4Name {
+		font-family: monospace;
+		font-size: 20px;
+		color: white;
+		margin-left: 735px;
+	}
+
+	#b5Name {
+		font-family: monospace;
+		font-size: 20px;
+		color: white;
+		margin-left: 735px;
+	}
+
+	#playerName {
+		position: relative;
+		font-family: monospace;
+		font-size: 24px;
+		color: white;
+		margin-top: -250px;
+		margin-left: 290px;
+		padding-top: 2em;
 	}
 
 	#deckCount {
+		position: relative;
 		width: 50px;
 		height: 30px;
-		margin-top: 500px;
+		margin-top: 400px;
 		margin-left: 1075px;
 		font-family: monospace;
 		font-size: 30px;
@@ -284,6 +584,14 @@
 		background-color: #04423d;
 		background-image: url("https://www.transparenttextures.com/patterns/rebel.png");
 		border: 0px solid black;
+	}
+
+	#totalSum {
+		font-size: 35px;
+		font-family: monospace;
+		color: white;
+		margin-left: 20px;
+		margin-top: 0px;
 	}
 
 	#sumTotal {
@@ -326,7 +634,7 @@
 	var turn = [0,0,0,0,0,0,0];
 	var temp;
 	var index;
-	var defaultTime = Math.floor(Math.random() * (6000 - 3000)) + 3000;
+	var defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
 	var winner = false;
 	var pActive = true;
 	var b1Active = true;
@@ -392,10 +700,6 @@
 
 	// Actions when card 1 is clicked
 	function pCard1Click() {
-		$("#pCard1").css('transform', 'scale(1.4)');
-		$("#pCard2").css('transform', 'scale(1.4)');
-		$("#pCard3").css('transform', 'scale(1.4)');
-		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 0;
 		playerTurn();
 		if (pActive) {
@@ -405,10 +709,6 @@
 	
 	// Actions when card 2 is clicked
 	function pCard2Click() {
-		$("#pCard1").css('transform', 'scale(1.4)');
-		$("#pCard2").css('transform', 'scale(1.4)');
-		$("#pCard3").css('transform', 'scale(1.4)');
-		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 1;
 		playerTurn();
 		if (pActive) {
@@ -418,10 +718,6 @@
 
 	// Actions when card 3 is clicked
 	function pCard3Click() {
-		$("#pCard1").css('transform', 'scale(1.4)');
-		$("#pCard2").css('transform', 'scale(1.4)');
-		$("#pCard3").css('transform', 'scale(1.4)');
-		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 2;
 		playerTurn();
 		if (pActive) {
@@ -431,10 +727,6 @@
 
 	// Actions when card 4 is clicked
 	function pCard4Click() {
-		$("#pCard1").css('transform', 'scale(1.4)');
-		$("#pCard2").css('transform', 'scale(1.4)');
-		$("#pCard3").css('transform', 'scale(1.4)');
-		$("#pCard4").css('transform', 'scale(1.4)');
 		playerChoice = 3;
 		playerTurn();
 		if (pActive) {
@@ -466,18 +758,27 @@
 
 	// Disable skip button
 	function disableSkip() {
-		$("#skipButton").off('click');
-		$("#skipButton").hide();
-		defaultTime = Math.floor(Math.random() * (6000 - 3000)) + 3000;
+		document.getElementById("skipButton").disabled = true;
+		defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
 		skip = false;
 		console.log("disabled. default = " + defaultTime);
 	}
 
 	// Enable skip button
 	function enableSkip() {
-		$("#skipButton").show();
+		document.getElementById("skipButton").disabled = false;
 		$("#skipButton").on('click', skipButtonClick);
 		console.log("enabled. default = 0 on click");
+	}
+
+	// Highlight player turn
+	function turnGlowOn(bot) {
+		document.getElementById(bot).style.textShadow = "0 0 3px #00FFFF";
+	}
+
+	// Disable highlight of name
+	function turnGlowOff(bot) {
+		document.getElementById(bot).style.textShadow = "none";
 	}
 
 	/* GAME PREP WHEN START */
@@ -600,9 +901,6 @@
 		// display current total sum and amount of cards in deck
 		$("#sumTotal").val(total_value);
 		$("#deckCount").val(deck.length);
-
-		//console.log("cards left in deck: " + deck.length);
-		//console.log("start = " + total_value);
 	}
 
 	/* CHECK IF THERE IS A WINNER */
@@ -656,6 +954,7 @@
 	function playerTurn() {
 		// Only if player is active 
 		if (pActive) {
+			document.getElementById("playerName").style.textShadow = "0 0 3px #00FFFF";
 			turn[0] += 1;
 
 			// Declares and initializes numerical value of card
@@ -773,7 +1072,7 @@
 			disableAll();
 			enableSkip();
 
-			// Timer set between 3-6 seconds during each bots turn
+			// Timer set between 1-3 seconds during each bots turn
 			// At the end of each timer, next function will be called for next bot's turn
 			timerId = setTimeout(bot1Turn, defaultTime);
 		}
