@@ -31,7 +31,7 @@
 		<div id="DropDowns">
 			<!--Select Difficulty DropDown-->
 			<label text-size="15" ; style="color:black">Difficulty:</label>
-			<select style="background-color:black; width:100px" id="difficultyChoice" />
+			<select style="background-color:black; width:100px" id="difficultyChoice">
 			<option value="Normal">Normal</option>
 			<option value="Hard">Hard</option>
 			</select>
@@ -39,9 +39,11 @@
 	</div>
 
 	<div id="playingPage">
-		<button type="button" class="btn btn-info" id="restartButton">Restart</button>
+		<button type="button" class="btn btn-primary" id="restartButton">Restart</button>
 		<button type="button" class="btn btn-warning" id="skipButton">Fast Forward</button>
 		<label id="b3Name">Bot 3</label>
+		<button type="button" class="btn btn-default" id="historyButton" data-toggle="modal" data-target="#historyModal">History</button>
+		<button type="button" class="btn btn-info" id="helpButton" data-toggle="modal" data-target="#myModal">Help</button>
 		<div id="bCards3">
 			<div id="b3Card1"></div>
 			<div id="b3Card2"></div>
@@ -152,7 +154,33 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="historyModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h2>History</h2><br />
+					<table id="histHead">
+						<col width="130">
+						<col width="130">
+						<col width="150">
+						<thead>
+							<th>Turn</th>
+							<th>Card Played</th>
+							<th>Value Sum to current Card Stack</th>
+						</thead>
+					</table>
+					<table id="historyTable"><col width="130"><col width="130"><col width="130">
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
 
 <style>
 	body {
@@ -215,7 +243,7 @@
 	#rulesButton {
 		position: absolute;
 		margin-top: 350px;
-		margin-left: -10%;
+		margin-left: -9%;
 	}
 
 	#DropDowns {
@@ -231,7 +259,7 @@
 		width: 70px;
 		border: solid 1px gray;
 		border-radius: 10%;
-		margin-left: 525px;
+		margin-left: 520px;
 		margin-top: -350px;
 		background-size: cover;
 	}
@@ -515,6 +543,28 @@
 		text-align: center;
 	}
 
+	#historyButton {
+		position: absolute;
+		width: 120px;
+		height: 30px;
+		margin-top: 20px;
+		margin-left: 550px;
+		font-family: monospace;
+		font-size: 12px;
+		text-align: center;
+	}
+
+	#helpButton {
+		position: absolute;
+		width: 120px;
+		height: 30px;
+		margin-top: 20px;
+		margin-left: 700px;
+		font-family: monospace;
+		font-size: 12px;
+		text-align: center;
+	}
+
 	#botsName15 {
 		margin-top: -15px;
 	}
@@ -569,7 +619,7 @@
 		color: white;
 		margin-top: -250px;
 		margin-left: 290px;
-		padding-top: 2em;
+		
 	}
 
 	#deckCount {
@@ -643,6 +693,7 @@
 	var b4Active = true;
 	var b5Active = true;
 	var skip = false;
+	var realValue;
 
 	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
 	{
@@ -667,13 +718,6 @@
 		console.log("difficulty = " + difficulty);
 		gameStart();
 	})
-
-	// Rules Button
-	$("#rulesButton").ready(function () {
-		$('[data-toggle="popover"]').popover({
-			container: 'body'
-		});
-	});
 
 	// Restart button at playing page
 	$("#restartButton").on('click', function () {
@@ -975,6 +1019,10 @@
 
 				// Prompts user for value if player chooses Queen
 				if (value == -1) {
+					realValue = -1;
+					//qfound = true;
+					//$('#pickQueen').modal('toggle');
+
 					while (1) {
 						/* note - currently window prompt; eventually change to buttons? */
 						var v = window.prompt("Enter desrired value");
@@ -1016,71 +1064,12 @@
 							alert("Invalid Value. Please enter another value.");
 							continue;
 						}
-					}
-				}
-
-				// Total value is updated after adding value of card played
-				total_value = total_value + value;
-
-				// Checks if total_value is over 99
-				// If true, player is out and unable to play
-				// Card clicks are disable, but user is able to skip bot turns to see results
-				if (total_value > 99) {
-					alert("Player loses");
-					ranks.push(0);
-					total_value -= value;
-					console.log("PLAYER OUT");
-					$("#playerName").css("text-decoration",'line-through');
-					disableAll();
-					enableSkip();
-					pActive = false;
-					checkWinner();
-
-					if (winner) {
-						return;
-					}
-
-					turnGlowOff("playerName");
-					botsTurnStart();
-
-					return;
-				}
-
-				// Card of player's choice is removed from player's hand and placed onto table (CardStack)
-				// Upon removal of card, another card will be drawn from deck
-				cardStack.push(...player.splice(playerChoice, 1));
-				console.log(player);
-
-				// As long as amount of cards in deck are greater than 0, cards can be drawn
-				// User and Bots will play with current cards in hand if no cards in deck
-				if (deck.length > 0) {
-					try {
-						player.push(deck.pop());
-						$("#deckCount").val(deck.length);
-					}
-					catch (err) {
-						console.log("no cards to draw. play with current hand");
-					}
+					} 
+					playerContinue(value);
 				}
 				else {
-					if (player.length == 0) {
-						$("#pCard1").css("border", 'none');
-						$("#pCard1").css("background-image", 'none');
-					}
-					else {
-						$("#pCard" + (player.length + 1)).hide();
-						//console.log(player);
-					}
+					playerContinue(value);
 				}
-
-				// Player turn summary outputted to console (developer purposes)
-				/* note - add visible turn stats to playing page */
-				console.log("player turn " + turn[0] + ": " + "+ " + value + " = " + total_value);
-				$("#sumTotal").val(total_value);
-
-				// Display cards on table
-				displayCards(player);
-				displayCardStack();
 			}
 			else {
 				alert("Player loses");
@@ -1104,6 +1093,86 @@
 		}
 	}
 
+	function playerContinue(value) {
+		// Total value is updated after adding value of card played
+		total_value = total_value + value;
+
+		// Checks if total_value is over 99
+		// If true, player is out and unable to play
+		// Card clicks are disable, but user is able to skip bot turns to see results
+		if (total_value > 99) {
+			alert("Player loses");
+			ranks.push(0);
+			total_value -= value;
+			console.log("PLAYER OUT");
+			$("#playerName").css("text-decoration", 'line-through');
+			disableAll();
+			enableSkip();
+			pActive = false;
+			checkWinner();
+
+			if (winner) {
+				return;
+			}
+
+			turnGlowOff("playerName");
+			botsTurnStart();
+
+			return;
+		}
+
+		// Card of player's choice is removed from player's hand and placed onto table (CardStack)
+		// Upon removal of card, another card will be drawn from deck
+		cardStack.push(...player.splice(playerChoice, 1));
+		console.log(player);
+
+		// As long as amount of cards in deck are greater than 0, cards can be drawn
+		// User and Bots will play with current cards in hand if no cards in deck
+		if (deck.length > 0) {
+			try {
+				player.push(deck.pop());
+				$("#deckCount").val(deck.length);
+			}
+			catch (err) {
+				console.log("no cards to draw. play with current hand");
+			}
+		}
+		else {
+			if (player.length == 0) {
+				$("#pCard1").css("border", 'none');
+				$("#pCard1").css("background-image", 'none');
+			}
+			else {
+				$("#pCard" + (player.length + 1)).hide();
+				//console.log(player);
+			}
+		}
+
+		// Player turn summary outputted to console (developer purposes)
+		var table = document.getElementById("historyTable");
+		var row = table.insertRow(0);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		cell1.innerHTML = "Player Turn " + turn[0];
+		if (realValue == -1) {
+			cell2.innerHTML = "Played Queen";
+			realValue = 0;
+		}
+		else if (value == -10)
+			cell2.innerHTML = "Played Jack";
+		else if (value == 0)
+			cell2.innerHTML = "Played King";
+		else 
+			cell2.innerHTML = "Played " + value;
+		cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+		$("#sumTotal").val(total_value);
+
+		// Display cards on table
+		displayCards(player);
+		displayCardStack();
+	}
+
 	/* START BOT TURN ACTIONS */
 	function botsTurnStart() {
 		// Disable player card clicks during bots turn
@@ -1114,9 +1183,29 @@
 
 			// Timer set between 1-3 seconds during each bots turn
 			// At the end of each timer, next function will be called for next bot's turn
+			if (b1Active)
+				turnGlowOn("b1Name");
+			else if (!b1Active && b2Active)
+				turnGlowOn("b2Name");
+			else if (!b1Active && !b2Active && b3Active)
+				turnGlowOn("b3Name");
+			else if (!b1Active && !b2Active && !b3Active && b4Active)
+				turnGlowOn("b4Name");
+			else if (!b1Active && !b2Active && !b3Active && !b4Active && b5Active)
+				turnGlowOn("b5Name");
 			timerId = setTimeout(bot1Turn, defaultTime);
 		}
 		else {
+			if (b1Active)
+				turnGlowOn("b1Name");
+			else if (!b1Active && b2Active)
+				turnGlowOn("b2Name");
+			else if (!b1Active && !b2Active && b3Active)
+				turnGlowOn("b3Name");
+			else if (!b1Active && !b2Active && !b3Active && b4Active)
+				turnGlowOn("b4Name");
+			else if (!b1Active && !b2Active && !b3Active && !b4Active && b5Active)
+				turnGlowOn("b5Name");
 			timerId = setTimeout(bot1Turn, defaultTime);
 		}
 	}
@@ -1150,9 +1239,7 @@
 			if (total_value >= 89) {
 				return 99 - total_value;
 			}
-		}
-		
-		
+		}		
 		return 10;
 	}
 	
@@ -1185,6 +1272,7 @@
 				index = Math.floor(Math.random() * bot.length)
 				if (bot[index].value == -1) 
 				{
+					realValue = bot[index].value;
 					return getQueenValue();
 				}
 				else if (bot[index].value == 0) 
@@ -1205,6 +1293,7 @@
 					if (bot[j].value == -1) 
 					{
 						index = j;
+						realValue = -1;
 						return getQueenValue();
 					}
 				}
@@ -1330,6 +1419,7 @@
 						{
 							if (bot[j].value == -1) 
 							{
+								realValue = -1;
 								index = j;
 								return getQueenValue();
 							}
@@ -1343,6 +1433,7 @@
 						{
 							if (bot[j].value == -1) 
 							{
+								realValue = -1;
 								index = j;
 								return getQueenValue();
 							}
@@ -1388,7 +1479,6 @@
 
 		// Bot will play if active in game (not out)
 		if (b1Active == true) {
-			turnGlowOn("b1Name");
 			turn[1] += 1;
 
 			if (bot1.length != 0)
@@ -1413,6 +1503,21 @@
 					}
 					checkWinner();
 					turnGlowOff("b1Name");
+					if (b2Active)
+						turnGlowOn("b2Name");
+					else if (!b2Active && b3Active)
+						turnGlowOn("b3Name");
+					else if (!b2Active && !b3Active && b4Active)
+						turnGlowOn("b4Name");
+					else if (!b2Active && !b3Active && !b4Active && b5Active)
+						turnGlowOn("b5Name");
+					if (skip)
+					{
+						defaultTime = 0;
+					}
+					else {
+						defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+					}
 					timerId = setTimeout(bot2Turn, defaultTime);
 					return;
 				}
@@ -1441,7 +1546,23 @@
 				}
 
 				// Output summary of turn results to console (developer purposes)
-				console.log("bot1 turn " + turn[1] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot1.length);
+				var table = document.getElementById("historyTable");
+				var row = table.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				cell1.innerHTML = "Bot 1 Turn " + turn[1];
+				if (realValue == -1) {
+					cell2.innerHTML = "Played Queen";
+					realValue = 0;
+				}
+				else if (value == -10)
+					cell2.innerHTML = "Played Jack";
+				else if (value == 0)
+					cell2.innerHTML = "Played King";
+				else
+					cell2.innerHTML = "Played " + value;
+				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1451,6 +1572,20 @@
 
 				// After timer ends, bot2 turn will start
 				turnGlowOff("b1Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b2Active)
+					turnGlowOn("b2Name");
+				else if (!b2Active && b3Active)
+					turnGlowOn("b3Name");
+				else if (!b2Active && !b3Active && b4Active)
+					turnGlowOn("b4Name");
+				else if (!b2Active && !b3Active && !b4Active && b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot2Turn, defaultTime);
 			}
 			else {
@@ -1466,11 +1601,26 @@
 				}
 				checkWinner();
 				turnGlowOff("b1Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b2Active)
+					turnGlowOn("b2Name");
+				else if (!b2Active && b3Active)
+					turnGlowOn("b3Name");
+				else if (!b2Active && !b3Active && b4Active)
+					turnGlowOn("b4Name");
+				else if (!b2Active && !b3Active && !b4Active && b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot2Turn, defaultTime);
 				return;
 			}
 		}
 		else {
+			turnGlowOff("b1Name");
 			bot2Turn();
 		}
 	}
@@ -1483,7 +1633,6 @@
 
 		// Bot wil play if active in game (not out)
 		if (b2Active == true) {
-			turnGlowOn("b2Name");
 			turn[2] += 1;
 
 			if (bot2.length != 0)
@@ -1508,6 +1657,18 @@
 					}
 					checkWinner();
 					turnGlowOff("b2Name");
+					if (skip) {
+						defaultTime = 0;
+					}
+					else {
+						defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+					}
+					if (b3Active)
+						turnGlowOn("b3Name");
+					else if (!b3Active && b4Active)
+						turnGlowOn("b4Name");
+					else if (!b3Active && !b4Active && b5Active)
+						turnGlowOn("b5Name");
 					timerId = setTimeout(bot3Turn, defaultTime);
 					return;
 				}
@@ -1535,7 +1696,23 @@
 				}
 
 				// Output summary of turn results to console (developer purposes)
-				console.log("bot2 turn " + turn[2] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot2.length);
+				var table = document.getElementById("historyTable");
+				var row = table.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				cell1.innerHTML = "Bot 2 Turn " + turn[2];
+				if (realValue == -1) {
+					cell2.innerHTML = "Played Queen";
+					realValue = 0;
+				}
+				else if (value == -10)
+					cell2.innerHTML = "Played Jack";
+				else if (value == 0)
+					cell2.innerHTML = "Played King";
+				else
+					cell2.innerHTML = "Played " + value;
+				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1545,6 +1722,18 @@
 
 				// After timer ends, bot3 turn will start
 				turnGlowOff("b2Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b3Active)
+					turnGlowOn("b3Name");
+				else if (!b3Active && b4Active)
+					turnGlowOn("b4Name");
+				else if (!b3Active && !b4Active && b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot3Turn, defaultTime);
 			}
 			else {
@@ -1560,11 +1749,24 @@
 				}
 				checkWinner();
 				turnGlowOff("b2Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b3Active)
+					turnGlowOn("b3Name");
+				else if (!b3Active && b4Active)
+					turnGlowOn("b4Name");
+				else if (!b3Active && !b4Active && b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot3Turn, defaultTime);
 				return;
 			}
 		}
 		else {
+			turnGlowOff("b2Name");
 			bot3Turn();
 		}
 	}
@@ -1577,7 +1779,6 @@
 
 		// Bot will play if active in game (not out)
 		if (b3Active == true) {
-			turnGlowOn("b3Name");
 			turn[3] += 1;
 
 			if (bot3.length != 0)
@@ -1602,6 +1803,16 @@
 					}
 					checkWinner();
 					turnGlowOn("b3Name");
+					if (skip) {
+						defaultTime = 0;
+					}
+					else {
+						defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+					}
+					if (b4Active)
+						turnGlowOn("b4Name");
+					else if (!b4Active && b5Active)
+						turnGlowOn("b5Name");
 					timerId = setTimeout(bot4Turn, defaultTime);
 					return;
 				}
@@ -1629,7 +1840,23 @@
 				}
 
 				// Output summary of turn results to console (developer purposes)
-				console.log("bot3 turn " + turn[3] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot3.length);
+				var table = document.getElementById("historyTable");
+				var row = table.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				cell1.innerHTML = "Bot 3 Turn " + turn[3];
+				if (realValue == -1) {
+					cell2.innerHTML = "Played Queen";
+					realValue = 0; 
+				}
+				else if (value == -10)
+					cell2.innerHTML = "Played Jack";
+				else if (value == 0)
+					cell2.innerHTML = "Played King";
+				else
+					cell2.innerHTML = "Played " + value;
+				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1639,6 +1866,16 @@
 
 				// After timer ends, bot4 turn will start
 				turnGlowOff("b3Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b4Active)
+					turnGlowOn("b4Name");
+				else if (!b4Active && b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot4Turn, defaultTime);
 			}
 			else {
@@ -1654,11 +1891,22 @@
 				}
 				checkWinner();
 				turnGlowOn("b3Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b4Active)
+					turnGlowOn("b4Name");
+				else if (!b4Active && b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot4Turn, defaultTime);
 				return;
 			}
 		}
 		else {
+			turnGlowOff("b3Name");
 			bot4Turn();
 		}
 	}
@@ -1671,7 +1919,6 @@
 
 		// Bot will play if active in game (not out)
 		if (b4Active == true) {
-			turnGlowOn("b4Name");
 			turn[4] += 1;
 
 			if (bot4.length != 0)
@@ -1696,6 +1943,14 @@
 					}
 					checkWinner();
 					turnGlowOff("b4Name");
+					if (skip) {
+						defaultTime = 0;
+					}
+					else {
+						defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+					}
+					if (b5Active)
+						turnGlowOn("b5Name");
 					timerId = setTimeout(bot5Turn, defaultTime);
 					return;
 				}
@@ -1723,7 +1978,23 @@
 				}
 
 				// Output summary of turn results to console (developer purposes)
-				console.log("bot4 turn " + turn[4] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot4.length);
+				var table = document.getElementById("historyTable");
+				var row = table.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				cell1.innerHTML = "Bot 4 Turn " + turn[4];
+				if (value == -1) {
+					cell2.innerHTML = "Played Queen";
+					realValue = 0;
+				}
+				else if (value == -10)
+					cell2.innerHTML = "Played Jack";
+				else if (value == 0)
+					cell2.innerHTML = "Played King";
+				else
+					cell2.innerHTML = "Played " + value;
+				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1733,6 +2004,14 @@
 
 				// After timer ends, bot5 turn will start
 				turnGlowOff("b4Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot5Turn, defaultTime);
 			}
 			else {
@@ -1748,11 +2027,20 @@
 				}
 				checkWinner();
 				turnGlowOff("b4Name");
+				if (skip) {
+					defaultTime = 0;
+				}
+				else {
+					defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+				}
+				if (b5Active)
+					turnGlowOn("b5Name");
 				timerId = setTimeout(bot5Turn, defaultTime);
 				return;
 			}
 		}
 		else {
+			turnGlowOff("b4Name");
 			bot5Turn();
 		}
 	}
@@ -1766,7 +2054,6 @@
 
 		// Bot will play if active in game (not out)
 		if (b5Active == true) {
-			turnGlowOn("b5Name");
 			turn[5] += 1;
 
 			if (bot5.length != 0)
@@ -1797,6 +2084,12 @@
 					}
 					else {
 						turnGlowOff("b5Name");
+						if (skip) {
+							defaultTime = 0;
+						}
+						else {
+							defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+						}
 						botsTurnStart();
 					}
 					return;
@@ -1825,7 +2118,24 @@
 				}
 
 				// Output summary of turn results to console (developer purposes)
-				console.log("bot5 turn " + turn[5] + ": " + "+ " + value + " = " + total_value + "; hand = " + bot5.length);
+				var table = document.getElementById("historyTable");
+				var row = table.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				cell1.innerHTML = "Bot 5 Turn " + turn[5];
+				if (realValue == -1) {
+					cell2.innerHTML = "Played Queen";
+					realValue = 0;
+				}
+				else if (value == -10)
+					cell2.innerHTML = "Played Jack";
+				else if (value == 0)
+					cell2.innerHTML = "Played King";
+				else
+					cell2.innerHTML = "Played " + value;
+				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				var row = table.insertRow(0);
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1841,6 +2151,12 @@
 					turnGlowOff("b5Name");
 				}
 				else {
+					if (skip) {
+						defaultTime = 0;
+					}
+					else {
+						defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+					}
 					botsTurnStart();
 				}
 			}
@@ -1863,6 +2179,12 @@
 				}
 				else {
 					turnGlowOff("b5Name");
+					if (skip) {
+						defaultTime = 0;
+					}
+					else {
+						defaultTime = Math.floor(Math.random() * (3000 - 1000)) + 1000;
+					}
 					botsTurnStart();
 				}
 				return;
