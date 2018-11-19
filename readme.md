@@ -23,12 +23,13 @@
 NOTE: These steps assume that you have a basic knowledge of web programming and git. You do NOT need to know how to use .NET core, however it helps.
 
 1. Create a feature branch from the current develop branch using the title ##xxxMyGame. In place of xxx you will put the UID of your game which will be the next number in the the features list. So, if the last feature worked on was called #234Chess, your game would be called ##235MyGame.
-2. Open the project using Visual Studio and look for the Controllers folder. Use the template found HERE to create a class called YourGameController.cs
-3. In the views folder, create a folder called YourGame
-4. In that folder, use THIS templte to create a file called Index.cshtml
-5. Create a button on the homepage so that it links to your game as shown here.
-6. CHeck to make sure the link works, then begin to create your game using the Index file.
-7. Once finished, creat a pull request to develop and await review.
+2. Open the project using Visual studio and look for the Models folder. Use the template found [HERE](https://github.com/03jordan11/WebCardGame/blob/master/TemplateFolder/TemplateViewModel.cs) to create a class called YourGameViewModel.cs
+3. Under the controllers folder, use the template found [HERE](https://github.com/03jordan11/WebCardGame/blob/master/TemplateFolder/TemplateController.cs) to create a class called YourGameController.cs
+4. In the views folder, create a folder called YourGame
+5. In that folder, use [THIS](https://github.com/03jordan11/WebCardGame/blob/master/TemplateFolder/TemplateIndex.cshtml) template to create a file called Index.cshtml
+6. Create a button on the homepage so that it links to your game as done in Views/Home/Index.
+7. Check to make sure the link works, then begin to create your game using the Index file.
+8. Once finished, creat a pull request to develop and await review.
 
 ## Contributors
 1. Aabhas Kharel @aabhaskharel
