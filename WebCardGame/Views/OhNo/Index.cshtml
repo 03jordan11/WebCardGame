@@ -24,13 +24,13 @@
 <div class="midArea">
 	<div id="startPage">
 		<!--start button-->
-		<button type="button" class="btn btn-info" id="startButton">START</button>
+		<button type="button" class="btn" id="startButton">START</button>
 		<button type="button" id="rulesButton" class="btn btn-info" data-toggle="modal" data-target="#myModal">Rules</button>
 
 		@*dropdown menu for difficulty selection*@
 		<div id="DropDowns">
 			<!--Select Difficulty DropDown-->
-			<label text-size="15" ; style="color:black">Difficulty:</label>
+			<label for="difficultyChoice">Difficulty</label>
 			<select style="background-color:black; width:100px" id="difficultyChoice">
 			<option value="Normal">Normal</option>
 			<option value="Hard">Hard</option>
@@ -43,7 +43,7 @@
 		<button type="button" class="btn btn-warning" id="skipButton">Fast Forward</button>
 		<label id="b3Name">Bot 3</label>
 		<button type="button" class="btn btn-default" id="historyButton" data-toggle="modal" data-target="#historyModal">History</button>
-		<button type="button" class="btn btn-info" id="helpButton" data-toggle="modal" data-target="#myModal">Help</button>
+		<button type="button" class="btn btn-info" id="helpButton" data-toggle="modal" data-target="#myModal">Rules</button>
 		<div id="bCards3">
 			<div id="b3Card1"></div>
 			<div id="b3Card2"></div>
@@ -54,8 +54,14 @@
 			<label id="b2Name">Bot 2</label>
 			<label id="b4Name">Bot 4</label>
 		</div>
-		<input type="text" id="deckCount" class="float-right" />
-		<div id="cardStack"></div>
+		<div id="cardStack">
+			<div class="container" id="contain">
+				<div class="overlay" id="over">
+					<input type="text" id="deckCount" />
+					<p id="popoverData" data-trigger="hover" data-placement="top"># Cards Left in Deck</p>
+				</div>
+			</div>
+		</div>
 		<div id="botsName15">
 			<label id="b1Name">Bot 1</label>
 			<label id="b5Name">Bot 5</label>
@@ -90,7 +96,9 @@
 			<label id="totalSum">Total:</label>
 			<input type="text" id="sumTotal" />
 			<label id="playerName">Player</label>
+			<button type="button" class="btn btn-default" id="ghostButton">Ghost Mode</button>
 		</div>
+		
 	</div>
 
 	<div id="myModal" class="modal fade" role="dialog">
@@ -167,7 +175,7 @@
 						<thead>
 							<th>Turn</th>
 							<th>Card Played</th>
-							<th>Value Sum to current Card Stack</th>
+							<th>Value Sum</th>
 						</thead>
 					</table>
 					<table id="historyTable"><col width="130"><col width="130"><col width="130">
@@ -231,37 +239,81 @@
 	}
 
 	#startButton {
-		width: 250px;
+		width: 200px;
 		height: 75px;
 		margin-top: 250px;
 		margin-left: 10%;
-		font-family: arial;
-		font-size: 40px;
+		font-family: Calibri;
+		font-size: 35px;
 		border-radius: 20px;
+		text-align: center;
 	}
 
 	#rulesButton {
 		position: absolute;
 		margin-top: 350px;
-		margin-left: -9%;
+		margin-left: -200px;
 	}
 
 	#DropDowns {
-		font-family: monospace;
+		font-family: Calibri;
 		font-size: 15px;
 		color: white;
-		margin-top: -320px;
-		margin-left: 80%;
+		margin-top: 30px;
+		margin-left: 190px;
 	}
 
 	#cardStack {
 		height: 100px;
 		width: 70px;
-		border: solid 1px gray;
+		border: none;
 		border-radius: 10%;
 		margin-left: 520px;
-		margin-top: -350px;
+		margin-top: 80px;
 		background-size: cover;
+	}
+
+	#contain {
+		height: 100px;
+		width: 70px;
+		margin-left: 100px;
+		border-radius: 10%;
+		background-image: url("images/cards/Gray_back.png");
+	}
+
+	#over {
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 100px;
+		width: 70px;
+		opacity: 0;
+		transition: .5s ease;
+		background-color: #6896a3;
+		margin-left: -15px;
+		border-radius: 10%;
+	}
+
+	#contain:hover #over {
+		opacity: 1;
+	}
+
+	#deckCount {
+		background-color: #6896a3;
+		color: white;
+		font-size: 25px;
+		font-family: Calibri;
+		height: 100px;
+		width: 70px;
+		text-align: center;
+		border: none;
+		border-radius: 10%;
+	}
+
+	#popoverData {
+		color: white;
+		font-family: monospace;
 	}
 
 	#playerCards {
@@ -565,6 +617,17 @@
 		text-align: center;
 	}
 
+	#ghostButton {
+		position: absolute;
+		width: 100px;
+		height: 30px;
+		margin-left: 400px;
+		font-size: 12px;
+		font-family: monospace;
+		text-align: center;
+		background-color: #c2c2d6;
+	}
+
 	#botsName15 {
 		margin-top: -15px;
 	}
@@ -576,14 +639,14 @@
 	#b1Name {
 		font-family: monospace;
 		font-size: 20px;
-		color: white;
+		color: gray;
 		margin-left: 130px;
 	}
 
 	#b2Name {
 		font-family: monospace;
 		font-size: 20px;
-		color: white;
+		color: gray;
 		margin-left: 130px;
 	}
 
@@ -591,7 +654,7 @@
 		position: absolute;
 		font-family: monospace;
 		font-size: 20px;
-		color: white;
+		color: gray;
 		margin-top: 15px;
 		margin-left: 235px;
 		padding:0px;
@@ -601,14 +664,14 @@
 	#b4Name {
 		font-family: monospace;
 		font-size: 20px;
-		color: white;
+		color: gray;
 		margin-left: 735px;
 	}
 
 	#b5Name {
 		font-family: monospace;
 		font-size: 20px;
-		color: white;
+		color: gray;
 		margin-left: 735px;
 	}
 
@@ -620,20 +683,6 @@
 		margin-top: -250px;
 		margin-left: 290px;
 		
-	}
-
-	#deckCount {
-		position: relative;
-		width: 50px;
-		height: 30px;
-		margin-top: 400px;
-		margin-left: 1075px;
-		font-family: monospace;
-		font-size: 30px;
-		color: white;
-		background-color: #04423d;
-		background-image: url("https://www.transparenttextures.com/patterns/rebel.png");
-		border: 0px solid black;
 	}
 
 	#totalSum {
@@ -694,6 +743,7 @@
 	var b5Active = true;
 	var skip = false;
 	var realValue;
+	var ghost = false;
 
 	@foreach (var item in Model.OhNoGame.DrawDeck.Cards)
 	{
@@ -734,12 +784,27 @@
 	$("#pCard2").on('click', pCard2Click);
 	$("#pCard3").on('click', pCard3Click);
 	$("#pCard4").on('click', pCard4Click);
+
+	// Button for ghostButton function
+	$("#ghostButton").on('click', ghostButtonClick);
 	
 	// Function for skipButton
 	function skipButtonClick() {
 		defaultTime = 0;
 		skip = true;
 		console.log("skip");
+	}
+
+	// Function for ghostButton
+	// Hide total value and history from player's view
+	function ghostButtonClick() {
+		alert("You have now entered GHOST MODE. All totals will be hidden. Begin sharpening your mind.");
+		document.getElementById("sumTotal").style.visibility = "hidden";
+		document.getElementById("totalSum").style.visibility = "hidden";
+		document.getElementById("playingPage").style.backgroundColor = "#5f5470";
+		document.getElementById("playingPage").style.backgroundImage = 'url("https://www.transparenttextures.com/patterns/light-sketch.png")';
+		$("#ghostButton").hide();
+		ghost = true;
 	}
 
 	// Actions when card 1 is clicked
@@ -822,12 +887,12 @@
 
 	// Highlight player turn
 	function turnGlowOn(bot) {
-		document.getElementById(bot).style.textShadow = "0 0 3px #00FFFF";
+		document.getElementById(bot).style.color = "white";
 	}
 
 	// Disable highlight of name
 	function turnGlowOff(bot) {
-		document.getElementById(bot).style.textShadow = "none";
+		document.getElementById(bot).style.color = "gray";
 	}
 
 	/* GAME PREP WHEN START */
@@ -956,35 +1021,42 @@
 
 	/* CHECK IF THERE IS A WINNER */
 	function checkWinner() {
+		var msg = 'R A N K I N G\n';
 		if (ranks.length == 5) 
 		{
 			winner = true;
 			if (pActive) {
-				alert("WINNER IS PLAYER");
+				alert("YOU WON");
+				msg = msg + "1. Player\n";
 				console.log("1. Player");
 			}
 			else if (b1Active) {
 				alert("WINNER IS BOT 1");
+				msg = msg + "1. Bot 1\n";
 				console.log("1. Bot1");
 				displayCards(bot1);
 			}
 			else if (b2Active) {
 				alert("WINNER IS BOT 2");
+				msg = msg + "1. Bot 2\n";
 				console.log("1. Bot2");
 				displayCards(bot2);
 			}
 			else if (b3Active) {
 				alert("WINNER IS BOT 3");
+				msg = msg + "1. Bot 3\n";
 				console.log("1. Bot3");
 				displayCards(bot3);
 			}
 			else if (b4Active) {
 				alert("WINNER IS BOT 4");
+				msg = msg + "1. Bot 4\n";
 				console.log("1. Bot4");
 				displayCards(bot4);
 			}
 			else if (b5Active) {
 				alert("WINNER IS BOT 5");
+				msg = msg + "1. Bot 5\n";
 				console.log("1. Bot5");
 				displayCards(bot5);
 			}
@@ -995,14 +1067,17 @@
 			{
 				if (ranks[i] == 0)
 				{
+					msg = msg + rank + ". Player\n";
 					console.log(rank + ". Player");
 					rank += 1;
 				}
 				else {
+					msg = msg + rank + ". Bot " + ranks[i] + "\n";
 					console.log(rank + ". Bot" + ranks[i]);
 					rank += 1;
 				}
 			}
+			alert(msg);
 		}
 	}
 
@@ -1072,7 +1147,7 @@
 				}
 			}
 			else {
-				alert("Player loses");
+				alert("YOU LOSE");
 				ranks.push(0);
 				console.log("PLAYER OUT");
 				$("#playerName").css("text-decoration", 'line-through');
@@ -1101,7 +1176,19 @@
 		// If true, player is out and unable to play
 		// Card clicks are disable, but user is able to skip bot turns to see results
 		if (total_value > 99) {
-			alert("Player loses");
+			if (ghost) {
+				alert("YOU LOSE. Current Total was " + (total_value-value) + ".");
+				document.getElementById("sumTotal").style.visibility = "visible";
+				document.getElementById("sumTotal").style.backgroundImage = 'url("https://www.transparenttextures.com/patterns/light-sketch.png")';
+				document.getElementById("sumTotal").style.backgroundColor = "#5f5470";
+				document.getElementById("totalSum").style.visibility = "visible";
+				document.getElementById("totalSum").style.backgroundImage = 'url("https://www.transparenttextures.com/patterns/light-sketch.png")';
+				document.getElementById("totalSum").style.backgroundColor = "#5f5470";
+				ghost = false;
+			}
+			else {
+				alert("YOU LOSE");
+			}
 			ranks.push(0);
 			total_value -= value;
 			console.log("PLAYER OUT");
@@ -1132,6 +1219,10 @@
 			try {
 				player.push(deck.pop());
 				$("#deckCount").val(deck.length);
+				if (deck.length == 0) 
+				{
+					$("#contain").hide();
+				}
 			}
 			catch (err) {
 				console.log("no cards to draw. play with current hand");
@@ -1165,7 +1256,12 @@
 			cell2.innerHTML = "Played King";
 		else 
 			cell2.innerHTML = "Played " + value;
-		cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+		if (ghost) {
+			cell3.innerHTML = "+ " + value;
+		}
+		else {
+			cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+		}
 		$("#sumTotal").val(total_value);
 
 		// Display cards on table
@@ -1175,6 +1271,9 @@
 
 	/* START BOT TURN ACTIONS */
 	function botsTurnStart() {
+		if (turn[0] == 1) {
+			document.getElementById("ghostButton").style.visibility = "hidden";
+		}
 		// Disable player card clicks during bots turn
 		// Enable skip button during bots turn
 		if (pActive) {
@@ -1528,6 +1627,9 @@
 					try {
 						bot1.push(deck.pop());
 						$("#deckCount").val(deck.length);
+						if (deck.length == 0) {
+							$("#contain").hide();
+						}
 					}
 					catch (err) {
 						console.log("no cards to draw");
@@ -1562,7 +1664,13 @@
 					cell2.innerHTML = "Played King";
 				else
 					cell2.innerHTML = "Played " + value;
-				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+
+				if (ghost) {
+					cell3.innerHTML = "+ " + value;
+				}
+				else {
+					cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				}
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1679,6 +1787,9 @@
 					try {
 						bot2.push(deck.pop());
 						$("#deckCount").val(deck.length);
+						if (deck.length == 0) {
+							$("#contain").hide();
+						}
 					}
 					catch {
 						console.log("no cards to draw");
@@ -1712,7 +1823,13 @@
 					cell2.innerHTML = "Played King";
 				else
 					cell2.innerHTML = "Played " + value;
-				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				
+				if (ghost) {
+					cell3.innerHTML = "+ " + value;
+				}
+				else {
+					cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				}
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1802,7 +1919,7 @@
 						return;
 					}
 					checkWinner();
-					turnGlowOn("b3Name");
+					turnGlowOff("b3Name");
 					if (skip) {
 						defaultTime = 0;
 					}
@@ -1823,6 +1940,9 @@
 					try {
 						bot3.push(deck.pop());
 						$("#deckCount").val(deck.length);
+						if (deck.length == 0) {
+							$("#contain").hide();
+						}
 					}
 					catch {
 						console.log("no cards to draw");
@@ -1856,7 +1976,13 @@
 					cell2.innerHTML = "Played King";
 				else
 					cell2.innerHTML = "Played " + value;
-				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				
+				if (ghost) {
+					cell3.innerHTML = "+ " + value;
+				}
+				else {
+					cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				}
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -1961,6 +2087,9 @@
 					try {
 						bot4.push(deck.pop());
 						$("#deckCount").val(deck.length);
+						if (deck.length == 0) {
+							$("#contain").hide();
+						}
 					}
 					catch {
 						console.log("no cards to draw");
@@ -1994,7 +2123,13 @@
 					cell2.innerHTML = "Played King";
 				else
 					cell2.innerHTML = "Played " + value;
-				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				
+				if (ghost) {
+					cell3.innerHTML = "+ " + value;
+				}
+				else {
+					cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				}
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
@@ -2101,6 +2236,9 @@
 					try {
 						bot5.push(deck.pop());
 						$("#deckCount").val(deck.length);
+						if (deck.length == 0) {
+							$("#contain").hide();
+						}
 					}
 					catch {
 						console.log("no cards to draw");
@@ -2134,8 +2272,13 @@
 					cell2.innerHTML = "Played King";
 				else
 					cell2.innerHTML = "Played " + value;
-				cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
-				var row = table.insertRow(0);
+				
+				if (ghost) {
+					cell3.innerHTML = "+ " + value;
+				}
+				else {
+					cell3.innerHTML = (total_value - value) + " + " + value + " = " + total_value;
+				}
 
 				// Update total sum on page
 				$("#sumTotal").val(total_value);
