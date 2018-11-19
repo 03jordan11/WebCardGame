@@ -1,0 +1,35 @@
+@{
+    Layout = "_Layout";
+}
+@model Template
+@using WebCardGame.Domains;
+
+<div id="ExampleDiv">
+  Write all of your HTML in here
+</div>
+
+<style>
+    //Put styling in here.
+</style>
+
+@section Scripts{
+
+
+    <script type="text/javascript">
+    //Write all of your javascript here.
+    
+    
+    var deck = [];
+    
+    //Creating Deck from View Model
+    //This will take the deck that you created and store them in a Json object of deck, declared above.
+    function CreateDeck() {
+        @foreach(var item in Model.Template.DrawDeck.Cards)
+        {
+            @:temp = @Html.Raw(Json.Serialize(item));
+            @:deck.push(temp);
+        }
+    }
+
+    </script>
+}
