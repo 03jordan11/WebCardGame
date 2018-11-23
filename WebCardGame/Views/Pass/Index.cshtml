@@ -38,32 +38,53 @@
                 <option value="hard">Hard</option>
             </select>
         </div>
-        <button type="button" id="rulesButton">Rules</button>
-        <div id="rules">
-            <p><b><u>Rules:</u></b></p>
-            <p>
-Deck: 4 cards of 1 card type, per player<br />
-    i.e. 3 players = 12 cards   Ace of Hearts, Spade, Diamond, & Clubs<br />
-                    2 of Hearts, Spade, Diamond, & Clubs<br />
-                    3 of Hearts, Spade, Diamond, & Clubs<br /><br />
+        @*<button type="button" id="rulesButton">Rules</button>*@
+        <button type="button" id="rulesButton" class="btn btn-info" data-toggle="modal" data-target="#myModal">Rules</button>
+        <div id="myModal" class="modal fade" role="dialog">
 
-
-    i.e. 2 players = 8 cards    Ace of Hearts, Spade, Diamond, & Clubs<br />
-                    2 of Hearts, Spade, Diamond, & Clubs<br /><br />
-
-Rules: <br />
-    Objective: Player's goal is to collect 4 cards of a kind.<br /><br />
-
-    At the start of the game, players will be dealt 4 cards each.<br /><br />
-    
-    Players will have 4 seconds to select a card from their hand to discard.<br /><br />
-    
-    At the end of 4 seconds, all players will pass their card face-down, to the player to the right. <br /><br />
-
-    This process is repeated until one player has collected 4 of a kind, displaying it on the table.<br /><br />
-            </p>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h2>Setup</h2><br />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Deck is formed by mixing 'four of a kind' cards according to the number of players.
+                    </li>
+                    <li class="list-group-item">
+                        Each player will receive four cards.
+                    </li>
+                </ul>
+                <h2>Playing</h2><br />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Player's goal is to end up getting four of a kind so player chooses a card that he/she wants to pass to the player to their right.
+                    </li>
+                    <li class="list-group-item">
+                        If no card is selected then the last card is passed. 
+                    </li>
+                    <li class="list-group-item">
+                        Player receives a card from the player to his left.
+                    </li>
+                    <li class="list-group-item">
+                        This process continues until one of the player is left with four of a kind. 
+                    </li>
+                </ul>
+                <h2>Winning</h2><br />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Once a player gets four of a kind, the player wins the game.
+                    </li>
+                    <li class="list-group-item">
+                        If player looses the game then he can restart a new game. 
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
+</div>
 
     <div id="playingPage">
         <button type="button" class="btn btn-success" id="restartButton">Restart</button>
