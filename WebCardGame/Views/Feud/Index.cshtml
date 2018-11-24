@@ -9,7 +9,7 @@
     </div>
 
 <button type="button" id="resetButton" class="btn btn-primary btn-group-lg">RESET</button>
-<h1 id="title" hidden>FEUD</h1>
+<h1 id="title" hidden></h1>
 <div id="startSection">
     <div id="startPage" class="row">
         <div id="welcomeMessage" class="col-lg-6">
@@ -392,7 +392,6 @@
     //Draws card from players deck to his hand
     //TODO give arguemtns for checking hand size and drawing acoordingly
     function PlayerDraw(firstTurn, person) {
-        debugger;
         if (person === "player") {
             if (firstTurn === false) {
                 playerHand.push(player.pop());
@@ -419,7 +418,6 @@
     }
 
     function checkValue(card) {
-        debugger;
         var temp = card;
         if (card === 1 || card === "1")
             temp = "A";
@@ -474,6 +472,7 @@
         if (playerHand.length === 0) { //if player has no more cards in hand, reset from discard
             if (playerDiscard.length === 0) {
                 alert("You lost");
+                location.reload();
                 //end game, ask to play again
             }
             player = playerDiscard;
